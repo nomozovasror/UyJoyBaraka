@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -70,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () => {},
+                              onPressed: ()  {
+                                launch("tel:+998919998877");
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff008B51),
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6)
