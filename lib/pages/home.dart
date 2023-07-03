@@ -2,6 +2,8 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,12 +26,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String? viloyat = "Toshkent";
   String? valyuta = "So'm";
 
+  bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          // FILTER >>>>>>>
           SizedBox(
             height: 56,
             child: ListView(
@@ -42,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xff008B51), width: 2),
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
                       borderRadius: BorderRadius.circular(6)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
@@ -82,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xff008B51), width: 2),
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
                       borderRadius: BorderRadius.circular(6)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
@@ -194,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xff008B51), width: 2),
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
                       borderRadius: BorderRadius.circular(6)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
@@ -234,17 +239,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-
                       backgroundColor: const Color(0xff008B51),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 6),
                     ),
-                    child: Text("Izlash"),
+                    child: const Text("Izlash"),
                   ),
                 )
               ],
             ),
           ),
+          // CAROUSEL >>>>>>>>
           Stack(alignment: Alignment.center, children: [
             CarouselSlider.builder(
               options: CarouselOptions(
@@ -334,6 +339,103 @@ class _HomeScreenState extends State<HomeScreen> {
                       dotColor: Colors.white),
                 ))
           ]),
+          // TITLE
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            child: const Row(
+              children: [
+                Text("Sizga mos keladigan uylar",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff008B51))),
+              ],
+            ),
+          ),
+          Flexible(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, mainAxisExtent: 335),
+              itemCount: 20,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 0), // changes position of shadow
+                      ),
+                    ],
+                  ),
+
+                  margin: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/card_img.jpg"),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8)),
+                        ),
+                        height: 200,
+                        width: double.infinity,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Toshkent",
+                              style: TextStyle(
+                                color: Color(0xff666666),
+                              ),
+                            ),
+                            LikeButton(
+                              size: 24,
+                              isLiked: isLiked,
+                              likeBuilder: (isTapped) {
+                                return SvgPicture.asset(
+                                  'assets/icons/mdi_heart-outline.svg',
+                                  color: isTapped
+                                      ? Colors.red
+                                      : const Color(0xffFF8D08),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Padding(padding:  EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: SizedBox(
+                        child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
+                          overflow: TextOverflow.ellipsis,),
+                      ),
+                      ),
+                      const Padding(padding:  EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                        child: SizedBox(
+                          child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                            overflow: TextOverflow.ellipsis,),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
