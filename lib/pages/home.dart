@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -353,88 +354,148 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Flexible(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisExtent: 335),
-              itemCount: 20,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 0), // changes position of shadow
+              child:StaggeredGridView.countBuilder(
+                crossAxisCount: 2,
+                itemCount: 26,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  if ((index + 1) % 11 == 0) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      height: 260,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("assets/images/ad_img.jpg",)
+                        ),
                       ),
-                    ],
-                  ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 42,
+                            left: 28,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  width: 300,
+                                  child: Text(
+                                    "REKLAMANGIZ UCHUN\nJOY",
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xff008B51)),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    launch("tel:+998919998877");
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff008B51),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 6),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.phone_rounded,
+                                        size: 20,
+                                      ),
+                                      Text(
+                                        " Biz bilan bog'lanish",
+                                        style: TextStyle(fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ); //your required widget
+                  } else { //for odd row
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 0), // changes position of shadow
+                          ),
+                        ],
+                      ),
 
-                  margin: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/card_img.jpg"),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8)),
-                        ),
-                        height: 200,
-                        width: double.infinity,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 6),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Toshkent",
-                              style: TextStyle(
-                                color: Color(0xff666666),
-                              ),
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/images/card_img.jpg"),
+                                  fit: BoxFit.cover),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8)),
                             ),
-                            LikeButton(
-                              size: 24,
-                              isLiked: isLiked,
-                              likeBuilder: (isTapped) {
-                                return SvgPicture.asset(
-                                  'assets/icons/mdi_heart-outline.svg',
-                                  color: isTapped
-                                      ? Colors.red
-                                      : const Color(0xffFF8D08),
-                                );
-                              },
+                            height: 200,
+                            width: double.infinity,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Toshkent",
+                                  style: TextStyle(
+                                    color: Color(0xff666666),
+                                  ),
+                                ),
+                                LikeButton(
+                                  size: 24,
+                                  isLiked: isLiked,
+                                  likeBuilder: (isTapped) {
+                                    return SvgPicture.asset(
+                                      'assets/icons/mdi_heart-outline.svg',
+                                      color: isTapped
+                                          ? Colors.red
+                                          : const Color(0xffFF8D08),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const Padding(padding:  EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
+                                overflow: TextOverflow.ellipsis,),
+                            ),
+                          ),
+                          const Padding(padding:  EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                                overflow: TextOverflow.ellipsis,),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Padding(padding:  EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 6),
-                      child: SizedBox(
-                        child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
-                          overflow: TextOverflow.ellipsis,),
-                      ),
-                      ),
-                      const Padding(padding:  EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 6),
-                        child: SizedBox(
-                          child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
-                            overflow: TextOverflow.ellipsis,),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    );
+                  }
+                },
+                staggeredTileBuilder: (int index) => (index + 1)% 11 == 0
+                    ? const StaggeredTile.fit(2)
+                    : const StaggeredTile.fit(1),
+              ),
           ),
         ],
       ),
