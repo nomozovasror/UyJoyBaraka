@@ -361,61 +361,135 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   if ((index + 1) % 11 == 0) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      height: 260,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/ad_img.jpg",)
+                    if (index < 11){
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        height: 260,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/images/ad_img.jpg",)
+                          ),
                         ),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 42,
-                            left: 28,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 42,
+                              left: 28,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    width: 300,
+                                    child: Text(
+                                      "REKLAMANGIZ UCHUN\nJOY",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff008B51)),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      launch("tel:+998919998877");
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff008B51),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6),
+                                    ),
+                                    child: const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.phone_rounded,
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          " Biz bilan bog'lanish",
+                                          style: TextStyle(fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }else{
+                      return Container(
+                        height: 80,
+                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xff008B51), width: 1)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const SizedBox(width: 5,),
+                            Image.asset('assets/images/green3.png', width: 70,),
+                            Container(
+                              margin: const EdgeInsets.only(left: 35),
+                              width: 140,
+                              height: 90,
+                              transform: Matrix4.skewX(-.3),
+                              decoration: const BoxDecoration(
+                                color: Color(0xff008B51),
+                              ),
+                              child: const Center(
+                                child: SizedBox(
+                                  width: 138,
+                                  child: Text("Bizni ijtimoiy tarmoqlarda kuzating", textAlign: TextAlign.center,  style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w600),),
+                                ),
+                              ),
+                            ),
+                            Row(
+
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  width: 300,
-                                  child: Text(
-                                    "REKLAMANGIZ UCHUN\nJOY",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xff008B51)),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFF8D08),
+                                    borderRadius: BorderRadius.circular(50)
+                                  ),
+                                  height: 25,
+                                  width: 25,
+                                  child: Center(
+                                    child: SvgPicture.asset('assets/icons/ri_facebook-fill.svg'),
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    launch("tel:+998919998877");
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff008B51),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 6),
+                                const SizedBox(width: 5,),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFFF8D08),
+                                      borderRadius: BorderRadius.circular(50)
                                   ),
-                                  child: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.phone_rounded,
-                                        size: 20,
-                                      ),
-                                      Text(
-                                        " Biz bilan bog'lanish",
-                                        style: TextStyle(fontSize: 14),
-                                      )
-                                    ],
+                                  height: 25,
+                                  width: 25,
+                                  child: Center(
+                                    child: SvgPicture.asset('assets/icons/mdi_instagram.svg'),
                                   ),
-                                )
+                                ),
+                                const SizedBox(width: 5,),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFFF8D08),
+                                      borderRadius: BorderRadius.circular(50)
+                                  ),
+                                  height: 25,
+                                  width: 25,
+                                  child: Center(
+                                    child: SvgPicture.asset('assets/icons/mingcute_telegram-line.svg'),
+                                  ),
+                                ),
+                                const SizedBox(width: 5,),
                               ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ); //your required widget
+                            )
+                          ],
+                        ),
+                      );
+                    }
                   } else { //for odd row
                     return Container(
                       decoration: BoxDecoration(
