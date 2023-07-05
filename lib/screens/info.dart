@@ -6,8 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/pages/home.dart';
 
 import '../models.dart';
+import '../pages/home.dart';
 
 class InfoScreen extends StatefulWidget {
   final House house;
@@ -273,33 +275,135 @@ class _InfoScreenState extends State<InfoScreen> {
                         backgroundImage: NetworkImage(widget.house.img[0]),
                         radius: 30,
                       ),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                              "Nasimov Mironshoh",
-                              style: TextStyle(
+                            "Nasimov Mironshoh",
+                            style: TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff898989)
-                              ),
+                                color: Color(0xff898989)),
                           ),
-                          Text(
-                              "2019.14.08 dan beri ",
+                          Text("2019.14.08 dan beri ",
                               style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                                  color: Color(0xff898989)
-                              )
-                          )
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                  color: Color(0xff898989)))
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Siz uchun taklif",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff008B51))),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 332,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: 20,
+                  itemBuilder: (BuildContext context, int index) {
+                    final housex = houses[index];
+                    return Container(
+                      width: 200,
+                      height: 330,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 0), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(house: housex,),),);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(housex.img[0]),
+                                    fit: BoxFit.cover),
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8)),
+                              ),
+                              height: 200,
+                              width: double.infinity,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Toshkent",
+                                  style: TextStyle(
+                                    color: Color(0xff666666),
+                                  ),
+                                ),
+                                LikeButton(
+                                  size: 24,
+                                  isLiked: isLiked,
+                                  likeBuilder: (isTapped) {
+                                    return SvgPicture.asset(
+                                      'assets/icons/mdi_heart-outline.svg',
+                                      color: isTapped
+                                          ? Colors.red
+                                          : const Color(0xffFF8D08),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Padding(padding:  EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
+                                overflow: TextOverflow.ellipsis,),
+                            ),
+                          ),
+                          const Padding(padding:  EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                                overflow: TextOverflow.ellipsis,),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 14,)
             ],
           ),
         ),
