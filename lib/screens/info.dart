@@ -261,6 +261,44 @@ class _InfoScreenState extends State<InfoScreen> {
                     )
                   ],
                 ),
+              ),
+              Container(
+                height: 100,
+                color: const Color(0xffE3E3E3),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(widget.house.img[0]),
+                        radius: 30,
+                      ),
+                      const SizedBox(width: 10,),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              "Nasimov Mironshoh",
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff898989)
+                              ),
+                          ),
+                          Text(
+                              "2019.14.08 dan beri ",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                  color: Color(0xff898989)
+                              )
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               )
             ],
           ),
