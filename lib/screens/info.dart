@@ -24,6 +24,12 @@ class _InfoScreenState extends State<InfoScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+            child: const Icon( Icons.arrow_back_ios, color: Colors.white, size: 20, ),
+            onTap: () {
+              Navigator.pop(context);
+            } ,
+          ) ,
           title: Image.asset('assets/images/logo.png', height: 40),
           backgroundColor: const Color(0xff008B51),
           centerTitle: true,
