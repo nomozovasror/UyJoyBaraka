@@ -314,7 +314,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
               ),
               SizedBox(
-                height: 332,
+                height: 342,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
@@ -323,7 +323,6 @@ class _InfoScreenState extends State<InfoScreen> {
                     final housex = houses[index];
                     return Container(
                       width: 200,
-                      height: 330,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: Colors.white,
