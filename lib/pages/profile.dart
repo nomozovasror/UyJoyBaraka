@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:uy_joy_baraka/screens/about.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -72,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )
                       )
                     ],),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_rounded))
+                    IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_forward_ios_rounded))
                   ],
                 ),
               ),
@@ -94,30 +95,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )
                       )
                     ],),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_rounded))
+                    IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_forward_ios_rounded))
                   ],
                 ),
               ),
               const Divider(thickness: 1.6,),
-              Padding(
-                padding: const EdgeInsets.only(left: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(children: [
-                      SvgPicture.asset("assets/icons/about.svg"),
-                      const SizedBox(width: 12,),
-                      const Text(
-                          "Sayt haqida ma'lumot",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff181725)
-                          )
-                      )
-                    ],),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_rounded))
-                  ],
+              InkWell(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutScreen()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        SvgPicture.asset("assets/icons/about.svg"),
+                        const SizedBox(width: 12,),
+                        const Text(
+                            "Sayt haqida ma'lumot",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff181725)
+                            )
+                        )
+                      ],),
+                      IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_forward_ios_rounded))
+                    ],
+                  ),
                 ),
               ),
               const Divider(thickness: 1.6,),

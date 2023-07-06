@@ -6,10 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uy_joy_baraka/pages/home.dart';
 
 import '../models.dart';
-import '../pages/home.dart';
 
 class InfoScreen extends StatefulWidget {
   final House house;
@@ -305,11 +303,14 @@ class _InfoScreenState extends State<InfoScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Siz uchun taklif",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff008B51))),
+                    Text(
+                      "Siz uchun taklif",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff008B51),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -331,7 +332,8 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 2,
                             blurRadius: 5,
-                            offset: const Offset(0, 0), // changes position of shadow
+                            offset: const Offset(
+                                0, 0), // changes position of shadow
                           ),
                         ],
                       ),
@@ -339,8 +341,14 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: (){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(house: housex,),),);
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => InfoScreen(
+                                    house: housex,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -382,18 +390,29 @@ class _InfoScreenState extends State<InfoScreen> {
                               ],
                             ),
                           ),
-                          const Padding(padding:  EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 6),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
                             child: SizedBox(
-                              child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
-                                overflow: TextOverflow.ellipsis,),
+                              child: Text(
+                                'Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi',
+                                style: TextStyle(fontSize: 12),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
-                          const Padding(padding:  EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 6),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
                             child: SizedBox(
-                              child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
-                                overflow: TextOverflow.ellipsis,),
+                              child: Text(
+                                '2 250 000 so’m',
+                                style: TextStyle(
+                                    fontSize: 18, color: Color(0xff008B51)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ],
@@ -402,7 +421,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 14,)
+              const SizedBox(
+                height: 14,
+              )
             ],
           ),
         ),
