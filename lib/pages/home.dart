@@ -553,10 +553,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     isLiked: isLiked,
                                     likeBuilder: (isTapped) {
                                       return SvgPicture.asset(
-                                        'assets/icons/mdi_heart-outline.svg',
-                                        color: isTapped
-                                            ? Colors.red
-                                            : const Color(0xffFF8D08),
+                                        isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
+                                        color: const Color(0xffFF8D08),
                                       );
                                     },
                                   ),

@@ -104,7 +104,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         Container(
                           padding:
-                              const EdgeInsets.only(right: 8, left: 12, top: 1),
+                              const EdgeInsets.only(right: 8, left: 12, top: 3, bottom: 3),
                           decoration: const BoxDecoration(
                               color: Color(0xff008B51),
                               borderRadius: BorderRadius.only(
@@ -116,17 +116,15 @@ class _InfoScreenState extends State<InfoScreen> {
                             isLiked: isLiked,
                             likeBuilder: (isTapped) {
                               return SvgPicture.asset(
-                                'assets/icons/mdi_heart-outline.svg',
-                                color: isTapped
-                                    ? Colors.red
-                                    : const Color(0xffffffff),
+                                isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
+                                color: isTapped ? const Color(0xffFF8D08) : Colors.white,
                               );
                             },
                           ),
                         ),
                         Container(
                             padding: const EdgeInsets.only(
-                                top: 1, right: 10, left: 10),
+                                right: 10, left: 10, top: 3, bottom: 3),
                             decoration: const BoxDecoration(
                                 color: Color(0xff008B51),
                                 borderRadius: BorderRadius.only(
@@ -380,10 +378,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   isLiked: isLiked,
                                   likeBuilder: (isTapped) {
                                     return SvgPicture.asset(
-                                      'assets/icons/mdi_heart-outline.svg',
-                                      color: isTapped
-                                          ? Colors.red
-                                          : const Color(0xffFF8D08),
+                                      isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
+                                      color: const Color(0xffFF8D08),
                                     );
                                   },
                                 ),
