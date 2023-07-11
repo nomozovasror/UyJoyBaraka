@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageData {
   final File file;
@@ -28,75 +29,362 @@ class _AddAdScreenState extends State<AddAdScreen> {
   String name = '';
   String expiration = '';
 
+  String ijaravalue = "Sotuv";
+
+  final viloyatlar = [
+    'Andijon',
+    'Buxoro',
+    'Farg\'ona',
+    'Jizzax',
+    'Xorazm',
+    'Namangan',
+    'Navoiy',
+    'Qashqadaryo',
+    'Qoraqalpog\'iston Respublikasi',
+    'Samarqand',
+    'Sirdaryo',
+    'Surxondaryo',
+    'Toshkent',
+    'Toshkent shahri'
+  ];
+
+  final andijon = ['Andijon shaxri', 'Andijon tumani', 'Asaka', 'Baliqchi', 'Bo\'z', 'Buloqboshi', 'Izboskan', 'Jalaquduq', 'Marhamat', 'Oltinko\'l', 'Paxtaobod', 'Qo\'rg\'ontepa', 'Shahrixon', 'Ulug\'nor', 'Xo\'jaobod', 'Xonobod',];
+  final buxoro = ['Buxoro shaxri', 'Buxoro tumani', 'G\'ijduvon', 'Jondor', 'Kogon', 'Qorako\'l', 'Qorovulbozor', 'Peshku', 'Romitan', 'Shofirkon', 'Vobkent',];
+  final fargona = ['Oltiariq', 'Bag\'dod', 'Beshariq', 'Buvayda', 'Dang\'ara', 'Farg\'ona shaxri', 'Farg\'ona tumani', 'Furqat', 'Quva', 'Qo\'qon', 'Rishton', 'So\'x', 'Toshloq', 'Uchko\'prik', 'Yozyovon',];
+  final jizzax = ['Arnasoy', 'Baxmal', 'Do\'stlik', 'Forish', 'G\'allaorol', 'G\'azalkent', 'Mirzacho\'l', 'Paxtakor', 'Yangiobod', 'Zomin', 'Zafarobod', 'Zarbdor', 'Zomin',];
+  String? viloyat;
+  String? andijon_value;
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              selectImages();
-            },
-            child: Text("Select Images"),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 10, top: 30),
+            child: Text(
+              "E’lon joylash",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF008B51),
+              ),
+            ),
           ),
-          SizedBox(height: 16),
-          Column(
-            children: [
-              for (int index = 0; index < selectedImages.length; index++)
-                Column(
+          const Padding(
+            padding: EdgeInsets.only(left: 10, top: 20, bottom: 5),
+            child: Text(
+              "Uy rasmini yuklang:",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Container(
+            height: 200,
+            color: const Color(0x50008B51),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.file(
-                      selectedImages[index].file,
-                      height: 100,
-                      width: 100,
+                    SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    SizedBox(height: 8),
-                    if (selectedImages[index].isUploading)
-                      CircularProgressIndicator(),
-                    if (selectedImages[index].uploadSuccess)
-                      Text(
-                        'Uploaded successfully',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    SizedBox(height: 16),
+                    SvgPicture.asset("assets/icons/fa_photo.svg"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
                   ],
                 ),
-            ],
-          ),
-          SizedBox(height: 16),
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                name = value;
-              });
-            },
-            decoration: InputDecoration(
-              labelText: 'Name',
+                const SizedBox(
+                  height: 12,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "+",
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Color(0xff008B51),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 6,
+                    ),
+                    Text(
+                      "Rasm yuklang",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff008B51),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
-          SizedBox(height: 8),
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                expiration = value;
-              });
-            },
-            decoration: InputDecoration(
-              labelText: 'Expiration',
+          Flexible(
+            child: ListView(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 25,
+                    left: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Text("Sarlavha kiriting",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          )),
+                      Text(" *",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xffFF0707),
+                          ))
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xffffffff),
+                          hintText: "Masalan: olmazor uy arenda",
+                          hintStyle: const TextStyle(
+                              color: Color(0xffABABAB), fontSize: 14)),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 25,
+                    left: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Text("Kategroiya",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          )),
+                      Text(" *",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xffFF0707),
+                          ))
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                      bottom: 6, top: 12, left: 8, right: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(6)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        value: ijaravalue,
+                        borderRadius: BorderRadius.circular(6),
+                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                        iconSize: 24,
+                        style: const TextStyle(
+                            color: Color(0xff272727),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Sotuv",
+                            child: Text(
+                              'Sotuv',
+                              style: TextStyle(
+                                  color: Color(0xffABABAB), fontSize: 16),
+                            ),
+                          ),
+                          DropdownMenuItem(
+                            value: "Ijara",
+                            child: Text(
+                              'Ijara',
+                              style: TextStyle(
+                                  color: Color(0xffABABAB), fontSize: 16),
+                            ),
+                          ),
+                        ],
+                        onChanged: (String? newIjara) {
+                          setState(() {
+                            ijaravalue = newIjara!;
+                          });
+                        }),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 25,
+                    left: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Text("Shaxarni tanlang",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          )),
+                      Text(" *",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xffFF0707),
+                          ))
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                      bottom: 6, top: 12, left: 8, right: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(6)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: viloyat,
+                      borderRadius: BorderRadius.circular(6),
+                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                      iconSize: 24,
+                      style: const TextStyle(
+                          color: Color(0xff272727),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                      items: viloyatlar.map(buildMenuItem).toList(),
+                      onChanged: (viloyat) => setState(
+                            () {
+                          this.viloyat = viloyat!;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                      bottom: 6, top: 12, left: 8, right: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(6)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        value: ijaravalue,
+                        borderRadius: BorderRadius.circular(6),
+                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                        iconSize: 24,
+                        style: const TextStyle(
+                            color: Color(0xff272727),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Sotuv",
+                            child: Text(
+                              'Sotuv',
+                              style: TextStyle(
+                                  color: Color(0xffABABAB), fontSize: 16),
+                            ),
+                          ),
+                          DropdownMenuItem(
+                            value: "Ijara",
+                            child: Text(
+                              'Ijara',
+                              style: TextStyle(
+                                  color: Color(0xffABABAB), fontSize: 16),
+                            ),
+                          ),
+                        ],
+                        onChanged: (String? newIjara) {
+                          setState(() {
+                            ijaravalue = newIjara!;
+                          });
+                        }),
+                  ),
+                ),
+
+              ],
             ),
-          ),
-          SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              uploadImages();
-            },
-            child: Text("Upload Images"),
-          ),
+          )
         ],
       ),
     );
   }
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(item),
+      );
 
   Future selectImages() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -151,6 +439,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
           data: data,
           onReceiveProgress: (int sent, int total) {
             // Progress can be tracked here if needed
+            print("send >>>>> $sent\ntotal >>>>> $total");
           },
         );
 
