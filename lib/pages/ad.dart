@@ -909,7 +909,21 @@ class _AddAdScreenState extends State<AddAdScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 90, vertical: 20),
                   child: ElevatedButton(
                     onPressed: () {
-
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: const Row(children: [
+                          Icon(Icons.error_outline,color: Colors.white,),
+                          Text('  Barcha maydonlarni to\'ldiring!')
+                        ],),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        backgroundColor: Colors.redAccent,
+                        margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height - 190,
+                            right: 20,
+                            left: 20),
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xffFF8D08),
