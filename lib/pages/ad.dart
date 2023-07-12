@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageData {
@@ -18,7 +19,7 @@ class ImageData {
 }
 
 class AddAdScreen extends StatefulWidget {
-  const AddAdScreen({Key? key}) : super(key: key);
+  const AddAdScreen({Key? key,}) : super(key: key);
 
   @override
   State<AddAdScreen> createState() => _AddAdScreenState();
@@ -251,6 +252,30 @@ class _AddAdScreenState extends State<AddAdScreen> {
   String? valyuta = 'So\'m';
   String? tel;
 
+  final _controller = TextEditingController();
+
+  // dispose it when the widget is unmounted
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  String? get _errorText {
+    // at any time, we can get the text from _controller.value.text
+    final text = _controller.value.text;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    if (text.isEmpty) {
+      return 'Can\'t be empty';
+    }
+    if (text.length < 4) {
+      return 'Too short';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -379,6 +404,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                           this.sarlavha = sarlavha;
                         });
                       },
+                      controller: _controller,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6),
@@ -432,7 +458,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                       ],
                       borderRadius: BorderRadius.circular(6)),
                   child: DropdownButtonHideUnderline(
+
                     child: DropdownButton(
+
                         value: ijaravalue,
                         hint: const Text("Sotuv"),
                         borderRadius: BorderRadius.circular(6),
@@ -780,6 +808,10 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 this.narx = narx;
                               });
                             },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6),
@@ -909,21 +941,47 @@ class _AddAdScreenState extends State<AddAdScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 90, vertical: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: const Row(children: [
-                          Icon(Icons.error_outline,color: Colors.white,),
-                          Text('  Barcha maydonlarni to\'ldiring!')
-                        ],),
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        backgroundColor: Colors.redAccent,
-                        margin: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height - 190,
-                            right: 20,
-                            left: 20),
-                      ));
+                      if (_controller.value.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Row(
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: Colors.white,
+                                ),
+                                Text('  Barcha maydonlarni to\'ldiring!')
+                              ],
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            backgroundColor: Colors.redAccent,
+                            margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height - 190,
+                                right: 20,
+                                left: 20),
+                          ),
+                        );
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Row(children: [
+                            Icon(Icons.error_outline,color: Colors.white,),
+                            Text('  Ok!')
+                          ],),
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          backgroundColor: Colors.green,
+                          margin: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height - 190,
+                              right: 20,
+                              left: 20),
+                        ),);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xffFF8D08),
@@ -933,7 +991,8 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     ),
                     child: Text("Saqlash"),
                   ),
-                )
+                ),
+                Text("$sarlavha $ijaravalue $narx $valyuta $tel"),
               ],
             ),
           )
