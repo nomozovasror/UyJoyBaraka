@@ -252,29 +252,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
   String? valyuta = 'So\'m';
   String? tel;
 
-  final _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  // dispose it when the widget is unmounted
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  String? get _errorText {
-    // at any time, we can get the text from _controller.value.text
-    final text = _controller.value.text;
-    // Note: you can do your own custom validation here
-    // Move this logic this outside the widget for more testable code
-    if (text.isEmpty) {
-      return 'Can\'t be empty';
-    }
-    if (text.length < 4) {
-      return 'Too short';
-    }
-    // return null if the text is valid
-    return null;
-  }
+  bool val_margin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -361,457 +341,62 @@ class _AddAdScreenState extends State<AddAdScreen> {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(
-                    top: 25,
-                    left: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      Text("Sarlavha kiriting",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      onChanged: (sarlavha) {
-                        setState(() {
-                          this.sarlavha = sarlavha;
-                        });
-                      },
-                      controller: _controller,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffffffff),
-                          hintText: "Masalan: olmazor uy arenda",
-                          hintStyle: const TextStyle(
-                              color: Color(0xffABABAB), fontSize: 14)),
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    top: 25,
-                    left: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      Text("Kategroiya",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 8, right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-
-                    child: DropdownButton(
-
-                        value: ijaravalue,
-                        hint: const Text("Sotuv"),
-                        borderRadius: BorderRadius.circular(6),
-                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        iconSize: 24,
-                        style: const TextStyle(
-                            color: Color(0xff272727),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "Sotuv",
-                            child: Text(
-                              'Sotuv',
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Ijara",
-                            child: Text(
-                              'Ijara',
-                            ),
-                          ),
+                Form(
+                  key: _formKey,
+                  child: Column(children: [
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 25,
+                        left: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Sarlavha kiriting",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
                         ],
-                        onChanged: (ijaravalue) {
-                          setState(() {
-                            this.ijaravalue = ijaravalue!;
-                          });
-                        }),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    top: 25,
-                    left: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      Text("Shaxarni tanlang",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-
-                //VILOYAT TANLANGANIDAN SO'NG TUMANLAR RO'YXATI CHIQADI
-                Container(
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 8, right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      value: viloyat,
-                      hint: const Text("Toshkent"),
-                      borderRadius: BorderRadius.circular(6),
-                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                      iconSize: 24,
-                      style: const TextStyle(
-                          color: Color(0xff272727),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                      items: viloyatlar.map(buildMenuViloyat).toList(),
-                      onChanged: (viloyat) => setState(
-                        () {
-                          this.viloyat = viloyat!;
-                          tuman = null;
-                        },
                       ),
                     ),
-                  ),
-                ),
-                //TUMANLAR
-                Container(
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 8, right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      hint: const Text("Chilonzor"),
-                      value: tuman,
-                      borderRadius: BorderRadius.circular(6),
-                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                      iconSize: 24,
-                      style: const TextStyle(
-                          color: Color(0xff272727),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                      items: viloyat == "Andijon"
-                          ? andijon.map(buildMenuTuman).toList()
-                          : viloyat == "Buxoro"
-                              ? buxoro.map(buildMenuTuman).toList()
-                              : viloyat == "Farg\'ona"
-                                  ? fargona.map(buildMenuTuman).toList()
-                                  : viloyat == "Jizzax"
-                                      ? jizzax.map(buildMenuTuman).toList()
-                                      : viloyat == "Xorazm"
-                                          ? xorazm.map(buildMenuTuman).toList()
-                                          : viloyat == "Namangan"
-                                              ? namangan
-                                                  .map(buildMenuTuman)
-                                                  .toList()
-                                              : viloyat == "Qashqadaryo"
-                                                  ? qashqadaryo
-                                                      .map(buildMenuTuman)
-                                                      .toList()
-                                                  : viloyat ==
-                                                          "Qoraqalpog\'iston Respublikasi"
-                                                      ? qoraqalpogiston
-                                                          .map(buildMenuTuman)
-                                                          .toList()
-                                                      : viloyat == "Samarqand"
-                                                          ? samarqand
-                                                              .map(
-                                                                  buildMenuTuman)
-                                                              .toList()
-                                                          : viloyat ==
-                                                                  "Sirdaryo"
-                                                              ? sirdaryo
-                                                                  .map(
-                                                                      buildMenuTuman)
-                                                                  .toList()
-                                                              : viloyat ==
-                                                                      "Surxondaryo"
-                                                                  ? surxondaryo
-                                                                      .map(
-                                                                          buildMenuTuman)
-                                                                      .toList()
-                                                                  : viloyat ==
-                                                                          "Toshkent"
-                                                                      ? toshkent
-                                                                          .map(
-                                                                              buildMenuTuman)
-                                                                          .toList()
-                                                                      : viloyat ==
-                                                                              "Toshkent shahri"
-                                                                          ? toshkentShahri
-                                                                              .map(
-                                                                                  buildMenuTuman)
-                                                                              .toList()
-                                                                          : bosh
-                                                                              .map(buildMenuTuman)
-                                                                              .toList(),
-                      onChanged: (tuman) => setState(
-                        () {
-                          this.tuman = tuman!;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-
-                //MANZIL
-                const Padding(
-                  padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text("Manzil",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      onChanged: (manzil) {
-                        setState(() {
-                          this.manzil = manzil;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffffffff),
-                          hintText: "Masalan: 17-mavze, 3-uy",
-                          hintStyle: const TextStyle(
-                              color: Color(0xffABABAB), fontSize: 14)),
-                    ),
-                  ),
-                ),
-
-                //UY HAQIDA MA"LUMOT
-                const Padding(
-                  padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text("Uy haqida ma'lumot",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(
-                            1,
-                            -5,
-                          ),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      maxLines: 8,
-                      maxLength: 300,
-                      onChanged: (text) {
-                        setState(() {
-                          this.text = text;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffffffff),
-                          hintText:
-                              "Сдается в аренду для семьи трёхкомнатная квартира в центральном, спальном районе,на Дархане. Доброжелательные соседи,развитая  инфраструктура,в трёх минутах от метро Хамид Олимжан. Рядом  есть школа,детский сад.Квартира полностью оснащена для жилья: свежий ремонт, меблирована, детская будет обставлена по желанию жильцов,три телевизора,два кондиционера, большой холодильник, стиральная машина, пылесос. Техника, мебель и посуда новые,не пользованные. Вы будете первым хозяином. ",
-                          hintStyle: const TextStyle(
-                              color: Color(0xffABABAB), fontSize: 14)),
-                    ),
-                  ),
-                ),
-
-                // NARX
-                const Padding(
-                  padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text("Narxni kiriting",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 6,
-                        child: Container(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(
+                        children: [ Container(
                           height: 50,
-                          width: MediaQuery.of(context).size.width - 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
+                                color: Colors.grey.withOpacity(0.2),
                                 spreadRadius: 2,
                                 blurRadius: 2,
-                                offset: const Offset(
-                                  0,
-                                  3,
-                                ),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
-                          child: TextField(
-                            onChanged: (narx) {
+                        ),
+                          TextFormField(
+                            validator: (sarlavha) {
+                              if(sarlavha!.isEmpty) {
+                              return 'Iltimos matn kiriting';
+                              }
+                              if(sarlavha.length < 10){
+                                return 'Sarlavha uzunligi yetarli emas';
+                              }
+                              return null;
+                            },
+                            onChanged: (sarlavha) {
                               setState(() {
-                                this.narx = narx;
+                                this.sarlavha = sarlavha;
                               });
                             },
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6),
@@ -822,177 +407,623 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 ),
                                 filled: true,
                                 fillColor: const Color(0xffffffff),
-                                hintText: "1 6000 000",
+                                hintText: "Masalan: olmazor uy arenda",
                                 hintStyle: const TextStyle(
                                     color: Color(0xffABABAB), fontSize: 14)),
                           ),
+  ]),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 25,
+                        left: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Kategroiya",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 60,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 8, right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+
+                        child: DropdownButton(
+
+                            value: ijaravalue,
+                            hint: const Text("Sotuv"),
+                            borderRadius: BorderRadius.circular(6),
+                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            iconSize: 24,
+                            style: const TextStyle(
+                                color: Color(0xff272727),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            items: const [
+                              DropdownMenuItem(
+                                value: "Sotuv",
+                                child: Text(
+                                  'Sotuv',
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Ijara",
+                                child: Text(
+                                  'Ijara',
+                                ),
+                              ),
+                            ],
+                            onChanged: (ijaravalue) {
+                              setState(() {
+                                this.ijaravalue = ijaravalue!;
+                              });
+                            }),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 25,
+                        left: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Shaxarni tanlang",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+
+                    //VILOYAT TANLANGANIDAN SO'NG TUMANLAR RO'YXATI CHIQADI
+                    Container(width: double.infinity,
+                      height: 60,
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 8, right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          value: viloyat,
+                          hint: const Text("Toshkent"),
+                          borderRadius: BorderRadius.circular(6),
+                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                          iconSize: 24,
+                          style: const TextStyle(
+                              color: Color(0xff272727),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                          items: viloyatlar.map(buildMenuViloyat).toList(),
+                          onChanged: (viloyat) => setState(
+                                () {
+                              this.viloyat = viloyat!;
+                              tuman = null;
+                            },
+                          ),
                         ),
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          height: 50,
-                          margin: const EdgeInsets.only(left: 8, right: 4),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    //TUMANLAR
+                    Container(
+                      height: 60,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 8, right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          hint: const Text("Chilonzor"),
+                          value: tuman,
+                          borderRadius: BorderRadius.circular(6),
+                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                          iconSize: 24,
+                          style: const TextStyle(
+                              color: Color(0xff272727),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                          items: viloyat == "Andijon"
+                              ? andijon.map(buildMenuTuman).toList()
+                              : viloyat == "Buxoro"
+                              ? buxoro.map(buildMenuTuman).toList()
+                              : viloyat == "Farg\'ona"
+                              ? fargona.map(buildMenuTuman).toList()
+                              : viloyat == "Jizzax"
+                              ? jizzax.map(buildMenuTuman).toList()
+                              : viloyat == "Xorazm"
+                              ? xorazm.map(buildMenuTuman).toList()
+                              : viloyat == "Namangan" ? namangan.map(buildMenuTuman).toList()
+                              : viloyat == "Navoiy" ? navoiy.map(buildMenuTuman).toList()
+                              : viloyat == "Qashqadaryo"
+                              ? qashqadaryo
+                              .map(buildMenuTuman)
+                              .toList()
+                              : viloyat ==
+                              "Qoraqalpog\'iston Respublikasi"
+                              ? qoraqalpogiston
+                              .map(buildMenuTuman)
+                              .toList()
+                              : viloyat == "Samarqand"
+                              ? samarqand
+                              .map(
+                              buildMenuTuman)
+                              .toList()
+                              : viloyat ==
+                              "Sirdaryo"
+                              ? sirdaryo
+                              .map(
+                              buildMenuTuman)
+                              .toList()
+                              : viloyat ==
+                              "Surxondaryo"
+                              ? surxondaryo
+                              .map(
+                              buildMenuTuman)
+                              .toList()
+                              : viloyat ==
+                              "Toshkent"
+                              ? toshkent
+                              .map(
+                              buildMenuTuman)
+                              .toList()
+                              : viloyat ==
+                              "Toshkent shahri"
+                              ? toshkentShahri
+                              .map(
+                              buildMenuTuman)
+                              .toList()
+                              : bosh
+                              .map(buildMenuTuman)
+                              .toList(),
+                          onChanged: (tuman) => setState(
+                                () {
+                              this.tuman = tuman!;
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //MANZIL
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                      child: Row(
+                        children: [
+                          Text("Manzil",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(
+                        children: [Container(
+                          height: 60,
                           decoration: BoxDecoration(
-                              color: const Color(0xffffffff),
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                        ),
+                          TextFormField(
+                            validator: (manzil) {
+                              if(manzil!.isEmpty) {
+                              return 'Iltimos matn kiriting';
+                              }
+                              else if(manzil.length < 8){
+                                return 'Manzil uzunligi yetarli emas';
+                              }
+                              return null;
+                            },
+                            onChanged: (manzil) {
+                              setState(() {
+                                this.manzil = manzil;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: const Color(0xffffffff),
+                                hintText: "Masalan: 17-mavze, 3-uy",
+                                hintStyle: const TextStyle(
+                                    color: Color(0xffABABAB), fontSize: 14)),
+                          ),
+                     ] ),
+
+                    ),
+
+                    //UY HAQIDA MA"LUMOT
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                      child: Row(
+                        children: [
+                          Text("Uy haqida ma'lumot",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 8,
+                                  offset: const Offset(
+                                    0,
+                                    3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextFormField(
+                            maxLines: 8,
+                            maxLength: 300,
+                            validator: (text) {
+                              if(text!.isEmpty) {
+                                return 'Iltimos matn kiriting';
+                              }
+                              else if(text.length < 10){
+                                return 'Matn juda kam';
+                              }
+                              return null;
+                            },
+                            onChanged: (text) {
+                              setState(() {
+                                this.text = text;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: const Color(0xffffffff),
+                                hintText:
+                                "Сдается в аренду для семьи трёхкомнатная квартира в центральном, спальном районе,на Дархане. Доброжелательные соседи,развитая  инфраструктура,в трёх минутах от метро Хамид Олимжан. Рядом  есть школа,детский сад.Квартира полностью оснащена для жилья: свежий ремонт, меблирована, детская будет обставлена по желанию жильцов,три телевизора,два кондиционера, большой холодильник, стиральная машина, пылесос. Техника, мебель и посуда новые,не пользованные. Вы будете первым хозяином. ",
+                                hintStyle: const TextStyle(
+                                    color: Color(0xffABABAB), fontSize: 14)),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // NARX
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                      child: Row(
+                        children: [
+                          Text("Narxni kiriting",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: MediaQuery.of(context).size.width - 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(
+                                          0,
+                                          3,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TextFormField(
+                                  validator: (narx) {
+                                    if(narx!.isEmpty) {
+                                      val_margin = true;
+                                      return 'Iltimos matn kiriting';
+                                    }
+                                    else if(narx.length < 1){
+                                      val_margin = true;
+                                      return 'Sarlavha uzunligi yetarli emas';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (narx) {
+                                    setState(() {
+                                      this.narx = narx;
+                                    });
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(6),
+                                        borderSide: const BorderSide(
+                                          width: 0,
+                                          style: BorderStyle.none,
+                                        ),
+                                      ),
+                                      filled: true,
+                                      fillColor: const Color(0xffffffff),
+                                      hintText: "1 6000 000",
+                                      hintStyle: const TextStyle(
+                                          color: Color(0xffABABAB), fontSize: 14)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              height: 60,
+                              margin: val_margin ? const EdgeInsets.only(left: 8, right: 4) : const EdgeInsets.only(left: 8, right: 4, bottom: 22),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(6)),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                    value: valyuta,
+                                    hint: Text("So\'m"),
+                                    borderRadius: BorderRadius.circular(6),
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_outlined),
+                                    iconSize: 24,
+                                    style: const TextStyle(
+                                        color: Color(0xff272727),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: "So\'m",
+                                        child: Text(
+                                          'So\'m',
+                                        ),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "Dollar",
+                                        child: Text(
+                                          'Dollar',
+                                        ),
+                                      ),
+                                    ],
+                                    onChanged: (valyuta) {
+                                      setState(() {
+                                        this.valyuta = valyuta!;
+                                      });
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                      child: Row(
+                        children: [
+                          Text("Telefon raqam",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text(" *",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xffFF0707),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 2,
-                                  blurRadius: 2,
+                                  blurRadius: 5,
                                   offset: const Offset(0, 3),
                                 ),
                               ],
-                              borderRadius: BorderRadius.circular(6)),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                                value: valyuta,
-                                hint: Text("So\'m"),
-                                borderRadius: BorderRadius.circular(6),
-                                icon: const Icon(
-                                    Icons.keyboard_arrow_down_outlined),
-                                iconSize: 24,
-                                style: const TextStyle(
-                                    color: Color(0xff272727),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "So\'m",
-                                    child: Text(
-                                      'So\'m',
-                                    ),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Dollar",
-                                    child: Text(
-                                      'Dollar',
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (valyuta) {
-                                  setState(() {
-                                    this.valyuta = valyuta!;
-                                  });
-                                }),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 25, left: 10, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text("Telefon raqam",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Text(" *",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xffFF0707),
-                          ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      onChanged: (tel) {
-                        setState(() {
-                          this.tel = tel;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
                             ),
                           ),
-                          filled: true,
-                          fillColor: const Color(0xffffffff),
-                          hintText: "+998",
-                          hintStyle: const TextStyle(
-                              color: Color(0xffABABAB), fontSize: 14)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 90, vertical: 20),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_controller.value.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Row(
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  color: Colors.white,
+                          TextFormField(
+                            validator: (tel) {
+                              if(tel!.isEmpty) {
+                                return 'Iltimos matn kiriting';
+                              }
+                              else if(tel.length < 7){
+                                return 'Sarlavha uzunligi yetarli emas';
+                              }
+                              return null;
+                            },
+                            onChanged: (tel) {
+                              setState(() {
+                                this.tel = tel;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
                                 ),
-                                Text('  Barcha maydonlarni to\'ldiring!')
-                              ],
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            backgroundColor: Colors.redAccent,
-                            margin: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).size.height - 190,
-                                right: 20,
-                                left: 20),
+                                filled: true,
+                                fillColor: const Color(0xffffffff),
+                                hintText: "+998",
+                                hintStyle: const TextStyle(
+                                    color: Color(0xffABABAB), fontSize: 14)),
                           ),
-                        );
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Row(children: [
-                            Icon(Icons.error_outline,color: Colors.white,),
-                            Text('  Ok!')
-                          ],),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          backgroundColor: Colors.green,
-                          margin: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).size.height - 190,
-                              right: 20,
-                              left: 20),
-                        ),);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffFF8D08),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        ],
                       ),
                     ),
-                    child: Text("Saqlash"),
-                  ),
-                ),
-                Text("$sarlavha $ijaravalue $narx $valyuta $tel"),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 90, vertical: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: const Row(children: [
+                                Icon(Icons.error_outline,color: Colors.white,),
+                                Text('  Ok!')
+                              ],),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              backgroundColor: Colors.green,
+                              margin: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context).size.height - 190,
+                                  right: 20,
+                                  left: 20),
+                            ),);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xffFF8D08),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        child: Text("Saqlash"),
+                      ),
+                    ),
+                    Text("$sarlavha $ijaravalue $narx $valyuta $tel"),
+                  ],),
+                )
               ],
             ),
           )
