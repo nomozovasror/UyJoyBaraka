@@ -243,8 +243,8 @@ class _AddAdScreenState extends State<AddAdScreen> {
   final bosh = [''];
 
   String? sarlavha;
-  String? ijaravalue;
-  String? viloyat;
+  String? ijaravalue = "Sotuv";
+  String? viloyat = 'Toshkent shahri';
   String? tuman;
   String? manzil;
   String? text;
@@ -253,8 +253,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
   String? tel;
 
   final _formKey = GlobalKey<FormState>();
-
-  bool val_margin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -369,14 +367,14 @@ class _AddAdScreenState extends State<AddAdScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Stack(
                         children: [ Container(
-                          height: 50,
+                          height: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.2),
                                 spreadRadius: 2,
-                                blurRadius: 2,
+                                blurRadius: 5,
                                 offset: const Offset(0, 3),
                               ),
                             ],
@@ -809,6 +807,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             child: Stack(
                               children: [
                                 Container(
+                                  margin: EdgeInsets.only(bottom: 22),
                                   height: 60,
                                   width: MediaQuery.of(context).size.width - 50,
                                   decoration: BoxDecoration(
@@ -829,12 +828,10 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 TextFormField(
                                   validator: (narx) {
                                     if(narx!.isEmpty) {
-                                      val_margin = true;
-                                      return 'Iltimos matn kiriting';
+                                      return 'Iltimos narx kiriting';
                                     }
                                     else if(narx.length < 1){
-                                      val_margin = true;
-                                      return 'Sarlavha uzunligi yetarli emas';
+                                      return 'narx kam';
                                     }
                                     return null;
                                   },
@@ -868,7 +865,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             flex: 4,
                             child: Container(
                               height: 60,
-                              margin: val_margin ? const EdgeInsets.only(left: 8, right: 4) : const EdgeInsets.only(left: 8, right: 4, bottom: 22),
+                              margin: const EdgeInsets.only(left: 8, right: 4, bottom: 22),
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
                                   color: const Color(0xffffffff),
@@ -957,10 +954,10 @@ class _AddAdScreenState extends State<AddAdScreen> {
                           TextFormField(
                             validator: (tel) {
                               if(tel!.isEmpty) {
-                                return 'Iltimos matn kiriting';
+                                return 'Iltimos telefon raqamingizni kiriting';
                               }
                               else if(tel.length < 7){
-                                return 'Sarlavha uzunligi yetarli emas';
+                                return 'Telefon raqam uzunligi yetarli emas';
                               }
                               return null;
                             },
@@ -969,6 +966,8 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 this.tel = tel;
                               });
                             },
+                            keyboardType: TextInputType.number,
+                            initialValue: "+998",
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6),
@@ -979,7 +978,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 ),
                                 filled: true,
                                 fillColor: const Color(0xffffffff),
-                                hintText: "+998",
+                                hintText: "+",
                                 hintStyle: const TextStyle(
                                     color: Color(0xffABABAB), fontSize: 14)),
                           ),
@@ -987,41 +986,49 @@ class _AddAdScreenState extends State<AddAdScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 90, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (tuman == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: const Row(children: [
-                                Icon(Icons.error_outline,color: Colors.white,),
-                                Text('  Ok!')
+                              const SnackBar(content: Row(children: [
+                                Icon(Icons.error_outline ,color: Colors.white,),
+                                Text('  Iltimos tuman tanlang')
                               ],),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                backgroundColor: Colors.redAccent,
                               ),
-                              backgroundColor: Colors.green,
-                              margin: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context).size.height - 190,
-                                  right: 20,
-                                  left: 20),
-                            ),);
+                            );
+                          }
+                            else if (_formKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Row(children: [
+                              Icon(Icons.check,color: Colors.white,),
+                              Text('  Saqlanmoqda ...')
+                            ],),
+                            backgroundColor: Colors.greenAccent,
+                            ),
+                            );
+                            }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Row(children: [
+                                Icon(Icons.error_outline ,color: Colors.white,),
+                                Text('  Iltimos barcha qatorlarni to\'ldiring')
+                              ],),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffFF8D08),
+                          minimumSize: const Size(200, 40),
+                          backgroundColor: const Color(0xffFF8D08),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text("Saqlash"),
+                        child: const Text("Saqlash"),
                       ),
                     ),
-                    Text("$sarlavha $ijaravalue $narx $valyuta $tel"),
                   ],),
                 )
               ],
