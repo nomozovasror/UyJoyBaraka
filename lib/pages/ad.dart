@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_is_empty, avoid_print
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -336,7 +338,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
           ),
           Flexible(
             child: ListView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: [
                 Form(
@@ -576,7 +578,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               ? andijon.map(buildMenuTuman).toList()
                               : viloyat == "Buxoro"
                               ? buxoro.map(buildMenuTuman).toList()
-                              : viloyat == "Farg\'ona"
+                              : viloyat == "Farg'ona"
                               ? fargona.map(buildMenuTuman).toList()
                               : viloyat == "Jizzax"
                               ? jizzax.map(buildMenuTuman).toList()
@@ -589,7 +591,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               .map(buildMenuTuman)
                               .toList()
                               : viloyat ==
-                              "Qoraqalpog\'iston Respublikasi"
+                              "Qoraqalpog'iston Respublikasi"
                               ? qoraqalpogiston
                               .map(buildMenuTuman)
                               .toList()
@@ -807,7 +809,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             child: Stack(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(bottom: 22),
+                                  margin: const EdgeInsets.only(bottom: 22),
                                   height: 60,
                                   width: MediaQuery.of(context).size.width - 50,
                                   decoration: BoxDecoration(
@@ -881,7 +883,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton(
                                     value: valyuta,
-                                    hint: Text("So\'m"),
+                                    hint: const Text("So'm"),
                                     borderRadius: BorderRadius.circular(6),
                                     icon: const Icon(
                                         Icons.keyboard_arrow_down_outlined),
@@ -892,9 +894,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                         fontWeight: FontWeight.w400),
                                     items: const [
                                       DropdownMenuItem(
-                                        value: "So\'m",
+                                        value: "So'm",
                                         child: Text(
-                                          'So\'m',
+                                          "So'm",
                                         ),
                                       ),
                                       DropdownMenuItem(
@@ -1077,9 +1079,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
     var dio = Dio();
 
     setState(() {
-      selectedImages.forEach((imageData) {
+      for (var imageData in selectedImages) {
         imageData.isUploading = true;
-      });
+      }
     });
 
     for (ImageData imageData in selectedImages) {
