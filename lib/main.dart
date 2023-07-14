@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:uy_joy_baraka/pages/ad.dart';
 import 'package:uy_joy_baraka/pages/chat.dart';
 import 'package:uy_joy_baraka/pages/home.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
       title: 'Flutter Demo',
       home: MyHomePage(),
     );

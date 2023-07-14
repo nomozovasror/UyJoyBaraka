@@ -251,7 +251,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
   String? manzil;
   String? text;
   String? narx;
-  String? valyuta = 'So\'m';
+  String? valyuta = "So'm";
   String? tel;
 
   final _formKey = GlobalKey<FormState>();
@@ -285,55 +285,104 @@ class _AddAdScreenState extends State<AddAdScreen> {
               ),
             ),
           ),
-          Container(
-            height: 200,
-            color: const Color(0x50008B51),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
-                    const SizedBox(
-                      width: 10,
+          GestureDetector(
+            onTap: () {
+              selectImages();
+            },
+            child: selectedImages.length >= 1 ? SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: selectedImages.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            image: DecorationImage(
+                              image: FileImage(selectedImages[index].file),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImages.removeAt(index);
+                              });
+                            },
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SvgPicture.asset("assets/icons/fa_photo.svg"),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
-                  ],
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "+",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Color(0xff008B51),
+                  );
+                },
+              )
+            ) : Container(
+              height: 200,
+              color: const Color(0x50008B51),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
+                      const SizedBox(
+                        width: 10,
                       ),
-                    ),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text(
-                      "Rasm yuklang",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xff008B51),
+                      SvgPicture.asset("assets/icons/fa_photo.svg"),
+                      const SizedBox(
+                        width: 10,
                       ),
-                    ),
-                  ],
-                )
-              ],
+                      SvgPicture.asset("assets/icons/fa_photo.svg", width: 65),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Color(0xff008B51)),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        "Rasm yuklang",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xff008B51),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           Flexible(
@@ -1002,6 +1051,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             );
                           }
                             else if (_formKey.currentState!.validate()) {
+                              uploadImages();
                             ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Row(children: [
                               Icon(Icons.check,color: Colors.white,),
@@ -1088,19 +1138,31 @@ class _AddAdScreenState extends State<AddAdScreen> {
       try {
         String filename = imageData.file.path.split('/').last;
 
+        var headers = {
+          'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiNmNkNzdiNTEtNDAzMC00MDlmLTk3MGYtZjJjNjZlMmE1Mjc0IiwiaWF0IjoxNjg4MTEyNTU5fQ.fbkM6gh48cp4IkvWl1OQ4trwT-Y_XH1CKm796_-VQtE',
+        };
+
         FormData data = FormData.fromMap({
-          'key': 'bbf33b20d1d6882d3ea88a8185a3a197',
-          'image': await MultipartFile.fromFile(
-            imageData.file.path,
-            filename: filename,
+          'city': viloyat.toString(),
+          'district': tuman.toString(),
+          'address': manzil.toString(),
+          'type': ijaravalue.toString(),
+          'title': sarlavha.toString(),
+          'description': text.toString(),
+          'images': await MultipartFile.fromFile(
+            imageData.file.path.toString(),
+            filename: filename.toString(),
           ),
-          'name': name,
-          'expiration': expiration,
+          'price': narx.toString(),
+          'price_type': valyuta.toString(),
         });
 
         var response = await dio.post(
-          'https://api.imgbb.com/1/upload',
+          'http://test.uyjoybaraka.uz/api/announcements/create',
           data: data,
+          options: Options(
+            headers: headers,
+          ),
           onReceiveProgress: (int sent, int total) {
             // Progress can be tracked here if needed
             print("send >>>>> $sent\ntotal >>>>> $total");
