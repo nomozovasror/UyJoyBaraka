@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,35 +33,40 @@ class RegisterationController extends GetxController {
 
       if (response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body);
-        print(jsonResponse['message'].toString());
+        if (kDebugMode) {
+          print(jsonResponse['message'].toString());
+        }
         if (jsonResponse['ok'] == true) {
           try {
             var headerss = {
               'Content-Type': 'application/json',
             };
-            var url_two = Uri.parse(
+            var urlTwo = Uri.parse(
                 ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.phoneCheck);
             Map bodyy = {
               "phone": phoneController.text,
             };
-            http.Response responsee = await http.post(url_two,
+            http.Response responsee = await http.post(urlTwo,
                 headers: headerss, body: json.encode(bodyy));
 
             if (responsee.statusCode == 200) {
               final jsonResponsee = jsonDecode(responsee.body);
-              print(jsonResponsee.toString());
               if (jsonResponsee['ok'] == true) {
                 var code = jsonResponsee['code'];
-                print(jsonResponsee['massage'].toString());
-                print(code);
+                var codeValidationId = jsonResponsee['codeValidationId'];
+                if (kDebugMode) {
+                  print(jsonResponsee['massage'].toString());
+                }
                 final SharedPreferences prefs = await _prefs;
 
                 await prefs.setString('code', code);
+                await prefs.setString(
+                    'code_validation_id', codeValidationId);
                 nameController.clear();
                 phoneController.clear();
                 passwordController.clear();
 
-                Get.off(checkPhone());
+                Get.off(() => const CheckCode());
               } else {
                 throw jsonResponsee['message'] ?? 'Xato';
               }
@@ -68,7 +74,9 @@ class RegisterationController extends GetxController {
               throw jsonDecode(responsee.body)['message'] ?? 'Xato';
             }
           } catch (e) {
-            print(e);
+            if (kDebugMode) {
+              print(e);
+            }
           }
         } else {
           throw jsonResponse['message'] ?? 'Xato';

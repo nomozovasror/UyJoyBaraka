@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uy_joy_baraka/pages/chat.dart';
+import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,18 +29,19 @@ class LoginController extends GetxController {
       http.Response response = await http.post(url, headers: headers, body: json.encode(body));
 
       if (response.statusCode == 201){
-        print("okkkkkk >>>>>>>>>>>>");
         final json = jsonDecode(response.body);
         if (json['ok'] == true){
           var token = json['token'];
-          print(token);
+          if (kDebugMode) {
+            print(token);
+          }
           final SharedPreferences prefs = await _prefs;
 
           await prefs.setString('token', token);
           phoneController.clear();
           passwordController.clear();
 
-          Get.off(ChatScreen());
+          Get.off(()=> const MyHomePage()) ;
         }else{
           throw jsonDecode(response.body)['message'] ?? 'Xato';
         }
@@ -50,7 +52,7 @@ class LoginController extends GetxController {
       Get.back();
       showDialog(context: Get.context!, builder: (context){
         return SimpleDialog(
-          title: const Text('Error'),
+          title: const Text('Xato'),
           children: [
             SimpleDialogOption(
               child: Text(e.toString()),

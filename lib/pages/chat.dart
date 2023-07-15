@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uy_joy_baraka/check_phone.dart';
 import 'package:uy_joy_baraka/login.dart';
+import 'package:uy_joy_baraka/main.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -40,11 +42,18 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () async {
                 final SharedPreferences? prefs = await _prefs;
                 prefs?.clear();
-                Get.offAll(AuthScreen());
+                Get.offAll(() => MyHomePage());
                 print(prefs!.getString('token'));
               },
               child: const Text('Logout'),
             ),
+            ElevatedButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CheckCode()),
+              );
+    },
+    child: Text("Code Check"),)
           ]),
     );
   }

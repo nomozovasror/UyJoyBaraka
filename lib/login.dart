@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:uy_joy_baraka/controller/login_controller.dart';
 import 'package:uy_joy_baraka/controller/register_controller.dart';
 
@@ -29,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Welcome to Joy Baraka",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -72,59 +71,59 @@ class _AuthScreenState extends State<AuthScreen> {
       children: [
         TextFormField(
           controller: registerationController.nameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: "Name",
             hintText: "Enter your name",
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextFormField(
           controller: registerationController.phoneController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: "Phone",
             hintText: "Enter your phone",
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextFormField(
           controller: registerationController.passwordController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: "Password",
             hintText: "Enter your password",
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         MaterialButton(
           onPressed: () {
             registerationController.register();
           },
-          child: Text(
+          color: Colors.green,
+          child: const Text(
             "Register",
             style: TextStyle(color: Colors.white),
           ),
-          color: Colors.green,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Already have an account?"),
+            const Text("Already have an account?"),
             MaterialButton(
               onPressed: () {
                 isLogin.value = true;
               },
-              child: Text(
+              child: const Text(
                 "Login",
                 style: TextStyle(color: Colors.green),
               ),
@@ -140,7 +139,7 @@ class _AuthScreenState extends State<AuthScreen> {
       children: [
         TextFormField(
           controller: loginController.phoneController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: "Phone",
             hintText: "Enter your phone",
             border: OutlineInputBorder(),
