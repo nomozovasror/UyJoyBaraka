@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uy_joy_baraka/check_phone.dart';
-import 'package:uy_joy_baraka/login.dart';
+import 'package:uy_joy_baraka/auth/check_phone.dart';
+import 'package:uy_joy_baraka/auth/login.dart';
 import 'package:uy_joy_baraka/main.dart';
 
 class ChatScreen extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uy_joy_baraka/check_phone.dart';
+import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 

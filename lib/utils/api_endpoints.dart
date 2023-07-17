@@ -8,4 +8,5 @@ class _AuthEndPoints {
   final String login = "users/login";
   final String phoneCheck = "users/send-code";
   final String checkCode = "users/validate-code";
+  final String resetPassword = "users/edit-password";
 }
