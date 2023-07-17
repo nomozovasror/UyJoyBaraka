@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:uy_joy_baraka/controller/login_controller.dart';
 import 'package:uy_joy_baraka/controller/register_controller.dart';
 import 'package:uy_joy_baraka/controller/reset_pass_controller.dart';
-import 'package:uy_joy_baraka/auth/reset_pass.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);

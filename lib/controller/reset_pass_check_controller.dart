@@ -42,17 +42,18 @@ class ResetCodeCheckController extends GetxController {
           try {
             final SharedPreferences prefs = await _prefs;
             var headers = {
-              'Content-Type': 'application/json',
-              'authorization': prefs.getString('token').toString() ?? '',
+              // 'Content-Type': 'application/json',
+              'authorization': prefs.getString('token').toString(),
             };
             var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.resetPassword);
-            Map<String, dynamic> body = {
+            Map body = {
               "password": resetController.confirmPasswordController.text.toString()
             };
             print(headers);
             print(body);
 
-            http.Response jsonResponse = await http.patch(url, headers: headers, body: json.encode(body));
+            http.Response jsonResponse = await http.patch(url, headers: headers, body: body);
+            print(jsonResponse.statusCode.toString());
 
 
             if (jsonResponse.statusCode == 201){
