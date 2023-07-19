@@ -521,7 +521,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     // CARD
                     return InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index],),),);
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
+                        getAllItemController.getItemBySlug(getAllItemController.allItem[index].slug!);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -542,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(ApiEndPoints.BASE_URL + getAllItemController.allItem[index].thumb![0]),
+                                    image: NetworkImage("${ApiEndPoints.BASE_URL + getAllItemController.allItem[index].thumb![0]}"),
                                     fit: BoxFit.cover),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),

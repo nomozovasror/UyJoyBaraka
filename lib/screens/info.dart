@@ -3,10 +3,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/models/home_item.dart';
+import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 import '../models/models.dart';
 
@@ -18,6 +22,7 @@ class InfoScreen extends StatefulWidget {
   @override
   State<InfoScreen> createState() => _InfoScreenState();
 }
+GetAllItemController getAllItemController = Get.put(GetAllItemController());
 
 class _InfoScreenState extends State<InfoScreen> {
   int activeIndex = 0;
@@ -59,7 +64,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     return Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: NetworkImage(imgL), fit: BoxFit.cover),
+                            image: NetworkImage(ApiEndPoints.BASE_URL +widget.allData.thumb![index]), fit: BoxFit.cover),
                       ),
                     );
                   },
@@ -76,6 +81,11 @@ class _InfoScreenState extends State<InfoScreen> {
                           dotColor: Colors.white),
                     ))
               ]),
+              Text("${getAllItemController.user!.phone}"),
+              Text("${getAllItemController.user!.fullName}"),
+              Text("${getAllItemController.user!.userId}"),
+              Text("${widget.allData.thumb!.length}"),
+
               Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 12),

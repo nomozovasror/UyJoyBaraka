@@ -216,26 +216,26 @@ class Announcement {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['announcement_id'] = this.announcementId;
-    data['slug'] = this.slug;
-    data['title'] = this.title;
-    data['thumb'] = this.thumb;
-    data['city'] = this.city;
-    data['district'] = this.district;
-    data['address'] = this.address;
-    data['type'] = this.type;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['price_type'] = this.priceType;
-    data['status'] = this.status;
-    data['confirm'] = this.confirm;
-    data['likeCount'] = this.likeCount;
-    data['viewCount'] = this.viewCount;
-    data['rec'] = this.rec;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['user_id'] = this.userId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['announcement_id'] = announcementId;
+    data['slug'] = slug;
+    data['title'] = title;
+    data['thumb'] = thumb;
+    data['city'] = city;
+    data['district'] = district;
+    data['address'] = address;
+    data['type'] = type;
+    data['description'] = description;
+    data['price'] = price;
+    data['price_type'] = priceType;
+    data['status'] = status;
+    data['confirm'] = confirm;
+    data['likeCount'] = likeCount;
+    data['viewCount'] = viewCount;
+    data['rec'] = rec;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['user_id'] = userId;
     return data;
   }
 }
@@ -254,10 +254,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['full_name'] = this.fullName;
-    data['phone'] = this.phone;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['full_name'] = fullName;
+    data['phone'] = phone;
     return data;
   }
 }

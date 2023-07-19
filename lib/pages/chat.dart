@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/auth/login.dart';
+import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  
+  GetAllItemController getAllItemController = Get.put(GetAllItemController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +50,22 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: const Text('Logout'),
             ),
-            ElevatedButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CheckCode()),
-              );
-    },
-    child: Text("Code Check"),)
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CheckCode()),
+                );
+              },
+              child: Text("Code Check"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                getAllItemController.getItemBySlug("zor-uy-sotiladi");
+              },
+              child: Text("Get item by slug"),
+            ),
+            Text("Item slug: ${getAllItemController.user!.phone}"),
           ]),
     );
   }

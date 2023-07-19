@@ -10,6 +10,7 @@ class GetAllItemController extends GetxController {
 
   var loadItem = false.obs;
   List<Posts> allItem = [];
+  User? user;
 
   @override
   void onInit() {
@@ -28,6 +29,7 @@ class GetAllItemController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
+        print(responseJson['posts'][0]['slug'].toString());
         allItem = (responseJson['posts'] as List)
             .map((e) => Posts.fromJson(e))
             .toList();
@@ -51,23 +53,25 @@ class GetAllItemController extends GetxController {
     }
   }
 
-  getItemBySlug(String slug) async {
-    List<Announcement> item = [];
-    List<User> user = [];
+  Future<void> getItemBySlug(String slug) async {
+
     try {
       var url = Uri.parse(
           ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.slugCall + slug);
+      print(url);
 
       http.Response response =
       await http.get(url, headers: {'Content-Type': 'application/json'});
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
-        print(responseJson.toString());
+        user = User.fromJson(responseJson['user']);
+        print(user.toString());
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } catch (e) {
+      print(e.toString());
       showDialog(
           context: Get.context!,
           builder: (context) {
