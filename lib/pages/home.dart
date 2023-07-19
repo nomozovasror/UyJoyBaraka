@@ -6,12 +6,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
+import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
-import '../models.dart';
+
+import '../models/models.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -28,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
     'https://images.unsplash.com/photo-1616137466211-f939a420be84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80',
     'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1453&q=80',
   ];
+
+  GetAllItemController getAllItemController = Get.put(GetAllItemController());
 
   String? ijaravalue = "ijaraYokiSotuv";
   String? viloyat = "Toshkent";
@@ -361,11 +368,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+
+          // Flexible(child: ListView.builder(
+          //     itemCount: ,
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemBuilder: (context, index){
+          //   return Text("Item ${getAllItemController.allItem[index].title} ");
+          // }))
           // ALL ITEM
           Flexible(
               child:StaggeredGridView.countBuilder(
                 crossAxisCount: 2,
-                itemCount: houses.length,
+                itemCount: getAllItemController.allItem.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
@@ -506,7 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // CARD
                     return InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(house: house,),),);
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index],),),);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -527,7 +542,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(house.img[0]),
+                                    image: NetworkImage(ApiEndPoints.BASE_URL + getAllItemController.allItem[index].thumb![0]),
                                     fit: BoxFit.cover),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(8),
@@ -535,6 +550,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               height: 200,
                               width: double.infinity,
+
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -542,9 +558,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
-                                    "Toshkent",
-                                    style: TextStyle(
+                                  Text(
+                                    "${getAllItemController.allItem[index].city}",
+                                    style: const TextStyle(
                                       color: Color(0xff666666),
                                     ),
                                   ),
@@ -561,18 +577,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            const Padding(padding:  EdgeInsets.symmetric(
+                            Padding(padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 6),
                               child: SizedBox(
-                                child: Text('Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi', style: TextStyle(fontSize: 12),maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,),
+                                child: Row(
+                                  children: [
+                                    Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,),
+                                  ],
+                                ),
                               ),
                             ),
-                            const Padding(padding:  EdgeInsets.symmetric(
+                            Padding(padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 6),
                               child: SizedBox(
-                                child: Text('2 250 000 so’m', style: TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,),
+                                child: Row(
+                                  children: [
+                                    Text('${getAllItemController.allItem[index].price}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:like_button/like_button.dart';
-import 'package:uy_joy_baraka/models.dart';
+import 'package:uy_joy_baraka/models/models.dart';
 
 class AdScreen extends StatefulWidget {
   const AdScreen({Key? key}) : super(key: key);

@@ -50,7 +50,6 @@ class ResetController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } catch (e) {
-      Get.back();
       showDialog(
           context: Get.context!,
           builder: (context) {

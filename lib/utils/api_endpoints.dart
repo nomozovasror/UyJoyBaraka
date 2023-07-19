@@ -9,4 +9,6 @@ class _AuthEndPoints {
   final String phoneCheck = "users/send-code";
   final String checkCode = "users/validate-code";
   final String resetPassword = "users/edit-password";
+  final String home = "home";
+  final String slugCall = "posts";
 }

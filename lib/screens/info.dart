@@ -6,13 +6,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/models/home_item.dart';
 
-import '../models.dart';
+import '../models/models.dart';
 
 class InfoScreen extends StatefulWidget {
-  final House house;
+  final Posts allData;
 
-  const InfoScreen({Key? key, required this.house}) : super(key: key);
+  const InfoScreen({Key? key, required this.allData}) : super(key: key);
 
   @override
   State<InfoScreen> createState() => _InfoScreenState();
@@ -51,10 +52,10 @@ class _InfoScreenState extends State<InfoScreen> {
                       autoPlay: false,
                       onPageChanged: (index, reason) =>
                           setState(() => activeIndex = index)),
-                  itemCount: widget.house.img.length,
+                  itemCount: widget.allData.thumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                    final imgL = widget.house.img[index];
+                    final imgL = widget.allData.thumb![index];
                     return Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -67,7 +68,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     bottom: 10,
                     child: AnimatedSmoothIndicator(
                       activeIndex: activeIndex,
-                      count: widget.house.img.length,
+                      count: widget.allData.thumb!.length,
                       effect: const WormEffect(
                           dotWidth: 12,
                           dotHeight: 12,
@@ -268,7 +269,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(widget.house.img[0]),
+                        backgroundImage: NetworkImage(widget.allData.thumb![0]),
                         radius: 30,
                       ),
                       const SizedBox(
@@ -312,111 +313,111 @@ class _InfoScreenState extends State<InfoScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 342,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  itemBuilder: (BuildContext context, int index) {
-                    final housex = houses[index];
-                    return Container(
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(
-                                0, 0), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      margin: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => InfoScreen(
-                                    house: housex,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(housex.img[0]),
-                                    fit: BoxFit.cover),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                              ),
-                              height: 200,
-                              width: double.infinity,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Toshkent",
-                                  style: TextStyle(
-                                    color: Color(0xff666666),
-                                  ),
-                                ),
-                                LikeButton(
-                                  size: 24,
-                                  isLiked: isLiked,
-                                  likeBuilder: (isTapped) {
-                                    return SvgPicture.asset(
-                                      isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                      color: const Color(0xffFF8D08),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: SizedBox(
-                              child: Text(
-                                'Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi',
-                                style: TextStyle(fontSize: 12),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: SizedBox(
-                              child: Text(
-                                '2 250 000 so’m',
-                                style: TextStyle(
-                                    fontSize: 18, color: Color(0xff008B51)),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   height: 342,
+              //   child: ListView.builder(
+              //     scrollDirection: Axis.horizontal,
+              //     shrinkWrap: true,
+              //     itemCount: 20,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       final housex = [index];
+              //       return Container(
+              //         width: 200,
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(8),
+              //           color: Colors.white,
+              //           boxShadow: [
+              //             BoxShadow(
+              //               color: Colors.grey.withOpacity(0.5),
+              //               spreadRadius: 2,
+              //               blurRadius: 5,
+              //               offset: const Offset(
+              //                   0, 0), // changes position of shadow
+              //             ),
+              //           ],
+              //         ),
+              //         margin: const EdgeInsets.all(10),
+              //         child: Column(
+              //           children: [
+              //             InkWell(
+              //               onTap: () {
+              //                 Navigator.of(context).push(
+              //                   MaterialPageRoute(
+              //                     builder: (context) => InfoScreen(
+              //                       allData: housex,
+              //                     ),
+              //                   ),
+              //                 );
+              //               },
+              //               child: Container(
+              //                 decoration: BoxDecoration(
+              //                   image: DecorationImage(
+              //                       image: NetworkImage(housex.img[0]),
+              //                       fit: BoxFit.cover),
+              //                   borderRadius: const BorderRadius.only(
+              //                       topLeft: Radius.circular(8),
+              //                       topRight: Radius.circular(8)),
+              //                 ),
+              //                 height: 200,
+              //                 width: double.infinity,
+              //               ),
+              //             ),
+              //             Padding(
+              //               padding: const EdgeInsets.symmetric(
+              //                   horizontal: 4, vertical: 6),
+              //               child: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                 children: [
+              //                   const Text(
+              //                     "Toshkent",
+              //                     style: TextStyle(
+              //                       color: Color(0xff666666),
+              //                     ),
+              //                   ),
+              //                   LikeButton(
+              //                     size: 24,
+              //                     isLiked: isLiked,
+              //                     likeBuilder: (isTapped) {
+              //                       return SvgPicture.asset(
+              //                         isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
+              //                         color: const Color(0xffFF8D08),
+              //                       );
+              //                     },
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //             const Padding(
+              //               padding: EdgeInsets.symmetric(
+              //                   horizontal: 4, vertical: 6),
+              //               child: SizedBox(
+              //                 child: Text(
+              //                   'Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi',
+              //                   style: TextStyle(fontSize: 12),
+              //                   maxLines: 2,
+              //                   overflow: TextOverflow.ellipsis,
+              //                 ),
+              //               ),
+              //             ),
+              //             const Padding(
+              //               padding: EdgeInsets.symmetric(
+              //                   horizontal: 4, vertical: 6),
+              //               child: SizedBox(
+              //                 child: Text(
+              //                   '2 250 000 so’m',
+              //                   style: TextStyle(
+              //                       fontSize: 18, color: Color(0xff008B51)),
+              //                   maxLines: 1,
+              //                   overflow: TextOverflow.ellipsis,
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
               const SizedBox(
                 height: 14,
               )
