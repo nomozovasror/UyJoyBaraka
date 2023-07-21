@@ -2,6 +2,7 @@
 
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,7 +17,6 @@ import 'package:uy_joy_baraka/screens/info.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 
-import '../models/models.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -368,14 +368,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
-          // Flexible(child: ListView.builder(
-          //     itemCount: ,
-          //     shrinkWrap: true,
-          //     physics: const NeverScrollableScrollPhysics(),
-          //     itemBuilder: (context, index){
-          //   return Text("Item ${getAllItemController.allItem[index].title} ");
-          // }))
           // ALL ITEM
           Flexible(
               child:StaggeredGridView.countBuilder(
@@ -384,7 +376,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  final house = houses[index];
                   if ((index + 1) % 11 == 0) {
                     if (index < 11){
                       return Container(
@@ -522,7 +513,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     return InkWell(
                       onTap: (){
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
-                        getAllItemController.getItemBySlug(getAllItemController.allItem[index].slug!);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -541,17 +531,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage("${ApiEndPoints.BASE_URL + getAllItemController.allItem[index].thumb![0]}"),
-                                    fit: BoxFit.cover),
-                                borderRadius: const BorderRadius.only(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8)),
                               ),
                               height: 200,
                               width: double.infinity,
-
+                              child: CachedNetworkImage(
+                                imageUrl: ApiEndPoints.BASE_URL + getAllItemController
+                                    .allItem[index].thumb![0],
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xff008B51),
+                                    )),
+                                errorWidget: (context, url, error) => const Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                ),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -581,12 +580,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             Padding(padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 6),
                               child: SizedBox(
-                                child: Row(
-                                  children: [
-                                    Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,),
-                                  ],
-                                ),
+                                height: 30,
+                                child: Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,),
                               ),
                             ),
                             Padding(padding: const EdgeInsets.symmetric(
@@ -594,7 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: SizedBox(
                                 child: Row(
                                   children: [
-                                    Text('${getAllItemController.allItem[index].price}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                                    Text('${getAllItemController.allItem[index].price} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
                                       overflow: TextOverflow.ellipsis,),
                                   ],
                                 ),

@@ -10,13 +10,13 @@ class GetAllItemController extends GetxController {
 
   var loadItem = false.obs;
   List<Posts> allItem = [];
-  User? user;
 
   @override
   void onInit() {
     getAllItem();
     super.onInit();
   }
+
 
   getAllItem() async {
     try {
@@ -29,7 +29,7 @@ class GetAllItemController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
-        print(responseJson['posts'][0]['slug'].toString());
+        print(responseJson['posts'][0]);
         allItem = (responseJson['posts'] as List)
             .map((e) => Posts.fromJson(e))
             .toList();
@@ -38,40 +38,6 @@ class GetAllItemController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } catch (e) {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Xato'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
-    }
-  }
-
-  Future<void> getItemBySlug(String slug) async {
-
-    try {
-      var url = Uri.parse(
-          ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.slugCall + slug);
-      print(url);
-
-      http.Response response =
-      await http.get(url, headers: {'Content-Type': 'application/json'});
-
-      if (response.statusCode == 200) {
-        var responseJson = jsonDecode(response.body);
-        user = User.fromJson(responseJson['user']);
-        print(user.toString());
-      } else {
-        throw jsonDecode(response.body)['message'] ?? 'Xato';
-      }
-    } catch (e) {
-      print(e.toString());
       showDialog(
           context: Get.context!,
           builder: (context) {

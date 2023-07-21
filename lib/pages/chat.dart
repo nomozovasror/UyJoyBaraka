@@ -59,13 +59,6 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: Text("Code Check"),
             ),
-            ElevatedButton(
-              onPressed: () {
-                getAllItemController.getItemBySlug("zor-uy-sotiladi");
-              },
-              child: Text("Get item by slug"),
-            ),
-            Text("Item slug: ${getAllItemController.user!.phone}"),
           ]),
     );
   }

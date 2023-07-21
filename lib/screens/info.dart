@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,8 +13,6 @@ import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/models/home_item.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
-import '../models/models.dart';
-
 class InfoScreen extends StatefulWidget {
   final Posts allData;
 
@@ -22,10 +21,18 @@ class InfoScreen extends StatefulWidget {
   @override
   State<InfoScreen> createState() => _InfoScreenState();
 }
-GetAllItemController getAllItemController = Get.put(GetAllItemController());
 
 class _InfoScreenState extends State<InfoScreen> {
   int activeIndex = 0;
+
+  GetAllItemController getAllItemController = Get.put(GetAllItemController());
+
+  @override
+  void initState() {
+    super.initState();
+    getAllItemController.allItem.shuffle();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLiked = false;
@@ -52,7 +59,7 @@ class _InfoScreenState extends State<InfoScreen> {
               Stack(alignment: Alignment.center, children: [
                 CarouselSlider.builder(
                   options: CarouselOptions(
-                      height: 250,
+                      height: MediaQuery.of(context).size.width,
                       viewportFraction: 1,
                       autoPlay: false,
                       onPageChanged: (index, reason) =>
@@ -60,11 +67,23 @@ class _InfoScreenState extends State<InfoScreen> {
                   itemCount: widget.allData.thumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                    final imgL = widget.allData.thumb![index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(ApiEndPoints.BASE_URL +widget.allData.thumb![index]), fit: BoxFit.cover),
+                    final imgL = Uri(
+                        scheme: 'http',
+                        host: 'test.uyjoybaraka.uz',
+                        path: widget.allData.thumb![index]);
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        imageUrl: imgL.toString(),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                          color: Color(0xff008B51),
+                        )),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
                       ),
                     );
                   },
@@ -81,10 +100,6 @@ class _InfoScreenState extends State<InfoScreen> {
                           dotColor: Colors.white),
                     ))
               ]),
-              Text("${getAllItemController.user!.phone}"),
-              Text("${getAllItemController.user!.fullName}"),
-              Text("${getAllItemController.user!.userId}"),
-              Text("${widget.allData.thumb!.length}"),
 
               Container(
                 margin:
@@ -92,8 +107,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("06.06.2023",
-                        style: TextStyle(
+                    Text(widget.allData.createdAt.toString(),
+                        style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff666666))),
@@ -114,8 +129,8 @@ class _InfoScreenState extends State<InfoScreen> {
                     Row(
                       children: [
                         Container(
-                          padding:
-                              const EdgeInsets.only(right: 8, left: 12, top: 3, bottom: 3),
+                          padding: const EdgeInsets.only(
+                              right: 8, left: 12, top: 3, bottom: 3),
                           decoration: const BoxDecoration(
                               color: Color(0xff008B51),
                               borderRadius: BorderRadius.only(
@@ -127,8 +142,12 @@ class _InfoScreenState extends State<InfoScreen> {
                             isLiked: isLiked,
                             likeBuilder: (isTapped) {
                               return SvgPicture.asset(
-                                isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                color: isTapped ? const Color(0xffFF8D08) : Colors.white,
+                                isTapped
+                                    ? 'assets/icons/fill_like.svg'
+                                    : 'assets/icons/mdi_heart-outline.svg',
+                                color: isTapped
+                                    ? const Color(0xffFF8D08)
+                                    : Colors.white,
                               );
                             },
                           ),
@@ -152,40 +171,40 @@ class _InfoScreenState extends State<InfoScreen> {
                   ],
                 ),
               ),
-              const Row(
+              Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text("2 250 000 so’m",
-                        style: TextStyle(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text("${widget.allData.price.toString()} ${widget.allData.priceType == 'dollar' ? '\$' : 'so\'m'}",
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: Color(0xff008B51))),
                   ),
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10, top: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 8),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        "Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi",
-                        style: TextStyle(
+                        widget.allData.title.toString(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 20),
                       ),
                     )
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10, top: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 8),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        "Сдается в аренду для семьи трёхкомнатная квартира в центральном, спальном районе,на Дархане. Доброжелательные соседи,развитая инфраструктура,в трёх минутах от метро Хамид Олимжан. Рядом  есть школа,детский сад.Квартира полностью оснащена для жилья: свежий ремонт, меблирована, детская будет обставлена по желанию жильцов,три телевизора,два кондиционера, большой холодильник, стиральная машина, пылесос. Техника, мебель и посуда новые,не пользованные. Вы будете первым хозяином. ",
-                        style: TextStyle(
+                        widget.allData.description.toString(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                             color: Color(0xff666666)),
@@ -323,111 +342,122 @@ class _InfoScreenState extends State<InfoScreen> {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 342,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     shrinkWrap: true,
-              //     itemCount: 20,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       final housex = [index];
-              //       return Container(
-              //         width: 200,
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(8),
-              //           color: Colors.white,
-              //           boxShadow: [
-              //             BoxShadow(
-              //               color: Colors.grey.withOpacity(0.5),
-              //               spreadRadius: 2,
-              //               blurRadius: 5,
-              //               offset: const Offset(
-              //                   0, 0), // changes position of shadow
-              //             ),
-              //           ],
-              //         ),
-              //         margin: const EdgeInsets.all(10),
-              //         child: Column(
-              //           children: [
-              //             InkWell(
-              //               onTap: () {
-              //                 Navigator.of(context).push(
-              //                   MaterialPageRoute(
-              //                     builder: (context) => InfoScreen(
-              //                       allData: housex,
-              //                     ),
-              //                   ),
-              //                 );
-              //               },
-              //               child: Container(
-              //                 decoration: BoxDecoration(
-              //                   image: DecorationImage(
-              //                       image: NetworkImage(housex.img[0]),
-              //                       fit: BoxFit.cover),
-              //                   borderRadius: const BorderRadius.only(
-              //                       topLeft: Radius.circular(8),
-              //                       topRight: Radius.circular(8)),
-              //                 ),
-              //                 height: 200,
-              //                 width: double.infinity,
-              //               ),
-              //             ),
-              //             Padding(
-              //               padding: const EdgeInsets.symmetric(
-              //                   horizontal: 4, vertical: 6),
-              //               child: Row(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   const Text(
-              //                     "Toshkent",
-              //                     style: TextStyle(
-              //                       color: Color(0xff666666),
-              //                     ),
-              //                   ),
-              //                   LikeButton(
-              //                     size: 24,
-              //                     isLiked: isLiked,
-              //                     likeBuilder: (isTapped) {
-              //                       return SvgPicture.asset(
-              //                         isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-              //                         color: const Color(0xffFF8D08),
-              //                       );
-              //                     },
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //             const Padding(
-              //               padding: EdgeInsets.symmetric(
-              //                   horizontal: 4, vertical: 6),
-              //               child: SizedBox(
-              //                 child: Text(
-              //                   'Olmazor tumanida joylashgan 2x kvartira ijaraga beriladi',
-              //                   style: TextStyle(fontSize: 12),
-              //                   maxLines: 2,
-              //                   overflow: TextOverflow.ellipsis,
-              //                 ),
-              //               ),
-              //             ),
-              //             const Padding(
-              //               padding: EdgeInsets.symmetric(
-              //                   horizontal: 4, vertical: 6),
-              //               child: SizedBox(
-              //                 child: Text(
-              //                   '2 250 000 so’m',
-              //                   style: TextStyle(
-              //                       fontSize: 18, color: Color(0xff008B51)),
-              //                   maxLines: 1,
-              //                   overflow: TextOverflow.ellipsis,
-              //                 ),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
+              SizedBox(
+                height: 342,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: getAllItemController.allItem.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 0), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => InfoScreen(
+                                    allData: getAllItemController
+                                        .allItem[index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8)),
+                              ),
+                              height: 200,
+                              width: double.infinity,
+                              child: CachedNetworkImage(
+                                imageUrl: ApiEndPoints.BASE_URL + getAllItemController
+                                    .allItem[index].thumb![0],
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xff008B51),
+                                    )),
+                                errorWidget: (context, url, error) => const Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  getAllItemController.allItem[index].city!,
+                                  style: const TextStyle(
+                                    color: Color(0xff666666),
+                                  ),
+                                ),
+                                LikeButton(
+                                  size: 24,
+                                  isLiked: isLiked,
+                                  likeBuilder: (isTapped) {
+                                    return SvgPicture.asset(
+                                      isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
+                                      color: const Color(0xffFF8D08),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              height: 30,
+                              child: Text(
+                                getAllItemController.allItem[index].title!,
+                                style: const TextStyle(fontSize: 12),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 6),
+                            child: SizedBox(
+                              child: Text(
+                                "${getAllItemController.allItem[index].price!} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}",
+                                style: const TextStyle(
+                                    fontSize: 18, color: Color(0xff008B51)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
               const SizedBox(
                 height: 14,
               )
