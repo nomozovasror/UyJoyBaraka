@@ -11,4 +11,5 @@ class _AuthEndPoints {
   final String resetPassword = "/api/users/edit-password";
   final String home = "/api/home";
   final String slugCall = "/api/posts/";
+  final String createPost = "/api/announcements/create";
 }

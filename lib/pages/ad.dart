@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ImageData {
   final File file;
@@ -26,7 +27,7 @@ class AddAdScreen extends StatefulWidget {
   @override
   State<AddAdScreen> createState() => _AddAdScreenState();
 }
-
+final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 class _AddAdScreenState extends State<AddAdScreen> {
   List<ImageData> selectedImages = [];
   String name = '';
@@ -1136,10 +1137,11 @@ class _AddAdScreenState extends State<AddAdScreen> {
 
     for (ImageData imageData in selectedImages) {
       try {
+        final SharedPreferences prefs = await _prefs;
         String filename = imageData.file.path.split('/').last;
 
         var headers = {
-          'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiNmNkNzdiNTEtNDAzMC00MDlmLTk3MGYtZjJjNjZlMmE1Mjc0IiwiaWF0IjoxNjg4MTEyNTU5fQ.fbkM6gh48cp4IkvWl1OQ4trwT-Y_XH1CKm796_-VQtE',
+          'authorization': prefs.getString('token') ?? '',
         };
 
         FormData data = FormData.fromMap({
@@ -1153,8 +1155,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
             imageData.file.path.toString(),
             filename: filename.toString(),
           ),
-          'price': narx.toString(),
+          'price': narx,
           'price_type': valyuta.toString(),
+          'phone': tel,
         });
 
         var response = await dio.post(
