@@ -541,6 +541,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: ApiEndPoints.BASE_URL + getAllItemController
                                     .allItem[index].thumb![0],
+                                imageBuilder: (context, imageProvider) => Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8)),
+                                    image: DecorationImage(
+                                        image: imageProvider, fit: BoxFit.cover),
+                                  ),
+                                ),
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(
@@ -558,10 +568,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "${getAllItemController.allItem[index].city}",
-                                    style: const TextStyle(
-                                      color: Color(0xff666666),
+                                  Expanded(
+                                    child: SizedBox(
+                                      child: Text(
+                                        "${getAllItemController.allItem[index].city}",
+                                        style: const TextStyle(
+                                          color: Color(0xff666666),
+                                          overflow: TextOverflow.ellipsis
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   LikeButton(

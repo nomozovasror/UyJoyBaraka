@@ -12,23 +12,64 @@ class SavedScreen extends StatefulWidget {
 }
 
 CreatePostController createPostController = Get.put(CreatePostController());
+var image = true.obs;
+
 class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ElevatedButton(onPressed: (){createPostController.pickImageFromGallery();}, child: Text("Pick Image"),),
           ElevatedButton(
-            onPressed: () {
-              createPostController.createPost();
-            },
-            child: Text("Upload Photo"),
+            onPressed: () => createPostController.pickImagesFromGallery(),
+            child: Text('Select Images'),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('Post'),
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            child: Obx(() {
+              return image.value ? _buildImageGridView() : Container();
+            }),
           ),
         ],
       ),
     );
-
+  }
+  Widget _buildImageGridView() {
+    if (createPostController.selectedImages == null || createPostController.selectedImages!.isEmpty) {
+      return Center(
+        child: Text('No images selected'),
+      );
+    } else {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemCount: createPostController.selectedImages!.length,
+        itemBuilder: (context, index) {
+          final imageFile = createPostController.selectedImages![index];
+          return Stack(
+            children: [
+              Image.file(imageFile),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  icon: Icon(Icons.remove_circle),
+                  onPressed: () => createPostController.removeImage(index), // Call the removeImage function
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
-

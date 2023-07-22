@@ -1,31 +1,53 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uy_joy_baraka/main.dart';
 
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
-class CreatePostController extends GetxController {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  // Function to select an image from the phone's memory
-  Future<XFile?> pickImageFromGallery() async {
+class CreatePostController extends GetxController {
+
+  TextEditingController addressController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  RxList<File>? selectedImages = RxList<File>();
+
+
+  Future<void> pickImagesFromGallery() async {
     final ImagePicker _picker = ImagePicker();
-    XFile? pickedFile;
+    List<XFile>? pickedFiles;
 
     try {
-      pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      pickedFiles = await _picker.pickMultiImage(); // Use pickMultiImage() for multi-image selection
     } catch (e) {
-      print('Error while picking the image: $e');
+      print('Error while picking the images: $e');
     }
 
-    return pickedFile;
+    if (pickedFiles != null) {
+      selectedImages!.addAll(pickedFiles.map((file) => File(file.path)).toList()); // Update the RxList with new images
+      update(); // Update the view to display selected images
+    }
   }
 
-  Future<void> createPost() async {
+  void removeImage(int index) {
+    if (selectedImages != null && index >= 0 && index < selectedImages!.length) {
+      selectedImages!.removeAt(index);
+    }
+  }
+
+  Future<void> createPost(String ijaravalue, String viloyat, String tuman, String valyuta) async {
     try {
       final SharedPreferences prefs = await _prefs;
       var headers = {
@@ -34,17 +56,11 @@ class CreatePostController extends GetxController {
       };
       var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.createPost);
 
-      // Select an image from the gallery
-      XFile? pickedImage = await pickImageFromGallery();
-
-      // Check if an image was selected
-      if (pickedImage == null) {
-        print('No image selected');
+      // Check if images are selected
+      if (selectedImages == null || selectedImages!.isEmpty) {
+        print('No images selected');
         return;
       }
-
-      // Fetch the image bytes from the selected file
-      var imageBytes = await pickedImage.readAsBytes();
 
       // Create a new multipart request
       var request = http.MultipartRequest('POST', url);
@@ -55,19 +71,22 @@ class CreatePostController extends GetxController {
       });
 
       // Add the fields to the request
-      request.fields['city'] = 'Surxondaryo';
-      request.fields['district'] = 'Termiz';
-      request.fields['address'] = 'Alisher Navoiy ko\'chasi';
-      request.fields['type'] = 'sale';
-      request.fields['title'] = 'TerDU sotiladi';
-      request.fields['description'] = 'Tekingayam bervoraman';
-      request.fields['price'] = '200000';
-      request.fields['price_type'] = 'dollar';
-      request.fields['phone'] = '998905210501';
+      request.fields['city'] = viloyat.toString();
+      request.fields['district'] = tuman.toString();
+      request.fields['address'] = addressController.text;
+      request.fields['type'] = ijaravalue.toString();
+      request.fields['title'] = titleController.text;
+      request.fields['description'] = descriptionController.text;
+      request.fields['price'] = priceController.text;
+      request.fields['price_type'] = valyuta.toString();
+      request.fields['phone'] = phoneController.text;
 
-      // Add the image to the request
-      var multipartFile = http.MultipartFile.fromBytes('images', imageBytes, filename: pickedImage.path.split('/').last);
-      request.files.add(multipartFile);
+      // Add the images to the request
+      for (int i = 0; i < selectedImages!.length; i++) {
+        var imageFile = selectedImages![i];
+        var multipartFile = http.MultipartFile.fromBytes('images', await imageFile.readAsBytes(), filename: imageFile.path.split('/').last);
+        request.files.add(multipartFile);
+      }
 
       // Send the request and get the response
       var streamedResponse = await request.send();
@@ -75,10 +94,36 @@ class CreatePostController extends GetxController {
       // Get the response as a regular response
       var response = await http.Response.fromStream(streamedResponse);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['ok'] == true) {
-          print("ok >>>>>>>>>>>>>>>>>>>>>>>");
+          showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: const Text('Muvaffaqiyatli saqlandi'),
+                children: [
+                  SimpleDialogOption(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          height: 200,
+                          child: Lottie.asset("assets/lottie/success.json", height: 200, options: LottieOptions(enableMergePaths: true,)),
+                        ),
+                      ],
+                    )
+                  )
+                ],
+              );
+            },
+          );
+          addressController.clear();
+          titleController.clear();
+          priceController.clear();
+          phoneController.clear();
+          descriptionController.clear();
+          selectedImages!.clear();
         } else {
           throw jsonResponse['message'] ?? 'Xato';
         }

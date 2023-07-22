@@ -387,6 +387,16 @@ class _InfoScreenState extends State<InfoScreen> {
                               height: 200,
                               width: double.infinity,
                               child: CachedNetworkImage(
+                                imageBuilder: (context, imageProvider) => Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8)),
+                                    image: DecorationImage(
+                                        image: imageProvider, fit: BoxFit.cover),
+                                  ),
+                                ),
                                 imageUrl: ApiEndPoints.BASE_URL + getAllItemController
                                     .allItem[index].thumb![0],
                                 fit: BoxFit.cover,
@@ -407,10 +417,13 @@ class _InfoScreenState extends State<InfoScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  getAllItemController.allItem[index].city!,
-                                  style: const TextStyle(
-                                    color: Color(0xff666666),
+                                Expanded(
+                                  child: Text(
+                                    getAllItemController.allItem[index].city!,
+                                    style: const TextStyle(
+                                      color: Color(0xff666666),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
                                 LikeButton(

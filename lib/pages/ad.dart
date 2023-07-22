@@ -2,12 +2,12 @@
 
 import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+
+import 'package:uy_joy_baraka/controller/create.dart';
 
 class ImageData {
   final File file;
@@ -27,9 +27,11 @@ class AddAdScreen extends StatefulWidget {
   @override
   State<AddAdScreen> createState() => _AddAdScreenState();
 }
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 class _AddAdScreenState extends State<AddAdScreen> {
-  List<ImageData> selectedImages = [];
+
+
+  CreatePostController createPostController = Get.put(CreatePostController());
+
   String name = '';
   String expiration = '';
 
@@ -246,16 +248,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
   final bosh = [''];
 
   String? sarlavha;
-  String? ijaravalue = "Sotuv";
+  String? ijaravalue;
   String? viloyat = 'Toshkent shahri';
   String? tuman;
   String? manzil;
   String? text;
   String? narx;
-  String? valyuta = "So'm";
+  String? valyuta;
   String? tel;
 
   final _formKey = GlobalKey<FormState>();
+  final _image = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -286,60 +289,75 @@ class _AddAdScreenState extends State<AddAdScreen> {
               ),
             ),
           ),
-          GestureDetector(
+          Obx(() => _image.value ? GestureDetector(
             onTap: () {
-              selectImages();
+              createPostController.pickImagesFromGallery();
             },
-            child: selectedImages.length >= 1 ? SizedBox(
-              height: 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: selectedImages.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            image: DecorationImage(
-                              image: FileImage(selectedImages[index].file),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 5,
-                          right: 5,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedImages.removeAt(index);
-                              });
-                            },
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 20,
+            child: createPostController.selectedImages!.length >= 1 ? SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: createPostController.selectedImages!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                image: FileImage(createPostController.selectedImages![index]),
+                                fit: BoxFit.cover,
                               ),
                             ),
+                            child: Stack(
+                              children:[ Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      child: Text("${index + 1}".toString(), style: const TextStyle(color: Colors.white),)),
+                                ),
+                              ),
+                            ]),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              )
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  createPostController.removeImage(index);
+                                });
+                              },
+                              child: Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
             ) : Container(
               height: 200,
               color: const Color(0x50008B51),
@@ -385,7 +403,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                 ],
               ),
             ),
-          ),
+          ) : Container()),
           Flexible(
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
@@ -433,6 +451,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                           ),
                         ),
                           TextFormField(
+                            controller: createPostController.titleController,
                             validator: (sarlavha) {
                               if(sarlavha!.isEmpty) {
                               return 'Iltimos matn kiriting';
@@ -441,11 +460,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 return 'Sarlavha uzunligi yetarli emas';
                               }
                               return null;
-                            },
-                            onChanged: (sarlavha) {
-                              setState(() {
-                                this.sarlavha = sarlavha;
-                              });
                             },
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -516,13 +530,13 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 fontWeight: FontWeight.w400),
                             items: const [
                               DropdownMenuItem(
-                                value: "Sotuv",
+                                value: "sale",
                                 child: Text(
                                   'Sotuv',
                                 ),
                               ),
                               DropdownMenuItem(
-                                value: "Ijara",
+                                value: "rent",
                                 child: Text(
                                   'Ijara',
                                 ),
@@ -615,7 +629,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                           borderRadius: BorderRadius.circular(6)),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          hint: const Text("Chilonzor"),
+                          hint: const Text("Tumanni tanlang"),
                           value: tuman,
                           borderRadius: BorderRadius.circular(6),
                           icon: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -723,6 +737,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                           ),
                         ),
                           TextFormField(
+                            controller: createPostController.addressController,
                             validator: (manzil) {
                               if(manzil!.isEmpty) {
                               return 'Iltimos matn kiriting';
@@ -731,11 +746,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 return 'Manzil uzunligi yetarli emas';
                               }
                               return null;
-                            },
-                            onChanged: (manzil) {
-                              setState(() {
-                                this.manzil = manzil;
-                              });
                             },
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -796,6 +806,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             ),
                           ),
                           TextFormField(
+                            controller: createPostController.descriptionController,
                             maxLines: 8,
                             maxLength: 300,
                             validator: (text) {
@@ -806,11 +817,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 return 'Matn juda kam';
                               }
                               return null;
-                            },
-                            onChanged: (text) {
-                              setState(() {
-                                this.text = text;
-                              });
                             },
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -878,6 +884,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                   ),
                                 ),
                                 TextFormField(
+                                  controller: createPostController.priceController,
                                   validator: (narx) {
                                     if(narx!.isEmpty) {
                                       return 'Iltimos narx kiriting';
@@ -887,11 +894,11 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                     }
                                     return null;
                                   },
-                                  onChanged: (narx) {
-                                    setState(() {
-                                      this.narx = narx;
-                                    });
-                                  },
+                                  // onChanged: (narx) {
+                                  //   setState(() {
+                                  //     this.narx = narx;
+                                  //   });
+                                  // },
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
@@ -933,7 +940,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton(
                                     value: valyuta,
-                                    hint: const Text("So'm"),
+                                    hint: const Text("so'm"),
                                     borderRadius: BorderRadius.circular(6),
                                     icon: const Icon(
                                         Icons.keyboard_arrow_down_outlined),
@@ -944,15 +951,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                         fontWeight: FontWeight.w400),
                                     items: const [
                                       DropdownMenuItem(
-                                        value: "So'm",
+                                        value: "sum",
                                         child: Text(
-                                          "So'm",
+                                          "so'm",
                                         ),
                                       ),
                                       DropdownMenuItem(
-                                        value: "Dollar",
+                                        value: "dollar",
                                         child: Text(
-                                          'Dollar',
+                                          'dollar',
                                         ),
                                       ),
                                     ],
@@ -1004,22 +1011,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                             ),
                           ),
                           TextFormField(
+                            controller: createPostController.phoneController,
                             validator: (tel) {
                               if(tel!.isEmpty) {
                                 return 'Iltimos telefon raqamingizni kiriting';
                               }
-                              else if(tel.length < 7){
+                              else if(tel.length < 10){
                                 return 'Telefon raqam uzunligi yetarli emas';
                               }
                               return null;
                             },
-                            onChanged: (tel) {
-                              setState(() {
-                                this.tel = tel;
-                              });
-                            },
                             keyboardType: TextInputType.number,
-                            initialValue: "+998",
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6),
@@ -1030,7 +1032,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                 ),
                                 filled: true,
                                 fillColor: const Color(0xffffffff),
-                                hintText: "+",
+                                hintText: "998 00 123 45 67",
                                 hintStyle: const TextStyle(
                                     color: Color(0xffABABAB), fontSize: 14)),
                           ),
@@ -1041,22 +1043,52 @@ class _AddAdScreenState extends State<AddAdScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (tuman == null) {
+                          if (createPostController.selectedImages!.length <= 0) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Row(children: [
                                 Icon(Icons.error_outline ,color: Colors.white,),
-                                Text('  Iltimos tuman tanlang')
+                                Text('  Iltimos surat yuklang')
+                              ],),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                          else if (ijaravalue == null || ijaravalue == '') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Row(children: [
+                                Icon(Icons.error_outline ,color: Colors.white,),
+                                Text('  Iltimos kategoriyani tanlang')
+                              ],),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                          else if (tuman == null || tuman == '') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Row(children: [
+                                Icon(Icons.error_outline ,color: Colors.white,),
+                                Text('  Iltimos tumanni tanlang')
+                              ],),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                          else if (valyuta == null || valyuta == '') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Row(children: [
+                                Icon(Icons.error_outline ,color: Colors.white,),
+                                Text('  Iltimos valyuta tanlang')
                               ],),
                                 backgroundColor: Colors.redAccent,
                               ),
                             );
                           }
                             else if (_formKey.currentState!.validate()) {
-                              uploadImages();
+                              createPostController.createPost(ijaravalue.toString(), viloyat.toString(), tuman.toString(), valyuta.toString());
                             ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Row(children: [
                               Icon(Icons.check,color: Colors.white,),
-                              Text('  Saqlanmoqda ...')
+                              Text('Saqlanmoqda ...')
                             ],),
                             backgroundColor: Colors.greenAccent,
                             ),
@@ -1081,6 +1113,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                         ),
                         child: const Text("Saqlash"),
                       ),
+
                     ),
                   ],),
                 )
@@ -1101,97 +1134,5 @@ class _AddAdScreenState extends State<AddAdScreen> {
         child: Text(item),
       );
 
-  Future selectImages() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-    );
 
-    if (result != null) {
-      List<File> files = result.paths.map((path) => File(path!)).toList();
-
-      List<ImageData> newImages = [];
-      for (File file in files) {
-        newImages.add(
-          ImageData(
-            file: file,
-          ),
-        );
-      }
-
-      setState(() {
-        selectedImages = newImages;
-      });
-    } else {
-      print("No files selected.");
-    }
-  }
-
-  Future uploadImages() async {
-    var dio = Dio();
-
-    setState(() {
-      for (var imageData in selectedImages) {
-        imageData.isUploading = true;
-      }
-    });
-
-    for (ImageData imageData in selectedImages) {
-      try {
-        final SharedPreferences prefs = await _prefs;
-        String filename = imageData.file.path.split('/').last;
-
-        var headers = {
-          'authorization': prefs.getString('token') ?? '',
-        };
-
-        FormData data = FormData.fromMap({
-          'city': viloyat.toString(),
-          'district': tuman.toString(),
-          'address': manzil.toString(),
-          'type': ijaravalue.toString(),
-          'title': sarlavha.toString(),
-          'description': text.toString(),
-          'images': await MultipartFile.fromFile(
-            imageData.file.path.toString(),
-            filename: filename.toString(),
-          ),
-          'price': narx,
-          'price_type': valyuta.toString(),
-          'phone': tel,
-        });
-
-        var response = await dio.post(
-          'http://test.uyjoybaraka.uz/api/announcements/create',
-          data: data,
-          options: Options(
-            headers: headers,
-          ),
-          onReceiveProgress: (int sent, int total) {
-            // Progress can be tracked here if needed
-            print("send >>>>> $sent\ntotal >>>>> $total");
-          },
-        );
-
-        if (response.statusCode == 200) {
-          setState(() {
-            imageData.isUploading = false;
-            imageData.uploadSuccess = true;
-          });
-          print('Image uploaded successfully');
-        } else {
-          setState(() {
-            imageData.isUploading = false;
-            imageData.uploadSuccess = false;
-          });
-          print('Image upload failed');
-        }
-      } catch (e) {
-        print('Error uploading image: $e');
-        setState(() {
-          imageData.isUploading = false;
-          imageData.uploadSuccess = false;
-        });
-      }
-    }
-  }
 }
