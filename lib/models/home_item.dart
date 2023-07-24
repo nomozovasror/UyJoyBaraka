@@ -1,13 +1,13 @@
-class HomeItems {
+class HomeItem {
   bool? ok;
   String? message;
   List<Posts>? posts;
   int? cPage;
   int? totalCount;
 
-  HomeItems({this.ok, this.message, this.posts, this.cPage, this.totalCount});
+  HomeItem({this.ok, this.message, this.posts, this.cPage, this.totalCount});
 
-  HomeItems.fromJson(Map<String, dynamic> json) {
+  HomeItem.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     message = json['message'];
     if (json['posts'] != null) {
@@ -45,11 +45,14 @@ class Posts {
   String? description;
   int? price;
   String? priceType;
+  String? phone;
   bool? status;
   bool? confirm;
   int? likeCount;
   int? viewCount;
   bool? rec;
+  String? fullName;
+  String? avatar;
   String? createdAt;
   String? updatedAt;
   String? userId;
@@ -66,11 +69,14 @@ class Posts {
         this.description,
         this.price,
         this.priceType,
+        this.phone,
         this.status,
         this.confirm,
         this.likeCount,
         this.viewCount,
         this.rec,
+        this.fullName,
+        this.avatar,
         this.createdAt,
         this.updatedAt,
         this.userId});
@@ -87,11 +93,14 @@ class Posts {
     description = json['description'];
     price = json['price'];
     priceType = json['price_type'];
+    phone = json['phone'];
     status = json['status'];
     confirm = json['confirm'];
     likeCount = json['likeCount'];
     viewCount = json['viewCount'];
     rec = json['rec'];
+    fullName = json['full_name'];
+    avatar = json['avatar'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     userId = json['user_id'];
@@ -110,15 +119,17 @@ class Posts {
     data['description'] = description;
     data['price'] = price;
     data['price_type'] = priceType;
+    data['phone'] = phone;
     data['status'] = status;
     data['confirm'] = confirm;
     data['likeCount'] = likeCount;
     data['viewCount'] = viewCount;
     data['rec'] = rec;
+    data['full_name'] = fullName;
+    data['avatar'] = avatar;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['user_id'] = userId;
     return data;
   }
 }
-

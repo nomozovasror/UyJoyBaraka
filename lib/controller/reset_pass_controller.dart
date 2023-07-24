@@ -42,7 +42,7 @@ class ResetController extends GetxController {
             print(jsonResponse['message'].toString());
           }
           phoneController.clear();
-          Get.to(() => ResetPass());
+          Get.to(() => const ResetPass());
         } else {
           throw jsonResponse['message'] ?? 'Xato';
         }

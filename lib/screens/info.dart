@@ -1,11 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:core';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,13 +29,10 @@ class _InfoScreenState extends State<InfoScreen> {
   int activeIndex = 0;
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
-
-  @override
-  void initState() {
-    super.initState();
-    getAllItemController.allItem.shuffle();
+  String timeSlicer(time) {
+    String timeSliced = time.substring(0, 10);
+    return timeSliced.toString();
   }
-
   @override
   Widget build(BuildContext context) {
     bool isLiked = false;
@@ -71,6 +71,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         scheme: 'http',
                         host: 'test.uyjoybaraka.uz',
                         path: widget.allData.thumb![index]);
+
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(
@@ -107,23 +108,23 @@ class _InfoScreenState extends State<InfoScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.allData.createdAt.toString(),
+                    Text(timeSlicer(widget.allData.createdAt!),
                         style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff666666))),
-                    const Row(
+                    Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.remove_red_eye_outlined,
                           size: 16,
                           color: Color(0xff666666),
                         ),
-                        Text("223",
-                            style: TextStyle(
+                        Text(widget.allData.viewCount.toString(),
+                            style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff666666))),
+                                color: Color(0xff666666),),),
                       ],
                     ),
                     Row(
@@ -239,7 +240,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          launch("tel:+998919998877");
+                          launch("tel:+${widget.allData.phone}");
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff008B51),
@@ -298,25 +299,27 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(widget.allData.thumb![0]),
+                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar
+                            .toString().replaceAll("https", "http",),),
                         radius: 30,
                       ),
                       const SizedBox(
                         width: 10,
                       ),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Nasimov Mironshoh",
-                            style: TextStyle(
+                            widget.allData.fullName.toString(),
+                            style: const TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xff898989)),
                           ),
-                          Text("2019.14.08 dan beri ",
-                              style: TextStyle(
+
+                          Text("${timeSlicer(widget.allData.createdAt.toString())} dan beri",
+                              style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
                                   color: Color(0xff898989)))
@@ -398,7 +401,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 imageUrl: ApiEndPoints.BASE_URL + getAllItemController
-                                    .allItem[index].thumb![0],
+                                    .allItem[index].thumb![0].toString().replaceAll("https", "http",),
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(

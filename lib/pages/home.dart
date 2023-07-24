@@ -13,6 +13,7 @@ import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
+import 'package:uy_joy_baraka/controller/view_count_controller.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
+  ViewCounterController viewCounterController = Get.put(ViewCounterController());
 
   String? ijaravalue = "ijaraYokiSotuv";
   String? viloyat = "Toshkent";
@@ -512,6 +514,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // CARD
                     return InkWell(
                       onTap: (){
+                        viewCounterController.viewCounter(getAllItemController.allItem[index].announcementId);
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
                       },
                       child: Container(

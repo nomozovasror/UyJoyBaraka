@@ -12,4 +12,5 @@ class _AuthEndPoints {
   final String home = "/api/home";
   final String slugCall = "/api/posts/";
   final String createPost = "/api/announcements/create";
+  final String viewCounter = "/api/posts/view/";
 }
