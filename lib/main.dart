@@ -32,6 +32,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+LikeController likeController = Get.put(LikeController());
+
+Future<void> updatePost() async {
+  likeController.updateLikedPosts(likeController.allLikedPost);
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -68,6 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
             unselectedFontSize: 10,
             currentIndex: currentIndex,
             onTap: (index) {
+              if (index == 1) {
+                updatePost();
+              }
               setState(() {
                 currentIndex = index;
               });

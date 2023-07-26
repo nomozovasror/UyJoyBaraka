@@ -7,9 +7,7 @@ import '../controller/like_controller.dart';
 import '../models/liked_posts.dart';
 
 class SavedScreen extends StatefulWidget {
-  const SavedScreen({super.key});
-
-  // ...
+  const SavedScreen({Key? key}) : super(key: key);
 
   @override
   State<SavedScreen> createState() => _SavedScreenState();
@@ -19,27 +17,38 @@ class _SavedScreenState extends State<SavedScreen> {
   LikeController likeController = Get.put(LikeController());
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: likeController.allLikedPost.length,
-      itemBuilder: (BuildContext context, int index) {
-        LikeModel post = likeController.allLikedPost[index];
-        String postId = post.announcementId ?? '';
+  void initState() {
+    super.initState();
+    likeController.initializeLikedPostIds();
+  }
 
-        return ListTile(
-          title: Text(post.announcementTitle ?? ''),
-          subtitle: Text(post.announcementDescription ?? ''),
-          trailing: IconButton(
-            onPressed: () {
-              likeController.unlike(postId);
-            },
-            icon: Icon(
-              likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-              color: likeController.isPostLiked(postId) ? Colors.red : null,
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+          () => ListView.builder(
+        itemCount: likeController.likedPosts.length,
+        itemBuilder: (BuildContext context, int index) {
+          final LikeModel post = likeController.likedPosts[index];
+          return ListTile(
+            title: Text(post.announcementTitle.toString()),
+            subtitle: Text(post.announcementDescription.toString()),
+            trailing: IconButton(
+              onPressed: () async {
+                // Unlike the post when IconButton is clicked
+                await likeController.unlike(post.announcementId!);
+
+                // Remove the unliked post from the list in the LikeController
+                likeController.removeLikedPost(post.announcementId!);
+                setState(() {});
+              },
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

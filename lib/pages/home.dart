@@ -48,6 +48,29 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLiked = false;
 
 
+  Future<void> _toggleLikeStatus(String postId) async {
+    if (likeController.isPostLiked(postId)) {
+      await _unlikePost(postId);
+    } else {
+      await _likePost(postId);
+    }
+  }
+
+  // Function to perform like operation
+  Future<void> _likePost(String postId) async {
+    await likeController.like(postId);
+    await likeController.fetchAndStoreLikedPosts();
+    likeController.updateLikedPosts(likeController.allLikedPost);
+  }
+
+  // Function to perform unlike operation
+  Future<void> _unlikePost(String postId) async {
+    await likeController.unlike(postId);
+    await likeController.fetchAndStoreLikedPosts();
+    likeController.updateLikedPosts(likeController.allLikedPost);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -592,11 +615,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 20,
                                     child: IconButton(
                                       onPressed: () {
-                                        if (likeController.isPostLiked(postId)) {
-                                          likeController.unlike(postId);
-                                        } else {
-                                          likeController.like(postId);
-                                        }
+                                        _toggleLikeStatus(postId);
                                       },
                                       icon: Icon(
                                         likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,

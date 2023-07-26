@@ -9,6 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:uy_joy_baraka/utils/local_storage_service.dart';
 
 class LikeController extends GetxController {
+
+  final RxList<LikeModel> _likedPosts = RxList<LikeModel>([]);
+  List<LikeModel> get likedPosts => _likedPosts.toList();
   List<String> _likedPostIds = [];
 
   List<String> get likedPostIds => _likedPostIds;
@@ -17,6 +20,10 @@ class LikeController extends GetxController {
   void onInit() {
     initializeLikedPostIds();
     super.onInit();
+  }
+
+  void updateLikedPosts(List<LikeModel> newLikedPosts) {
+    _likedPosts.value = newLikedPosts;
   }
 
   Future<void> initializeLikedPostIds() async {
@@ -167,4 +174,11 @@ class LikeController extends GetxController {
     // Check if the provided postId exists in the liked post IDs list
     return likedPostIds.contains(postId);
   }
+
+
+  void removeLikedPost(String postId) {
+    allLikedPost.removeWhere((post) => post.announcementId == postId);
+  }
+
+
 }
