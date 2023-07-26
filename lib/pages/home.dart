@@ -13,6 +13,7 @@ import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
+import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/controller/view_count_controller.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
   ViewCounterController viewCounterController = Get.put(ViewCounterController());
+  LikeController likeController = Get.put(LikeController());
 
   String? ijaravalue = "ijaraYokiSotuv";
   String? viloyat = "Toshkent";
@@ -582,15 +584,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  LikeButton(
-                                    size: 24,
-                                    isLiked: isLiked,
-                                    likeBuilder: (isTapped) {
-                                      return SvgPicture.asset(
-                                        isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                        color: const Color(0xffFF8D08),
-                                      );
-                                    },
+                                  SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: (){
+                                      likeController.like(getAllItemController.allItem[index].announcementId);
+                                    }, icon: Icon(Icons.favorite_border )),
                                   ),
                                 ],
                               ),

@@ -13,4 +13,6 @@ class _AuthEndPoints {
   final String slugCall = "/api/posts/";
   final String createPost = "/api/announcements/create";
   final String viewCounter = "/api/posts/view/";
+  final String likeCounter = "/api/announcements/";
+  final String getLikedPosts = "/api/announcements/liked";
 }
