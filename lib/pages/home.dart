@@ -610,16 +610,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 10),
                                     height: 20,
                                     width: 20,
                                     child: IconButton(
+                                      padding: EdgeInsets.zero,
+
                                       onPressed: () {
                                         _toggleLikeStatus(postId);
+                                        likeController.isPostLiked(postId) ? ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Row(children: [
+                                            Icon(Icons.delete_outline ,color: Colors.white,),
+                                            Text("  Saqlanganlardan o'chirildi")
+                                          ],),
+                                              backgroundColor: Color(0xffFF8D08),
+                                            ),)  : ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Row(children: [
+                                            Icon(Icons.save ,color: Colors.white,),
+                                            Text("  Saqlanmoqda . . .")
+                                          ],),
+                                            backgroundColor: Colors.green,
+                                          ),);
                                       },
                                       icon: Icon(
                                         likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-                                        color: likeController.isPostLiked(postId) ? Colors.red : null,
+                                        color: const Color(0xffFF8D08),
+                                        size: 26,
                                       ),
                                     ),
 
