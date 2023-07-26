@@ -2,14 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/pages/ad.dart';
 import 'package:uy_joy_baraka/pages/chat.dart';
 import 'package:uy_joy_baraka/pages/home.dart';
 import 'package:uy_joy_baraka/pages/profile.dart';
 import 'package:uy_joy_baraka/pages/saved.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  LikeController likeController = Get.put(LikeController());
+  await likeController.fetchAndStoreLikedPosts();
   runApp(const MyApp());
 }
 

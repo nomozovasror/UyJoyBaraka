@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/controller/view_count_controller.dart';
+import 'package:uy_joy_baraka/models/home_item.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
@@ -380,6 +381,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
+                  Posts post = getAllItemController.allItem[index];
+                  String postId = post.announcementId ?? '';
                   if ((index + 1) % 11 == 0) {
                     if (index < 11){
                       return Container(
@@ -588,10 +591,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 20,
                                     width: 20,
                                     child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        onPressed: (){
-                                      likeController.like(getAllItemController.allItem[index].announcementId);
-                                    }, icon: Icon(Icons.favorite_border )),
+                                      onPressed: () {
+                                        if (likeController.isPostLiked(postId)) {
+                                          likeController.unlike(postId);
+                                        } else {
+                                          likeController.like(postId);
+                                        }
+                                      },
+                                      icon: Icon(
+                                        likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
+                                        color: likeController.isPostLiked(postId) ? Colors.red : null,
+                                      ),
+                                    ),
+
                                   ),
                                 ],
                               ),

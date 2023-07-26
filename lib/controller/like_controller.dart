@@ -6,9 +6,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/models/liked_posts.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
+import 'package:uy_joy_baraka/utils/local_storage_service.dart';
 
 class LikeController extends GetxController {
-  Future<void> like(announcementId) async {
+  List<String> _likedPostIds = [];
+
+  List<String> get likedPostIds => _likedPostIds;
+
+  @override
+  void onInit() {
+    initializeLikedPostIds();
+    super.onInit();
+  }
+
+  Future<void> initializeLikedPostIds() async {
+    _likedPostIds = await LocalStorageService.retrieveLikedPostIds() ?? [];
+  }
+
+  Future<void> like(String announcementId) async {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     try {
@@ -23,24 +38,31 @@ class LikeController extends GetxController {
       http.Response jsonResponse = await http.patch(url, headers: headers);
       print(jsonResponse.statusCode.toString());
       print(jsonResponse.body.toString());
+
+      // Add the liked post ID to the _likedPostIds list
+      _likedPostIds.add(announcementId);
+
+      // Store the updated likedPostIds list in local storage
+      await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
       print(e.toString());
       showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Error'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
+        context: Get.context!,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Error'),
+            children: [
+              SimpleDialogOption(
+                child: Text(e.toString()),
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
-  Future<void> unlike(announcementId) async {
+  Future<void> unlike(String announcementId) async {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     try {
@@ -55,31 +77,32 @@ class LikeController extends GetxController {
       http.Response jsonResponse = await http.patch(url, headers: headers);
       print(jsonResponse.statusCode.toString());
       print(jsonResponse.body.toString());
+
+      // Remove the unliked post ID from the _likedPostIds list
+      _likedPostIds.remove(announcementId);
+
+      // Store the updated likedPostIds list in local storage
+      await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
       print(e.toString());
       showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Error'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
+        context: Get.context!,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Error'),
+            children: [
+              SimpleDialogOption(
+                child: Text(e.toString()),
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
   var loadLike = false.obs;
   List<LikeModel> allLikedPost = [];
-
-  @override
-  void onInit() {
-    getAllLikedPosts();
-    super.onInit();
-  }
 
   getAllLikedPosts() async {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -97,7 +120,7 @@ class LikeController extends GetxController {
 
       http.Response response = await http.get(url, headers: headers);
 
-      print("${response.statusCode} like ok >>>>>>>>>",);
+      print("${response.statusCode} like ok >>>>>>>>>");
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
@@ -111,17 +134,37 @@ class LikeController extends GetxController {
       }
     } catch (e) {
       showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Xato'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
+        context: Get.context!,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Xato'),
+            children: [
+              SimpleDialogOption(
+                child: Text(e.toString()),
+              )
+            ],
+          );
+        },
+      );
     }
+  }
+
+  Future<void> fetchAndStoreLikedPosts() async {
+    try {
+      // Fetch liked posts from the backend API using getAllLikedPosts()
+      List<LikeModel> likedPosts = await getAllLikedPosts();
+
+      // Store the liked posts locally using shared preferences
+      List<String> likedPostIds =
+      likedPosts.map((post) => post.announcementId!).toList();
+      await LocalStorageService.storeLikedPostIds(likedPostIds);
+    } catch (e) {
+      // Handle any errors that may occur during the fetch and store process
+    }
+  }
+
+  bool isPostLiked(String postId) {
+    // Check if the provided postId exists in the liked post IDs list
+    return likedPostIds.contains(postId);
   }
 }
