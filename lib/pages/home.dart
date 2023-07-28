@@ -60,15 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _likePost(String postId) async {
     await likeController.like(postId);
     await likeController.fetchAndStoreLikedPosts();
+    await likeController.getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
-  // Function to perform unlike operation
   Future<void> _unlikePost(String postId) async {
     await likeController.unlike(postId);
     await likeController.fetchAndStoreLikedPosts();
+    await likeController.getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
+
 
 
 

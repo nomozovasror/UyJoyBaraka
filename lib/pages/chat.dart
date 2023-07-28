@@ -59,6 +59,28 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: Text("Code Check"),
             ),
+
+
+            ElevatedButton(
+              onPressed: () async {
+            await likeController.deleteAllLikedData();
+            },
+              child: Text("Delete All Liked Data"),
+            ),
+
+            ElevatedButton(
+              onPressed: () async {
+                await likeController.restoreLikedDataFromAPI();
+              },
+              child: Text("Restore Liked Data From API"),
+            ),
+            ElevatedButton(onPressed: (){
+              likeController.printLikedPostIds();
+            }, child: Text("Print data"),)
+
+
+
+
           ]),
     );
   }

@@ -16,6 +16,11 @@ class LikeController extends GetxController {
 
   List<String> get likedPostIds => _likedPostIds;
 
+  void printLikedPostIds() {
+    print(_likedPostIds);
+    print(likedPostIds);
+  }
+
   @override
   void onInit() {
     initializeLikedPostIds();
@@ -179,6 +184,29 @@ class LikeController extends GetxController {
   void removeLikedPost(String postId) {
     allLikedPost.removeWhere((post) => post.announcementId == postId);
   }
+
+  Future<void> deleteAllLikedData() async {
+    await LocalStorageService.storeLikedPostIds([]);
+    _likedPostIds.clear();
+    _likedPosts.clear();
+
+  }
+
+  Future<void> restoreLikedDataFromAPI() async {
+    try {
+      await getAllLikedPosts();
+
+      List<String> likedPostIds = allLikedPost.map((post) => post.announcementId!).toList();
+
+      await LocalStorageService.storeLikedPostIds(likedPostIds);
+
+      _likedPostIds = likedPostIds;
+    } catch (e) {
+      // Handle any errors that may occur during data restoration from the API
+      // You can show an error message or take appropriate actions here
+    }
+  }
+
 
 
 }
