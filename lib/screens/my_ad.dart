@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:like_button/like_button.dart';
 import 'package:uy_joy_baraka/models/models.dart';
 
 class AdScreen extends StatefulWidget {
@@ -150,16 +148,6 @@ class _AdScreenState extends State<AdScreen> {
                                           color: Color(0xff666666),
                                         ),
                                       ),
-                                      LikeButton(
-                                        size: 24,
-                                        isLiked: isLiked,
-                                        likeBuilder: (isTapped) {
-                                          return SvgPicture.asset(
-                                            isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                            color:const Color(0xffFF8D08),
-                                          );
-                                        },
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -241,16 +229,6 @@ class _AdScreenState extends State<AdScreen> {
                                         style: TextStyle(
                                           color: Color(0xff666666),
                                         ),
-                                      ),
-                                      LikeButton(
-                                        size: 24,
-                                        isLiked: isLiked,
-                                        likeBuilder: (isTapped) {
-                                          return SvgPicture.asset(
-                                            isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                            color: const Color(0xffFF8D08),
-                                          );
-                                        },
                                       ),
                                     ],
                                   ),

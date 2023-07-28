@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:intl/intl.dart';
-import 'package:like_button/like_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
@@ -33,9 +31,10 @@ class _InfoScreenState extends State<InfoScreen> {
     String timeSliced = time.substring(0, 10);
     return timeSliced.toString();
   }
+
+
   @override
   Widget build(BuildContext context) {
-    bool isLiked = false;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -138,20 +137,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 topLeft: Radius.circular(8),
                                 bottomLeft: Radius.circular(8),
                               )),
-                          child: LikeButton(
-                            size: 24,
-                            isLiked: isLiked,
-                            likeBuilder: (isTapped) {
-                              return SvgPicture.asset(
-                                isTapped
-                                    ? 'assets/icons/fill_like.svg'
-                                    : 'assets/icons/mdi_heart-outline.svg',
-                                color: isTapped
-                                    ? const Color(0xffFF8D08)
-                                    : Colors.white,
-                              );
-                            },
-                          ),
+
                         ),
                         Container(
                             padding: const EdgeInsets.only(
@@ -429,16 +415,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                     ),
                                   ),
                                 ),
-                                LikeButton(
-                                  size: 24,
-                                  isLiked: isLiked,
-                                  likeBuilder: (isTapped) {
-                                    return SvgPicture.asset(
-                                      isTapped ? 'assets/icons/fill_like.svg' : 'assets/icons/mdi_heart-outline.svg',
-                                      color: const Color(0xffFF8D08),
-                                    );
-                                  },
-                                ),
+
                               ],
                             ),
                           ),

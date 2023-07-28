@@ -9,7 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:like_button/like_button.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isLiked = false;
 
-
   Future<void> _toggleLikeStatus(String postId) async {
     if (likeController.isPostLiked(postId)) {
       await _unlikePost(postId);
@@ -71,230 +70,316 @@ class _HomeScreenState extends State<HomeScreen> {
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      // At the end of the current page, load more items
+      getAllItemController.loadNextPage();
+    }
+  }
 
 
+   bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: scrollController,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // FILTER >>>>>>>
-          SizedBox(
-            height: 56,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+        children: [
+          ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 10),
+            controlAffinity: ListTileControlAffinity.leading,
+            leading: Container(
+              height: 40,
+              width: 46,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xff008B51),
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  "assets/icons/filter-alt.svg",
+                  height: 24,
+                  width: 24,
+                  color: Color(0xff008B51),
+                ),
+              ),
+            ),
+            title: Row(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 8, right: 4),
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        value: ijaravalue,
-                        borderRadius: BorderRadius.circular(6),
-                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        iconSize: 24,
-                        style: const TextStyle(
-                            color: Color(0xff272727),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "ijaraYokiSotuv",
-                            child: Text('Ijara yoki Sotuv'),
-                          ),
-                          DropdownMenuItem(
-                            value: "Ijara",
-                            child: Text('Ijara'),
-                          ),
-                          DropdownMenuItem(
-                            value: "Sotuv",
-                            child: Text('Sotuv'),
-                          )
-                        ],
-                        onChanged: (String? newIjara) {
-                          setState(() {
-                            ijaravalue = newIjara!;
-                          });
-                        }),
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 4, right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        value: viloyat,
-                        borderRadius: BorderRadius.circular(6),
-                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        iconSize: 24,
-                        style: const TextStyle(
-                            color: Color(0xff272727),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "Toshkent",
-                            child: Text(
-                              'Toshkent',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Andijon",
-                            child: Text(
-                              'Andijon',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Buxoro",
-                            child: Text(
-                              'Buxoro',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Fargʻona",
-                            child: Text(
-                              'Fargʻona',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Xorazm",
-                            child: Text(
-                              'Xorazm',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Namangan",
-                            child: Text(
-                              'Namangan',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Navoiy",
-                            child: Text(
-                              'Navoiy',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Qashqadaryo",
-                            child: Text(
-                              'Qashqadaryo',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Qoraqalpogʻiston",
-                            child: Text(
-                              'Qoraqalpogʻiston',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Samarqand",
-                            child: Text(
-                              'Samarqand',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Sirdaryo",
-                            child: Text(
-                              'Sirdaryo',
-                              softWrap: true,
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: "Surxondaryo",
-                            child: Text(
-                              'Surxondaryo',
-                              softWrap: true,
-                            ),
-                          ),
-                        ],
-                        onChanged: (String? newViloyat) {
-                          setState(() {
-                            viloyat = newViloyat!;
-                          });
-                        }),
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 4, right: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        value: valyuta,
-                        borderRadius: BorderRadius.circular(6),
-                        icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        iconSize: 24,
-                        style: const TextStyle(
-                            color: Color(0xff272727),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "So'm",
-                            child: Text("So'm"),
-                          ),
-                          DropdownMenuItem(
-                            value: "Dollar",
-                            child: Text('Dollar'),
-                          ),
-                          DropdownMenuItem(
-                            value: "Yevro",
-                            child: Text('Yevro'),
-                          )
-                        ],
-                        onChanged: (String? newValyuta) {
-                          setState(() {
-                            valyuta = newValyuta!;
-                          });
-                        }),
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(
-                      bottom: 6, top: 12, left: 4, right: 4),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff008B51),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                Expanded(
+                  flex: 8,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      isDense: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Color(0xff008B51),
+                          width: 2
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.all(12),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Color(0xff008B51),
+                          width: 2
+                        ),
+                      ),
+                      hintText: "Qidirish",
+                      hintStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
                     ),
-                    child: const Text("Izlash"),
+                  ),
+                ),
+                SizedBox(width: 8,),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+
+                    child: Container(
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff008B51),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search, color: Colors.white),
+
+                        ],
+                      ),
+                    ),
                   ),
                 )
               ],
             ),
-          ),
+            children: [
+              SizedBox(
+                height: 56,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 8, right: 4),
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                            value: ijaravalue,
+                            borderRadius: BorderRadius.circular(6),
+                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            iconSize: 24,
+                            style: const TextStyle(
+                                color: Color(0xff272727),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            items: const [
+                              DropdownMenuItem(
+                                value: "ijaraYokiSotuv",
+                                child: Text('Ijara yoki Sotuv'),
+                              ),
+                              DropdownMenuItem(
+                                value: "Ijara",
+                                child: Text('Ijara'),
+                              ),
+                              DropdownMenuItem(
+                                value: "Sotuv",
+                                child: Text('Sotuv'),
+                              )
+                            ],
+                            onChanged: (String? newIjara) {
+                              setState(() {
+                                ijaravalue = newIjara!;
+                              });
+                            }),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 4, right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                            value: viloyat,
+                            borderRadius: BorderRadius.circular(6),
+                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            iconSize: 24,
+                            style: const TextStyle(
+                                color: Color(0xff272727),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            items: const [
+                              DropdownMenuItem(
+                                value: "Toshkent",
+                                child: Text(
+                                  'Toshkent',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Andijon",
+                                child: Text(
+                                  'Andijon',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Buxoro",
+                                child: Text(
+                                  'Buxoro',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Fargʻona",
+                                child: Text(
+                                  'Fargʻona',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Xorazm",
+                                child: Text(
+                                  'Xorazm',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Namangan",
+                                child: Text(
+                                  'Namangan',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Navoiy",
+                                child: Text(
+                                  'Navoiy',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Qashqadaryo",
+                                child: Text(
+                                  'Qashqadaryo',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Qoraqalpogʻiston",
+                                child: Text(
+                                  'Qoraqalpogʻiston',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Samarqand",
+                                child: Text(
+                                  'Samarqand',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Sirdaryo",
+                                child: Text(
+                                  'Sirdaryo',
+                                  softWrap: true,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: "Surxondaryo",
+                                child: Text(
+                                  'Surxondaryo',
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                            onChanged: (String? newViloyat) {
+                              setState(() {
+                                viloyat = newViloyat!;
+                              });
+                            }),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(
+                          bottom: 6, top: 12, left: 4, right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                            value: valyuta,
+                            borderRadius: BorderRadius.circular(6),
+                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            iconSize: 24,
+                            style: const TextStyle(
+                                color: Color(0xff272727),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            items: const [
+                              DropdownMenuItem(
+                                value: "So'm",
+                                child: Text("So'm"),
+                              ),
+                              DropdownMenuItem(
+                                value: "Dollar",
+                                child: Text('Dollar'),
+                              ),
+                              DropdownMenuItem(
+                                value: "Yevro",
+                                child: Text('Yevro'),
+                              )
+                            ],
+                            onChanged: (String? newValyuta) {
+                              setState(() {
+                                valyuta = newValyuta!;
+                              });
+                            }),
+                      ),
+                    ),
+                  ],
+                ),),
+            ],),
+          // FILTER >>>>>>>
+
           // CAROUSEL >>>>>>>>
           Stack(alignment: Alignment.center, children: [
             CarouselSlider.builder(
@@ -399,283 +484,297 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           // ALL ITEM
-          Flexible(
-              child:StaggeredGridView.countBuilder(
-                crossAxisCount: 2,
-                itemCount: getAllItemController.allItem.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  Posts post = getAllItemController.allItem[index];
-                  String postId = post.announcementId ?? '';
-                  if ((index + 1) % 11 == 0) {
-                    if (index < 11){
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        height: 260,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage("assets/images/ad_img.jpg",)
-                          ),
-                        ),
-                        // AD BANNER
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              top: 42,
-                              left: 28,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+Obx(() {
+                if(getAllItemController.loadItem.value && getAllItemController.page.value == 1){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else{
+                  return Flexible(
+                    child: StaggeredGridView.countBuilder(
+                      crossAxisCount: 2,
+                      itemCount: getAllItemController.allItem.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        Posts post = getAllItemController.allItem[index];
+                        String postId = post.announcementId ?? '';
+                        if ((index + 1) % 11 == 0) {
+                          if (index < 11){
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              height: 260,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage("assets/images/ad_img.jpg",)
+                                ),
+                              ),
+                              // AD BANNER
+                              child: Stack(
                                 children: [
-                                  const SizedBox(
-                                    width: 300,
-                                    child: Text(
-                                      "REKLAMANGIZ UCHUN\nJOY",
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff008B51)),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      launch("tel:+998919998877");
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff008B51),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
-                                    ),
-                                    child: const Row(
+                                  Positioned(
+                                    top: 42,
+                                    left: 28,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          Icons.phone_rounded,
-                                          size: 20,
+                                        const SizedBox(
+                                          width: 300,
+                                          child: Text(
+                                            "REKLAMANGIZ UCHUN\nJOY",
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff008B51)),
+                                          ),
                                         ),
-                                        Text(
-                                          " Biz bilan bog'lanish",
-                                          style: TextStyle(fontSize: 14),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            launch("tel:+998919998877");
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xff008B51),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 6),
+                                          ),
+                                          child: const Row(
+                                            children: [
+                                              Icon(
+                                                Icons.phone_rounded,
+                                                size: 20,
+                                              ),
+                                              Text(
+                                                " Biz bilan bog'lanish",
+                                                style: TextStyle(fontSize: 14),
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }else{
+                            // SECOND AD BANNER
+                            return Container(
+                              height: 80,
+                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: const Color(0xff008B51), width: 1)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(width: 5,),
+                                  Image.asset('assets/images/green3.png', width: 70,),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 35),
+                                    width: 140,
+                                    height: 90,
+                                    transform: Matrix4.skewX(-.3),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xff008B51),
+                                    ),
+                                    child: const Center(
+                                      child: SizedBox(
+                                        width: 138,
+                                        child: Text("Bizni ijtimoiy tarmoqlarda kuzating", textAlign: TextAlign.center,  style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w600),),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFFF8D08),
+                                            borderRadius: BorderRadius.circular(50)
+                                        ),
+                                        height: 25,
+                                        width: 25,
+                                        child: Center(
+                                          child: SvgPicture.asset('assets/icons/ri_facebook-fill.svg'),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5,),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFFF8D08),
+                                            borderRadius: BorderRadius.circular(50)
+                                        ),
+                                        height: 25,
+                                        width: 25,
+                                        child: Center(
+                                          child: SvgPicture.asset('assets/icons/mdi_instagram.svg'),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5,),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFFF8D08),
+                                            borderRadius: BorderRadius.circular(50)
+                                        ),
+                                        height: 25,
+                                        width: 25,
+                                        child: Center(
+                                          child: SvgPicture.asset('assets/icons/mingcute_telegram-line.svg'),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5,),
+                                    ],
                                   )
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }else{
-                      // SECOND AD BANNER
-                      return Container(
-                        height: 80,
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xff008B51), width: 1)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const SizedBox(width: 5,),
-                            Image.asset('assets/images/green3.png', width: 70,),
-                            Container(
-                              margin: const EdgeInsets.only(left: 35),
-                              width: 140,
-                              height: 90,
-                              transform: Matrix4.skewX(-.3),
-                              decoration: const BoxDecoration(
-                                color: Color(0xff008B51),
+                            );
+                          }
+                        } else {
+                          // CARD
+                          return InkWell(
+                            onTap: (){
+                              viewCounterController.viewCounter(getAllItemController.allItem[index].announcementId);
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 0), // changes position of shadow
+                                  ),
+                                ],
                               ),
-                              child: const Center(
-                                child: SizedBox(
-                                  width: 138,
-                                  child: Text("Bizni ijtimoiy tarmoqlarda kuzating", textAlign: TextAlign.center,  style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w600),),
-                                ),
-                              ),
-                            ),
-                            Row(
-
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFF8D08),
-                                    borderRadius: BorderRadius.circular(50)
-                                  ),
-                                  height: 25,
-                                  width: 25,
-                                  child: Center(
-                                    child: SvgPicture.asset('assets/icons/ri_facebook-fill.svg'),
-                                  ),
-                                ),
-                                const SizedBox(width: 5,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFFFF8D08),
-                                      borderRadius: BorderRadius.circular(50)
-                                  ),
-                                  height: 25,
-                                  width: 25,
-                                  child: Center(
-                                    child: SvgPicture.asset('assets/icons/mdi_instagram.svg'),
-                                  ),
-                                ),
-                                const SizedBox(width: 5,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFFFF8D08),
-                                      borderRadius: BorderRadius.circular(50)
-                                  ),
-                                  height: 25,
-                                  width: 25,
-                                  child: Center(
-                                    child: SvgPicture.asset('assets/icons/mingcute_telegram-line.svg'),
-                                  ),
-                                ),
-                                const SizedBox(width: 5,),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  } else {
-                    // CARD
-                    return InkWell(
-                      onTap: (){
-                        viewCounterController.viewCounter(getAllItemController.allItem[index].announcementId);
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 0), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        margin: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                              ),
-                              height: 200,
-                              width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageUrl: ApiEndPoints.BASE_URL + getAllItemController
-                                    .allItem[index].thumb![0],
-                                imageBuilder: (context, imageProvider) => Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8)),
-                                    image: DecorationImage(
-                                        image: imageProvider, fit: BoxFit.cover),
-                                  ),
-                                ),
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xff008B51),
-                                    )),
-                                errorWidget: (context, url, error) => const Icon(
-                                  Icons.error,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 6),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              margin: const EdgeInsets.all(10),
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: SizedBox(
-                                      child: Text(
-                                        "${getAllItemController.allItem[index].city}",
-                                        style: const TextStyle(
-                                          color: Color(0xff666666),
-                                          overflow: TextOverflow.ellipsis
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8)),
+                                    ),
+                                    height: 200,
+                                    width: double.infinity,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ApiEndPoints.BASE_URL + getAllItemController
+                                          .allItem[index].thumb![0],
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8)),
+                                          image: DecorationImage(
+                                              image: imageProvider, fit: BoxFit.cover),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 10),
-                                    height: 20,
-                                    width: 20,
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-
-                                      onPressed: () {
-                                        _toggleLikeStatus(postId);
-                                        likeController.isPostLiked(postId) ? ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Row(children: [
-                                            Icon(Icons.delete_outline ,color: Colors.white,),
-                                            Text("  Saqlanganlardan o'chirildi")
-                                          ],),
-                                              backgroundColor: Color(0xffFF8D08),
-                                            ),)  : ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Row(children: [
-                                            Icon(Icons.save ,color: Colors.white,),
-                                            Text("  Saqlanmoqda . . .")
-                                          ],),
-                                            backgroundColor: Colors.green,
-                                          ),);
-                                      },
-                                      icon: Icon(
-                                        likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-                                        color: const Color(0xffFF8D08),
-                                        size: 26,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Color(0xff008B51),
+                                          )),
+                                      errorWidget: (context, url, error) => const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
                                       ),
                                     ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 6),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Text(
+                                              "${getAllItemController.allItem[index].city}",
+                                              style: const TextStyle(
+                                                  color: Color(0xff666666),
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 10),
+                                          height: 20,
+                                          width: 20,
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
 
+                                            onPressed: () {
+                                              _toggleLikeStatus(postId);
+                                              likeController.isPostLiked(postId) ? ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  duration: Duration(milliseconds: 1000),
+                                                  content: Row(children: [
+                                                    Icon(Icons.delete_outline ,color: Colors.white,),
+                                                    Text("  Saqlanganlardan o'chirildi")
+                                                  ],),
+                                                  backgroundColor: Color(0xffFF8D08),
+                                                ),)  : ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  duration: Duration(milliseconds: 1000),
+                                                  content: Row(children: [
+                                                  Icon(Icons.save ,color: Colors.white,),
+                                                  Text("  Saqlanmoqda . . .")
+                                                ],),
+                                                  backgroundColor: Colors.green,
+                                                ),);
+                                            },
+                                            icon: Icon(
+                                              likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
+                                              color: const Color(0xffFF8D08),
+                                              size: 26,
+                                            ),
+                                          ),
+
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 6),
+                                    child: SizedBox(
+                                      height: 30,
+                                      child: Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,),
+                                    ),
+                                  ),
+                                  Padding(padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 6),
+                                    child: SizedBox(
+                                      child: Row(
+                                        children: [
+                                          Text('${getAllItemController.allItem[index].price} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Padding(padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                              child: SizedBox(
-                                height: 30,
-                                child: Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,),
-                              ),
-                            ),
-                            Padding(padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                              child: SizedBox(
-                                child: Row(
-                                  children: [
-                                    Text('${getAllItemController.allItem[index].price} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                },
-                staggeredTileBuilder: (int index) => (index + 1)% 11 == 0
-                    ? const StaggeredTile.fit(2)
-                    : const StaggeredTile.fit(1),
-              ),
-          ),
+                          );
+                        }
+                      },
+                      staggeredTileBuilder: (int index) => (index + 1)% 11 == 0
+                          ? const StaggeredTile.fit(2)
+                          : const StaggeredTile.fit(1),
+                    ),
+                  );
+                }
+              }),
+          getAllItemController.hasMoreData ?
+            const CircularProgressIndicator() : const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Center(child: Text("Oxiriga yettingiz", style: TextStyle(color: Colors.grey),),),)
         ],
       ),
     );
