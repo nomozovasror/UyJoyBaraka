@@ -1,5 +1,3 @@
-
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
@@ -19,10 +18,7 @@ import 'package:uy_joy_baraka/models/home_item.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -38,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
-  ViewCounterController viewCounterController = Get.put(ViewCounterController());
+  ViewCounterController viewCounterController =
+      Get.put(ViewCounterController());
   LikeController likeController = Get.put(LikeController());
 
   String? ijaravalue = "ijaraYokiSotuv";
@@ -59,14 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _likePost(String postId) async {
     await likeController.like(postId);
     await likeController.fetchAndStoreLikedPosts();
-    await likeController.getAllLikedPosts(); // Fetch the liked posts from the API
+    await likeController
+        .getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
   Future<void> _unlikePost(String postId) async {
     await likeController.unlike(postId);
     await likeController.fetchAndStoreLikedPosts();
-    await likeController.getAllLikedPosts(); // Fetch the liked posts from the API
+    await likeController
+        .getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
@@ -86,14 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
       // At the end of the current page, load more items
       getAllItemController.loadNextPage();
     }
   }
 
-
-   bool isExpanded = false;
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "assets/icons/filter-alt.svg",
                   height: 24,
                   width: 24,
-                  color: Color(0xff008B51),
+                  color: const Color(0xff008B51),
                 ),
               ),
             ),
@@ -134,17 +133,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
-                          color: Color(0xff008B51),
-                          width: 2
-                        ),
+                            color: Color(0xff008B51), width: 2),
                       ),
                       contentPadding: const EdgeInsets.all(12),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
-                          color: Color(0xff008B51),
-                          width: 2
-                        ),
+                            color: Color(0xff008B51), width: 2),
                       ),
                       hintText: "Qidirish",
                       hintStyle: const TextStyle(
@@ -154,22 +149,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(width: 8,),
+                const SizedBox(
+                  width: 8,
+                ),
                 Expanded(
                   flex: 2,
                   child: GestureDetector(
-
                     child: Container(
                       height: 42,
                       decoration: BoxDecoration(
                         color: const Color(0xff008B51),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.search, color: Colors.white),
-
                         ],
                       ),
                     ),
@@ -189,14 +184,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 40,
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                          border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          border: Border.all(
+                              color: const Color(0xff008B51), width: 1.5),
                           borderRadius: BorderRadius.circular(6)),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
                             value: ijaravalue,
                             borderRadius: BorderRadius.circular(6),
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
                             iconSize: 24,
                             style: const TextStyle(
                                 color: Color(0xff272727),
@@ -229,14 +225,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           bottom: 6, top: 12, left: 4, right: 4),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                          border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          border: Border.all(
+                              color: const Color(0xff008B51), width: 1.5),
                           borderRadius: BorderRadius.circular(6)),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
                             value: viloyat,
                             borderRadius: BorderRadius.circular(6),
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
                             iconSize: 24,
                             style: const TextStyle(
                                 color: Color(0xff272727),
@@ -341,14 +338,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           bottom: 6, top: 12, left: 4, right: 4),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
-                          border:
-                          Border.all(color: const Color(0xff008B51), width: 1.5),
+                          border: Border.all(
+                              color: const Color(0xff008B51), width: 1.5),
                           borderRadius: BorderRadius.circular(6)),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
                             value: valyuta,
                             borderRadius: BorderRadius.circular(6),
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
                             iconSize: 24,
                             style: const TextStyle(
                                 color: Color(0xff272727),
@@ -376,8 +374,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                ),),
-            ],),
+                ),
+              ),
+            ],
+          ),
           // FILTER >>>>>>>
 
           // CAROUSEL >>>>>>>>
@@ -484,299 +484,523 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           // ALL ITEM
-Obx(() {
-                if(getAllItemController.loadItem.value && getAllItemController.page.value == 1){
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }else{
-                  return Flexible(
-                    child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 2,
-                      itemCount: getAllItemController.allItem.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        Posts post = getAllItemController.allItem[index];
-                        String postId = post.announcementId ?? '';
-                        if ((index + 1) % 11 == 0) {
-                          if (index < 11){
-                            return Container(
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              height: 260,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage("assets/images/ad_img.jpg",)
-                                ),
-                              ),
-                              // AD BANNER
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    top: 42,
-                                    left: 28,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(
-                                          width: 300,
-                                          child: Text(
-                                            "REKLAMANGIZ UCHUN\nJOY",
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xff008B51)),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            launch("tel:+998919998877");
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xff008B51),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 6),
-                                          ),
-                                          child: const Row(
-                                            children: [
-                                              Icon(
-                                                Icons.phone_rounded,
-                                                size: 20,
-                                              ),
-                                              Text(
-                                                " Biz bilan bog'lanish",
-                                                style: TextStyle(fontSize: 14),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }else{
-                            // SECOND AD BANNER
-                            return Container(
-                              height: 80,
-                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: const Color(0xff008B51), width: 1)
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  const SizedBox(width: 5,),
-                                  Image.asset('assets/images/green3.png', width: 70,),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 35),
-                                    width: 140,
-                                    height: 90,
-                                    transform: Matrix4.skewX(-.3),
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xff008B51),
-                                    ),
-                                    child: const Center(
-                                      child: SizedBox(
-                                        width: 138,
-                                        child: Text("Bizni ijtimoiy tarmoqlarda kuzating", textAlign: TextAlign.center,  style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w600),),
+          Obx(() {
+            if (getAllItemController.loadItem.value &&
+                getAllItemController.page.value == 1) {
+              return StaggeredGridView.countBuilder(
+                crossAxisCount: 2,
+                itemCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return homeShimmer();
+                }, staggeredTileBuilder: (int index) =>
+                  const StaggeredTile.fit(1)
+              );
+            } else {
+              return Flexible(
+                child: StaggeredGridView.countBuilder(
+                  crossAxisCount: 2,
+                  itemCount: getAllItemController.allItem.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    Posts post = getAllItemController.allItem[index];
+                    String postId = post.announcementId ?? '';
+                    if ((index + 1) % 11 == 0) {
+                      if (index < 11) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          height: 260,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  "assets/images/ad_img.jpg",
+                                )),
+                          ),
+                          // AD BANNER
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                top: 42,
+                                left: 28,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      width: 300,
+                                      child: Text(
+                                        "REKLAMANGIZ UCHUN\nJOY",
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xff008B51)),
                                       ),
                                     ),
-                                  ),
-                                  Row(
-
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFFFF8D08),
-                                            borderRadius: BorderRadius.circular(50)
-                                        ),
-                                        height: 25,
-                                        width: 25,
-                                        child: Center(
-                                          child: SvgPicture.asset('assets/icons/ri_facebook-fill.svg'),
-                                        ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        launch("tel:+998919998877");
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xff008B51),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 6),
                                       ),
-                                      const SizedBox(width: 5,),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFFFF8D08),
-                                            borderRadius: BorderRadius.circular(50)
-                                        ),
-                                        height: 25,
-                                        width: 25,
-                                        child: Center(
-                                          child: SvgPicture.asset('assets/icons/mdi_instagram.svg'),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5,),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFFFF8D08),
-                                            borderRadius: BorderRadius.circular(50)
-                                        ),
-                                        height: 25,
-                                        width: 25,
-                                        child: Center(
-                                          child: SvgPicture.asset('assets/icons/mingcute_telegram-line.svg'),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5,),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                        } else {
-                          // CARD
-                          return InkWell(
-                            onTap: (){
-                              viewCounterController.viewCounter(getAllItemController.allItem[index].announcementId);
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen(allData: getAllItemController.allItem[index]),),);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 0), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8)),
-                                    ),
-                                    height: 200,
-                                    width: double.infinity,
-                                    child: CachedNetworkImage(
-                                      imageUrl: ApiEndPoints.BASE_URL + getAllItemController
-                                          .allItem[index].thumb![0],
-                                      imageBuilder: (context, imageProvider) => Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8)),
-                                          image: DecorationImage(
-                                              image: imageProvider, fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => const Center(
-                                          child: CircularProgressIndicator(
-                                            color: Color(0xff008B51),
-                                          )),
-                                      errorWidget: (context, url, error) => const Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4, vertical: 6),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: SizedBox(
-                                            child: Text(
-                                              "${getAllItemController.allItem[index].city}",
-                                              style: const TextStyle(
-                                                  color: Color(0xff666666),
-                                                  overflow: TextOverflow.ellipsis
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(right: 10),
-                                          height: 20,
-                                          width: 20,
-                                          child: IconButton(
-                                            padding: EdgeInsets.zero,
-
-                                            onPressed: () {
-                                              _toggleLikeStatus(postId);
-                                              likeController.isPostLiked(postId) ? ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
-                                                  duration: Duration(milliseconds: 1000),
-                                                  content: Row(children: [
-                                                    Icon(Icons.delete_outline ,color: Colors.white,),
-                                                    Text("  Saqlanganlardan o'chirildi")
-                                                  ],),
-                                                  backgroundColor: Color(0xffFF8D08),
-                                                ),)  : ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
-                                                  duration: Duration(milliseconds: 1000),
-                                                  content: Row(children: [
-                                                  Icon(Icons.save ,color: Colors.white,),
-                                                  Text("  Saqlanmoqda . . .")
-                                                ],),
-                                                  backgroundColor: Colors.green,
-                                                ),);
-                                            },
-                                            icon: Icon(
-                                              likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-                                              color: const Color(0xffFF8D08),
-                                              size: 26,
-                                            ),
-                                          ),
-
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 6),
-                                    child: SizedBox(
-                                      height: 30,
-                                      child: Text('${getAllItemController.allItem[index].title}', style: const TextStyle(fontSize: 12),maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,),
-                                    ),
-                                  ),
-                                  Padding(padding: const EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 6),
-                                    child: SizedBox(
-                                      child: Row(
+                                      child: const Row(
                                         children: [
-                                          Text('${getAllItemController.allItem[index].price} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}', style: const TextStyle(fontSize: 18, color: Color(0xff008B51)),maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,),
+                                          Icon(
+                                            Icons.phone_rounded,
+                                            size: 20,
+                                          ),
+                                          Text(
+                                            " Biz bilan bog'lanish",
+                                            style: TextStyle(fontSize: 14),
+                                          )
                                         ],
                                       ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // SECOND AD BANNER
+                        return Container(
+                          height: 80,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: const Color(0xff008B51), width: 1)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Image.asset(
+                                'assets/images/green3.png',
+                                width: 70,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 35),
+                                width: 140,
+                                height: 90,
+                                transform: Matrix4.skewX(-.3),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xff008B51),
+                                ),
+                                child: const Center(
+                                  child: SizedBox(
+                                    width: 138,
+                                    child: Text(
+                                      "Bizni ijtimoiy tarmoqlarda kuzating",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFFF8D08),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    height: 25,
+                                    width: 25,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                          'assets/icons/ri_facebook-fill.svg'),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFFF8D08),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    height: 25,
+                                    width: 25,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                          'assets/icons/mdi_instagram.svg'),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFFF8D08),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    height: 25,
+                                    width: 25,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                          'assets/icons/mingcute_telegram-line.svg'),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    } else {
+                      // CARD
+                      return InkWell(
+                        onTap: () {
+                          viewCounterController.viewCounter(getAllItemController
+                              .allItem[index].announcementId);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => InfoScreen(
+                                  allData: getAllItemController.allItem[index]),
                             ),
                           );
-                        }
-                      },
-                      staggeredTileBuilder: (int index) => (index + 1)% 11 == 0
-                          ? const StaggeredTile.fit(2)
-                          : const StaggeredTile.fit(1),
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(
+                                    0, 0), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          margin: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8)),
+                                ),
+                                height: 200,
+                                width: double.infinity,
+                                child: CachedNetworkImage(
+                                  imageUrl: ApiEndPoints.BASE_URL +
+                                      getAllItemController
+                                          .allItem[index].thumb![0],
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8)),
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Color(0xff008B51),
+                                  )),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 6),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: Text(
+                                          "${getAllItemController.allItem[index].city}",
+                                          style: const TextStyle(
+                                              color: Color(0xff666666),
+                                              overflow: TextOverflow.ellipsis),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      height: 20,
+                                      width: 20,
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          _toggleLikeStatus(postId);
+                                          likeController.isPostLiked(postId)
+                                              ? ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                  const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 1000),
+                                                    content: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.delete_outline,
+                                                          color: Colors.white,
+                                                        ),
+                                                        Text(
+                                                            "  Saqlanganlardan o'chirildi")
+                                                      ],
+                                                    ),
+                                                    backgroundColor:
+                                                        Color(0xffFF8D08),
+                                                  ),
+                                                )
+                                              : ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                  const SnackBar(
+                                                    duration: Duration(
+                                                        milliseconds: 1000),
+                                                    content: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.save,
+                                                          color: Colors.white,
+                                                        ),
+                                                        Text(
+                                                            "  Saqlanmoqda . . .")
+                                                      ],
+                                                    ),
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                  ),
+                                                );
+                                        },
+                                        icon: Icon(
+                                          likeController.isPostLiked(postId)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: const Color(0xffFF8D08),
+                                          size: 26,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 6),
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Text(
+                                    '${getAllItemController.allItem[index].title}',
+                                    style: const TextStyle(fontSize: 12),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 6),
+                                child: SizedBox(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${getAllItemController.allItem[index].price} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Color(0xff008B51)),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  staggeredTileBuilder: (int index) => (index + 1) % 11 == 0
+                      ? const StaggeredTile.fit(2)
+                      : const StaggeredTile.fit(1),
+                ),
+              );
+            }
+          }),
+          getAllItemController.hasMoreData
+              ? StaggeredGridView.countBuilder(
+    crossAxisCount: 2,
+    itemCount: 2,
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemBuilder: (BuildContext context, int index) {
+    return homeShimmer();
+    }, staggeredTileBuilder: (int index) =>
+    const StaggeredTile.fit(1)
+    )
+              : const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Center(
+                    child: Text(
+                      "Oxiriga yettingiz",
+                      style: TextStyle(color: Colors.grey),
                     ),
-                  );
-                }
-              }),
-          getAllItemController.hasMoreData ?
-            const CircularProgressIndicator() : const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Center(child: Text("Oxiriga yettingiz", style: TextStyle(color: Colors.grey),),),)
+                  ),
+                )
         ],
       ),
     );
   }
+
+  Widget homeShimmer() => Container(
+    margin: const EdgeInsets.all(10),
+    height: 327,
+    child: Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 110,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                margin: const EdgeInsets.only(right: 10),
+                height: 26,
+                width: 26,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 14,
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 9,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Expanded(
+                flex: 1,
+                child: SizedBox())
+          ],
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 8,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 10,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Expanded(
+                flex: 2,
+                child: SizedBox())
+          ],
+        ),
+        const SizedBox(
+          height: 14,
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 7,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 18,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Expanded(
+                flex: 3,
+                child: SizedBox())
+          ],
+        ),
+      ],
+    ),
+  );
 }

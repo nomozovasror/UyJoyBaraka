@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 import 'package:uy_joy_baraka/models/home_item.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class GetAllItemController extends GetxController {
 
-  var loadItem = false.obs;
+  var loadItem = true.obs;
   List<Posts> allItem = [];
   var page = 1.obs;
 
@@ -61,7 +64,40 @@ class GetAllItemController extends GetxController {
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
-    } catch (e) {
+    } on SocketException catch(e){
+      showDialog(
+        barrierDismissible: false,
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text('Sizda internet mavjud emas'),
+            children: [
+              SimpleDialogOption(
+                padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Lottie.asset("assets/lottie/internet_error.json", height: 200, options: LottieOptions(enableMergePaths: true,)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          getAllItem();
+                        },
+                        child: const Text('Qayta urinib ko\'rish'),
+                      )
+                    ],
+                  )
+              )
+            ],
+          );
+        },
+      );
+    }
+    catch (e) {
+      print(e.toString());
       showDialog(
           context: Get.context!,
           builder: (context) {
