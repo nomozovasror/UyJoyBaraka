@@ -154,22 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: GestureDetector(
-                    child: Container(
-                      height: 42,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff008B51),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.search, color: Colors.white),
-                        ],
+                  child: Container(
+                    height: 43,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xff008B51),
+                    ),
+                    child: const  Center(
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                )
+                  )
               ],
             ),
             children: [
