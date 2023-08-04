@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
@@ -13,29 +14,32 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
-import 'package:uy_joy_baraka/models/home_item.dart';
+import 'package:uy_joy_baraka/models/liked_posts.dart';
+import 'package:uy_joy_baraka/pages/saved.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
-class InfoScreen extends StatefulWidget {
-  final Posts allData;
+import '../main.dart';
 
-  const InfoScreen({Key? key, required this.allData}) : super(key: key);
+class LikedInfoScreen extends StatefulWidget {
+  final LikeModel allData;
+
+  const LikedInfoScreen({Key? key, required this.allData}) : super(key: key);
 
   @override
-  State<InfoScreen> createState() => _InfoScreenState();
+  State<LikedInfoScreen> createState() => _LikedInfoScreenState();
 }
 
-class _InfoScreenState extends State<InfoScreen> {
-
-
+class _LikedInfoScreenState extends State<LikedInfoScreen> {
   int activeIndex = 0;
 
-  GetAllItemController getAllItemController = Get.put(GetAllItemController());
   LikeController likeController = Get.put(LikeController());
+  GetAllItemController getAllItemController = Get.put(GetAllItemController());
+
   String timeSlicer(time) {
     String timeSliced = time.substring(0, 10);
     return timeSliced.toString();
   }
+  bool isLiked = false;
 
   Future<void> _toggleLikeStatus(String postId) async {
     if (likeController.isPostLiked(postId)) {
@@ -50,19 +54,17 @@ class _InfoScreenState extends State<InfoScreen> {
     await likeController.like(postId);
     await likeController.fetchAndStoreLikedPosts();
     await likeController
-        .getAllLikedPosts(); // Fetch the liked posts from the API
+        .getAllLikedPosts();
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
   Future<void> _unlikePost(String postId) async {
     await likeController.unlike(postId);
     await likeController.fetchAndStoreLikedPosts();
-    await likeController.getAllLikedPosts(); // Fetch the liked posts from the API
+    await likeController.getAllLikedPosts();
     likeController.removeLikedPost(postId);
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
-  bool isLiked = false;
-
 
   @override
   void initState() {
@@ -72,7 +74,6 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -101,14 +102,13 @@ class _InfoScreenState extends State<InfoScreen> {
                       autoPlay: false,
                       onPageChanged: (index, reason) =>
                           setState(() => activeIndex = index)),
-                  itemCount: widget.allData.thumb!.length,
+                  itemCount: widget.allData.announcementThumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
                     final imgL = Uri(
                         scheme: 'http',
                         host: 'test.uyjoybaraka.uz',
-                        path: widget.allData.thumb![index]);
-
+                        path: widget.allData.announcementThumb![index]);
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(
@@ -116,8 +116,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
-                          color: Color(0xff008B51),
-                        )),
+                              color: Color(0xff008B51),
+                            )),
                         errorWidget: (context, url, error) => const Icon(
                           Icons.error,
                           color: Colors.red,
@@ -130,7 +130,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     bottom: 10,
                     child: AnimatedSmoothIndicator(
                       activeIndex: activeIndex,
-                      count: widget.allData.thumb!.length,
+                      count: widget.allData.announcementThumb!.length,
                       effect: const WormEffect(
                           dotWidth: 12,
                           dotHeight: 12,
@@ -141,7 +141,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -149,7 +149,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),),),
+                            color: Color(0xff666666))),
                     Row(
                       children: [
                         const Icon(
@@ -157,11 +157,11 @@ class _InfoScreenState extends State<InfoScreen> {
                           size: 16,
                           color: Color(0xff666666),
                         ),
-                        Text(widget.allData.viewCount.toString(),
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff666666),),),
+                        Text(widget.allData.announcementViewCount.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff666666),),),
                       ],
                     ),
                     Row(
@@ -175,68 +175,67 @@ class _InfoScreenState extends State<InfoScreen> {
                                 topLeft: Radius.circular(8),
                                 bottomLeft: Radius.circular(8),
                               ),),
-                          child: LikeButton(
-                            size: 20,
-                            circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
-                            bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                            child: LikeButton(
+                              size: 20,
+                              circleColor: const CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: const BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
+                                  color: const  Color(0xffFF8D08),
+                                  size: 26,
+                                );
+                              },
+                              onTap: (isLiked) async {
+                                this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
+                                _toggleLikeStatus(widget.allData.announcementId!);
+                                likeController.isPostLiked(widget.allData.announcementId!)
+                                    ? ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(
+                                        milliseconds: 1000),
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                            "  Saqlanganlardan o'chirildi")
+                                      ],
+                                    ),
+                                    backgroundColor:
+                                    Color(0xffFF8D08),
+                                  ),
+                                )
+                                    : ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(
+                                        milliseconds: 1000),
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                            "  Saqlanglarga qo'shildi")
+                                      ],
+                                    ),
+                                    backgroundColor:
+                                    Colors.green,
+                                  ),);
+
+                                return !isLiked;
+                              },
                             ),
-                            likeBuilder: (bool isLiked) {
-                              return Icon(
-                                likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
-                                color: isLiked ?  Colors.white : const Color(0xffFF8D08),
-                                size: 26,
-                              );
-                            },
-                            onTap: (bool isLiked) async {
-                              this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
-                              _toggleLikeStatus(widget.allData.announcementId!);
-                              likeController.isPostLiked(widget.allData.announcementId!)
-                                  ? ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(
-                                      milliseconds: 1000),
-                                  content: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                          "  Saqlanganlardan o'chirildi")
-                                    ],
-                                  ),
-                                  backgroundColor:
-                                  Color(0xffFF8D08),
-                                ),
-                              )
-                                  : ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(
-                                      milliseconds: 1000),
-                                  content: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                          "  Saqlanglarga qo'shildi")
-                                    ],
-                                  ),
-                                  backgroundColor:
-                                  Colors.green,
-                                ),);
-
-                              return !isLiked;
-                            },
-                          ),
-
                         ),
                         Container(
                             padding: const EdgeInsets.only(
@@ -261,7 +260,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text("${widget.allData.price.toString()} ${widget.allData.priceType == 'dollar' ? '\$' : 'so\'m'}",
+                    child: Text("${widget.allData.announcementPrice.toString()} ${widget.allData.announcementPriceType == 'dollar' ? '\$' : 'so\'m'}",
                         style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -275,7 +274,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.allData.title.toString(),
+                        widget.allData.announcementTitle.toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 20),
                       ),
@@ -289,7 +288,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.allData.description.toString(),
+                        widget.allData.announcementDescription.toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
@@ -325,7 +324,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          launch("tel:+${widget.allData.phone}");
+                          launch("tel:+${widget.allData.announcementPhone.toString()}");
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff008B51),
@@ -384,7 +383,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar
+                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.announcementAvatar
                             .toString().replaceAll("https", "http",),),
                         radius: 30,
                       ),
@@ -396,7 +395,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.allData.fullName.toString(),
+                            widget.allData.announcementFullName.toString(),
                             style: const TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.w400,
@@ -414,145 +413,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Siz uchun taklif",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff008B51),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 342,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: getAllItemController.allItem.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(
-                                0, 0), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      margin: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => InfoScreen(
-                                    allData: getAllItemController
-                                        .allItem[index],
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                              ),
-                              height: 200,
-                              width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageBuilder: (context, imageProvider) => Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8)),
-                                    image: DecorationImage(
-                                        image: imageProvider, fit: BoxFit.cover),
-                                  ),
-                                ),
-                                imageUrl: ApiEndPoints.BASE_URL + getAllItemController
-                                    .allItem[index].thumb![0].toString().replaceAll("https", "http",),
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xff008B51),
-                                    )),
-                                errorWidget: (context, url, error) => const Icon(
-                                  Icons.error,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    getAllItemController.allItem[index].city!,
-                                    style: const TextStyle(
-                                      color: Color(0xff666666),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: SizedBox(
-                              height: 30,
-                              child: Text(
-                                getAllItemController.allItem[index].title!,
-                                style: const TextStyle(fontSize: 12),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: SizedBox(
-                              child: Text(
-                                "${getAllItemController.allItem[index].price!} ${getAllItemController.allItem[index].priceType! == 'dollar' ? '\$' : 'so\'m'}",
-                                style: const TextStyle(
-                                    fontSize: 18, color: Color(0xff008B51)),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
               const SizedBox(
-                height: 14,
-              )
+                height: 10,
+              ),
             ],
           ),
         ),

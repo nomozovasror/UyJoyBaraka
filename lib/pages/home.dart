@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/controller/view_count_controller.dart';
 import 'package:uy_joy_baraka/models/home_item.dart';
 import 'package:uy_joy_baraka/screens/info.dart';
+import 'package:uy_joy_baraka/screens/search.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isLiked = false;
 
-  Future<void> _toggleLikeStatus(String postId) async {
+  Future<void> _toggleLikeStatus(String postId, var index) async {
     if (likeController.isPostLiked(postId)) {
-      await _unlikePost(postId);
+      await _unlikePost(postId, index);
     } else {
       await _likePost(postId);
     }
@@ -61,12 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
-  Future<void> _unlikePost(String postId) async {
+  Future<void> _unlikePost(String postId, var index) async {
     await likeController.unlike(postId);
     await likeController.fetchAndStoreLikedPosts();
     await likeController
         .getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
+    likeController.removeLikedPost(likeController.allLikedPost[index].announcementId!);
   }
 
   final scrollController = ScrollController();
@@ -75,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     scrollController.addListener(_scrollListener);
+    likeController.initializeLikedPostIds();
   }
 
   @override
@@ -101,60 +105,38 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: 10),
-            controlAffinity: ListTileControlAffinity.leading,
-            leading: Container(
-              height: 40,
-              width: 46,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: const Color(0xff008B51),
-                  width: 2,
-                ),
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  "assets/icons/filter-alt.svg",
-                  height: 24,
-                  width: 24,
-                  color: const Color(0xff008B51),
-                ),
-              ),
-            ),
-            title: Row(
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchScreen()));
+            },
+            child: Row(
               children: [
                 Expanded(
                   flex: 8,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      isDense: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                            color: Color(0xff008B51), width: 2),
-                      ),
-                      contentPadding: const EdgeInsets.all(12),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                            color: Color(0xff008B51), width: 2),
-                      ),
-                      hintText: "Qidirish",
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      ),
+                  child: Container(
+                    height: 43,
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xff008B51), width: 2),
+                    ),
+                    child: const Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "E'lonlar orasidan qidirish", style: TextStyle(color: Colors.grey, fontSize: 16,),
+                        ),
+                      ],
+                    ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
                 Expanded(
                   flex: 2,
                   child: Container(
+                    margin: const EdgeInsets.only(right: 10),
                     height: 43,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -167,214 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  )
+                ),
               ],
             ),
-            children: [
-              SizedBox(
-                height: 56,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(
-                          bottom: 6, top: 12, left: 8, right: 4),
-                      height: 40,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color(0xff008B51), width: 1.5),
-                          borderRadius: BorderRadius.circular(6)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            value: ijaravalue,
-                            borderRadius: BorderRadius.circular(6),
-                            icon:
-                                const Icon(Icons.keyboard_arrow_down_outlined),
-                            iconSize: 24,
-                            style: const TextStyle(
-                                color: Color(0xff272727),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                            items: const [
-                              DropdownMenuItem(
-                                value: "ijaraYokiSotuv",
-                                child: Text('Ijara yoki Sotuv'),
-                              ),
-                              DropdownMenuItem(
-                                value: "Ijara",
-                                child: Text('Ijara'),
-                              ),
-                              DropdownMenuItem(
-                                value: "Sotuv",
-                                child: Text('Sotuv'),
-                              )
-                            ],
-                            onChanged: (String? newIjara) {
-                              setState(() {
-                                ijaravalue = newIjara!;
-                              });
-                            }),
-                      ),
-                    ),
-                    Container(
-                      height: 40,
-                      margin: const EdgeInsets.only(
-                          bottom: 6, top: 12, left: 4, right: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color(0xff008B51), width: 1.5),
-                          borderRadius: BorderRadius.circular(6)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            value: viloyat,
-                            borderRadius: BorderRadius.circular(6),
-                            icon:
-                                const Icon(Icons.keyboard_arrow_down_outlined),
-                            iconSize: 24,
-                            style: const TextStyle(
-                                color: Color(0xff272727),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                            items: const [
-                              DropdownMenuItem(
-                                value: "Toshkent",
-                                child: Text(
-                                  'Toshkent',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Andijon",
-                                child: Text(
-                                  'Andijon',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Buxoro",
-                                child: Text(
-                                  'Buxoro',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Fargʻona",
-                                child: Text(
-                                  'Fargʻona',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Xorazm",
-                                child: Text(
-                                  'Xorazm',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Namangan",
-                                child: Text(
-                                  'Namangan',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Navoiy",
-                                child: Text(
-                                  'Navoiy',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Qashqadaryo",
-                                child: Text(
-                                  'Qashqadaryo',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Qoraqalpogʻiston",
-                                child: Text(
-                                  'Qoraqalpogʻiston',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Samarqand",
-                                child: Text(
-                                  'Samarqand',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Sirdaryo",
-                                child: Text(
-                                  'Sirdaryo',
-                                  softWrap: true,
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: "Surxondaryo",
-                                child: Text(
-                                  'Surxondaryo',
-                                  softWrap: true,
-                                ),
-                              ),
-                            ],
-                            onChanged: (String? newViloyat) {
-                              setState(() {
-                                viloyat = newViloyat!;
-                              });
-                            }),
-                      ),
-                    ),
-                    Container(
-                      height: 40,
-                      margin: const EdgeInsets.only(
-                          bottom: 6, top: 12, left: 4, right: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color(0xff008B51), width: 1.5),
-                          borderRadius: BorderRadius.circular(6)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            value: valyuta,
-                            borderRadius: BorderRadius.circular(6),
-                            icon:
-                                const Icon(Icons.keyboard_arrow_down_outlined),
-                            iconSize: 24,
-                            style: const TextStyle(
-                                color: Color(0xff272727),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                            items: const [
-                              DropdownMenuItem(
-                                value: "So'm",
-                                child: Text("So'm"),
-                              ),
-                              DropdownMenuItem(
-                                value: "Dollar",
-                                child: Text('Dollar'),
-                              ),
-                              DropdownMenuItem(
-                                value: "Yevro",
-                                child: Text('Yevro'),
-                              )
-                            ],
-                            onChanged: (String? newValyuta) {
-                              setState(() {
-                                valyuta = newValyuta!;
-                              });
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
           ),
           // FILTER >>>>>>>
 
@@ -743,61 +520,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      height: 20,
-                                      width: 20,
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        onPressed: () {
-                                          _toggleLikeStatus(postId);
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: LikeButton(
+                                        size: 20,
+                                        circleColor: const CircleColor(
+                                            start: Color(0xff00ddff),
+                                            end: Color(0xff0099cc)),
+                                        bubblesColor: const BubblesColor(
+                                          dotPrimaryColor: Color(0xff33b5e5),
+                                          dotSecondaryColor: Color(0xff0099cc),
+                                        ),
+                                        likeBuilder: (bool isLiked) {
+                                          return Icon(
+                                            likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
+                                            color: const Color(0xffFF8D08),
+                                            size: 26,
+                                          );
+                                        },
+                                        onTap: (isLiked) async {
+                                          this.isLiked = likeController.isPostLiked(postId);
+                                          _toggleLikeStatus(postId, index);
                                           likeController.isPostLiked(postId)
                                               ? ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                  const SnackBar(
-                                                    duration: Duration(
-                                                        milliseconds: 1000),
-                                                    content: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.delete_outline,
-                                                          color: Colors.white,
-                                                        ),
-                                                        Text(
-                                                            "  Saqlanganlardan o'chirildi")
-                                                      ],
-                                                    ),
-                                                    backgroundColor:
-                                                        Color(0xffFF8D08),
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              duration: Duration(
+                                                  milliseconds: 1000),
+                                              content: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.delete_outline,
+                                                    color: Colors.white,
                                                   ),
-                                                )
+                                                  Text(
+                                                      "  Saqlanganlardan o'chirildi")
+                                                ],
+                                              ),
+                                              backgroundColor:
+                                              Color(0xffFF8D08),
+                                            ),
+                                          )
                                               : ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                  const SnackBar(
-                                                    duration: Duration(
-                                                        milliseconds: 1000),
-                                                    content: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.save,
-                                                          color: Colors.white,
-                                                        ),
-                                                        Text(
-                                                            "  Saqlanmoqda . . .")
-                                                      ],
+                                              .showSnackBar(
+                                              const SnackBar(
+                                                duration: Duration(
+                                                    milliseconds: 1000),
+                                                content: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.white,
                                                     ),
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                  ),
-                                                );
+                                                    Text(
+                                                        "  Saqlanglarga qo'shildi")
+                                                  ],
+                                                ),
+                                                backgroundColor:
+                                                Colors.green,
+                                              ),);
+
+                                          return !isLiked;
                                         },
-                                        icon: Icon(
-                                          likeController.isPostLiked(postId)
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          color: const Color(0xffFF8D08),
-                                          size: 26,
-                                        ),
                                       ),
                                     ),
                                   ],

@@ -74,12 +74,6 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: Text("Restore Liked Data From API"),
             ),
-            ElevatedButton(onPressed: (){
-              likeController.printLikedPostIds();
-            }, child: Text("Print data"),)
-
-
-
 
           ]),
     );

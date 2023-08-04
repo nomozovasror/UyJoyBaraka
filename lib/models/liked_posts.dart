@@ -1,4 +1,4 @@
-class LikedPosts {
+class LikePosts {
   bool? ok;
   String? title;
   List<LikeModel>? posts;
@@ -6,7 +6,7 @@ class LikedPosts {
   int? cPage;
   int? pPage;
 
-  LikedPosts(
+  LikePosts(
       {this.ok,
         this.title,
         this.posts,
@@ -14,7 +14,7 @@ class LikedPosts {
         this.cPage,
         this.pPage});
 
-  LikedPosts.fromJson(Map<String, dynamic> json) {
+  LikePosts.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     title = json['title'];
     if (json['posts'] != null) {
@@ -35,7 +35,7 @@ class LikedPosts {
     if (posts != null) {
       data['posts'] = posts!.map((v) => v.toJson()).toList();
     }
-    data['totalCount'] = totalCount;
+    data['totalCount'] = this.totalCount;
     data['c_page'] = cPage;
     data['p_page'] = pPage;
     return data;
@@ -60,11 +60,14 @@ class LikeModel {
   String? announcementDescription;
   int? announcementPrice;
   String? announcementPriceType;
+  String? announcementPhone;
   bool? announcementStatus;
   bool? announcementConfirm;
   int? announcementLikeCount;
   int? announcementViewCount;
   bool? announcementRec;
+  String? announcementFullName;
+  String? announcementAvatar;
   String? announcementCreatedAt;
   String? announcementUpdatedAt;
   String? announcementUserId;
@@ -87,11 +90,14 @@ class LikeModel {
         this.announcementDescription,
         this.announcementPrice,
         this.announcementPriceType,
+        this.announcementPhone,
         this.announcementStatus,
         this.announcementConfirm,
         this.announcementLikeCount,
         this.announcementViewCount,
         this.announcementRec,
+        this.announcementFullName,
+        this.announcementAvatar,
         this.announcementCreatedAt,
         this.announcementUpdatedAt,
         this.announcementUserId});
@@ -114,11 +120,14 @@ class LikeModel {
     announcementDescription = json['announcement.description'];
     announcementPrice = json['announcement.price'];
     announcementPriceType = json['announcement.price_type'];
+    announcementPhone = json['announcement.phone'];
     announcementStatus = json['announcement.status'];
     announcementConfirm = json['announcement.confirm'];
     announcementLikeCount = json['announcement.likeCount'];
     announcementViewCount = json['announcement.viewCount'];
     announcementRec = json['announcement.rec'];
+    announcementFullName = json['announcement.full_name'];
+    announcementAvatar = json['announcement.avatar'];
     announcementCreatedAt = json['announcement.createdAt'];
     announcementUpdatedAt = json['announcement.updatedAt'];
     announcementUserId = json['announcement.user_id'];
@@ -143,11 +152,14 @@ class LikeModel {
     data['announcement.description'] = announcementDescription;
     data['announcement.price'] = announcementPrice;
     data['announcement.price_type'] = announcementPriceType;
+    data['announcement.phone'] = announcementPhone;
     data['announcement.status'] = announcementStatus;
     data['announcement.confirm'] = announcementConfirm;
     data['announcement.likeCount'] = announcementLikeCount;
     data['announcement.viewCount'] = announcementViewCount;
     data['announcement.rec'] = announcementRec;
+    data['announcement.full_name'] = announcementFullName;
+    data['announcement.avatar'] = announcementAvatar;
     data['announcement.createdAt'] = announcementCreatedAt;
     data['announcement.updatedAt'] = announcementUpdatedAt;
     data['announcement.user_id'] = announcementUserId;

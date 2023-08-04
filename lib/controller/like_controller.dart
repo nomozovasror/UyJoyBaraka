@@ -16,10 +16,6 @@ class LikeController extends GetxController {
 
   List<String> get likedPostIds => _likedPostIds;
 
-  void printLikedPostIds() {
-    print(_likedPostIds);
-    print(likedPostIds);
-  }
 
   @override
   void onInit() {
@@ -48,13 +44,9 @@ class LikeController extends GetxController {
       };
 
       http.Response jsonResponse = await http.patch(url, headers: headers);
-      print(jsonResponse.statusCode.toString());
-      print(jsonResponse.body.toString());
 
-      // Add the liked post ID to the _likedPostIds list
       _likedPostIds.add(announcementId);
 
-      // Store the updated likedPostIds list in local storage
       await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
       print(e.toString());
@@ -87,13 +79,8 @@ class LikeController extends GetxController {
       };
 
       http.Response jsonResponse = await http.patch(url, headers: headers);
-      print(jsonResponse.statusCode.toString());
-      print(jsonResponse.body.toString());
 
-      // Remove the unliked post ID from the _likedPostIds list
       _likedPostIds.remove(announcementId);
-
-      // Store the updated likedPostIds list in local storage
       await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
       print(e.toString());
@@ -144,7 +131,10 @@ class LikeController extends GetxController {
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
-    } catch (e) {
+    } on RangeError {
+      loadLike.value = false;
+    }
+    catch (e) {
       showDialog(
         context: Get.context!,
         builder: (context) {

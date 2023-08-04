@@ -65,12 +65,16 @@ class GetAllItemController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } on SocketException catch(e){
+      print(e.toString());
       showDialog(
         barrierDismissible: false,
         context: Get.context!,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: const Text('Sizda internet mavjud emas'),
+            title: const Column(children: [
+              Text('Sizda internet mavjud emas'),
+              Text("Yoki server bilan bog'lanishda xatolik yuz berdi", style: TextStyle(fontSize: 12, color: Colors.grey),)
+            ],),
             children: [
               SimpleDialogOption(
                 padding: EdgeInsets.zero,
