@@ -518,7 +518,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                       child: DropdownButtonHideUnderline(
 
                         child: DropdownButton(
-
                             value: ijaravalue,
                             hint: const Text("Sotuv"),
                             borderRadius: BorderRadius.circular(6),

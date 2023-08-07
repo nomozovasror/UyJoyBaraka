@@ -15,4 +15,5 @@ class _AuthEndPoints {
   final String viewCounter = "/api/posts/view/";
   final String likeCounter = "/api/announcements/";
   final String getLikedPosts = "/api/announcements/liked";
+  final String search = "/api/search";
 }

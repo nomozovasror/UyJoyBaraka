@@ -187,7 +187,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             likeBuilder: (bool isLiked) {
                               return Icon(
                                 likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
-                                color: isLiked ?  Colors.white : const Color(0xffFF8D08),
+                                color: const  Color(0xffFF8D08),
                                 size: 26,
                               );
                             },
