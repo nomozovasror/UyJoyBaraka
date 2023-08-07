@@ -43,22 +43,19 @@ class GetAllItemController extends GetxController {
         url,
         headers: {'Content-Type': 'application/json'},
       );
+      print(url);
+      print(page.value);
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
-
         if (responseJson.containsKey('posts')) {
           if (page.value == 1) {
             allItem = (responseJson['posts'] as List).map((e) => Posts.fromJson(e)).toList();
           } else {
             allItem.addAll((responseJson['posts'] as List).map((e) => Posts.fromJson(e)).toList());
           }
-          // Check if there is more data to load
           hasMoreData = (responseJson['posts'] as List).length == 10;
-          // Increment the page number for the next request
-          page.value++;
         } else {
-          // No more data for the next page
           hasMoreData = false;
         }
       } else {

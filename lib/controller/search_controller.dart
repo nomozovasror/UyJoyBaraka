@@ -14,17 +14,30 @@ import '../models/search_model.dart';
 class GetSearchItemController extends GetxController {
 
   var loadItem = true.obs;
+  var startSearch = false.obs;
   RxList<SearchPosts> allSearchedPost = <SearchPosts>[].obs;
 
-  var isLoading = false.obs;
+  var page = 1.obs;
+
+  var isSearchLoading = false.obs;
+  bool hasMoreData = true;
+  int limit = 10;
+
+
+  void loadNextPage() {
+    if (!hasMoreData || isSearchLoading.value) return;
+    page.value++;
+    getSearchItem();
+  }
 
   TextEditingController searchController = TextEditingController();
 
-  getSearchItem(String valyuta, String viloyat, String ijaraValue) async {
+  getSearchItem([String? valyuta, String? viloyat, String? ijaraValue]) async {
     try {
-      isLoading.value = true;
+      startSearch.value = true;
+      isSearchLoading.value = true;
 
-      var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.search}?search=${searchController.text}');
+      var url = Uri.parse('${ApiEndPoints.BASE_URL}${'${ApiEndPoints.authEndPoints.search}?'}${searchController.text.isNotEmpty ? 'search=${searchController.text}' : ""}${viloyat != null && viloyat.isNotEmpty ? '&city=$viloyat' : ""}${ijaraValue != null && ijaraValue.isNotEmpty ? '&type=$ijaraValue' : ""}${valyuta != null && valyuta.isNotEmpty ? '&price_type=$valyuta' : ""}&c_page=${page.value}&p_page=$limit');
       print(url);
 
       http.Response response = await http.get(
@@ -33,11 +46,16 @@ class GetSearchItemController extends GetxController {
       );
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
-        print(responseJson.toString());
-        print(responseJson['posts'].toString());
-        allSearchedPost.value = (responseJson['posts'] as List)
-            .map((p) => SearchPosts.fromJson(p))
-            .toList();
+        if (responseJson.containsKey('posts')) {
+          if (page.value == 1) {
+            allSearchedPost.value = (responseJson['posts'] as List).map((e) => SearchPosts.fromJson(e)).toList();
+          } else {
+            allSearchedPost.addAll((responseJson['posts'] as List).map((e) => SearchPosts.fromJson(e)).toList());
+          }
+          hasMoreData = (responseJson['posts'] as List).length == 10;
+        } else {
+          hasMoreData = false;
+        }
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
@@ -65,7 +83,7 @@ class GetSearchItemController extends GetxController {
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          getSearchItem("", "", "");
+                          getSearchItem();
                         },
                         child: const Text('Qayta urinib ko\'rish'),
                       )
@@ -92,7 +110,7 @@ class GetSearchItemController extends GetxController {
             );
           });
     }finally {
-      isLoading.value = false; // Reset the isLoading flag regardless of success or failure
+      isSearchLoading.value = false; // Reset the isLoading flag regardless of success or failure
       loadItem.value = false; // Set loadItem to false after the API call is complete
     }
   }

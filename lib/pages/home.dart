@@ -91,12 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      // At the end of the current page, load more items
       getAllItemController.loadNextPage();
     }
   }
 
-  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
