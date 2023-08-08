@@ -217,14 +217,14 @@ class _AdScreenState extends State<AdScreen> {
                                         topRight: Radius.circular(8)),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
                                       horizontal: 4, vertical: 6),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
+                                      Text(
                                         "Toshkent",
                                         style: TextStyle(
                                           color: Color(0xff666666),

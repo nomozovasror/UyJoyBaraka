@@ -20,24 +20,34 @@ class GetSearchItemController extends GetxController {
   var page = 1.obs;
 
   var isSearchLoading = false.obs;
-  bool hasMoreData = true;
+  var hasMoreData = true.obs;
   int limit = 10;
 
 
+
   void loadNextPage() {
-    if (!hasMoreData || isSearchLoading.value) return;
     page.value++;
     getSearchItem();
   }
+  var city = "".obs;
+  var type = "".obs;
+  var price_type = "".obs;
 
   TextEditingController searchController = TextEditingController();
 
+
   getSearchItem([String? valyuta, String? viloyat, String? ijaraValue]) async {
+    if (!hasMoreData.value || isSearchLoading.value) return;
+    if (page.value == 1) {
+      city.value = viloyat ?? "";
+      type.value = ijaraValue ?? "";
+      price_type.value = valyuta ?? "";
+    }
     try {
       startSearch.value = true;
       isSearchLoading.value = true;
 
-      var url = Uri.parse('${ApiEndPoints.BASE_URL}${'${ApiEndPoints.authEndPoints.search}?'}${searchController.text.isNotEmpty ? 'search=${searchController.text}' : ""}${viloyat != null && viloyat.isNotEmpty ? '&city=$viloyat' : ""}${ijaraValue != null && ijaraValue.isNotEmpty ? '&type=$ijaraValue' : ""}${valyuta != null && valyuta.isNotEmpty ? '&price_type=$valyuta' : ""}&c_page=${page.value}&p_page=$limit');
+      var url = Uri.parse('${ApiEndPoints.BASE_URL}${'${ApiEndPoints.authEndPoints.search}?'}${searchController.text.isNotEmpty ? 'search=${searchController.text}' : ""}${city.isNotEmpty ? '&city=$city' : ""}${type.isNotEmpty ? '&type=$type' : ""}${price_type.isNotEmpty ? '&price_type=$price_type' : ""}&c_page=${page.value}&p_page=$limit');
       print(url);
 
       http.Response response = await http.get(
@@ -52,9 +62,11 @@ class GetSearchItemController extends GetxController {
           } else {
             allSearchedPost.addAll((responseJson['posts'] as List).map((e) => SearchPosts.fromJson(e)).toList());
           }
-          hasMoreData = (responseJson['posts'] as List).length == 10;
+          hasMoreData.value = (responseJson['posts'] as List).length == 10;
+          print(hasMoreData.value);
         } else {
-          hasMoreData = false;
+          hasMoreData.value = false;
+          print(hasMoreData.value);
         }
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';

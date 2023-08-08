@@ -631,15 +631,15 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
           getAllItemController.hasMoreData
               ? StaggeredGridView.countBuilder(
-    crossAxisCount: 2,
-    itemCount: 2,
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemBuilder: (BuildContext context, int index) {
-    return homeShimmer();
-    }, staggeredTileBuilder: (int index) =>
-    const StaggeredTile.fit(1)
-    )
+                  crossAxisCount: 2,
+                  itemCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                  return homeShimmer();
+                  }, staggeredTileBuilder: (int index) =>
+                  const StaggeredTile.fit(1)
+                  )
               : const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Center(
