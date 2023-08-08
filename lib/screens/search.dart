@@ -8,7 +8,9 @@ import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/search_controller.dart';
+import 'package:uy_joy_baraka/controller/view_count_controller.dart';
 import 'package:uy_joy_baraka/models/search_model.dart';
+import 'package:uy_joy_baraka/screens/search_post_info.dart';
 
 import '../controller/like_controller.dart';
 import '../utils/api_endpoints.dart';
@@ -24,6 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
   GetSearchItemController getSearchItemController =
       Get.put(GetSearchItemController());
   LikeController likeController = Get.put(LikeController());
+  ViewCounterController viewCounterController = Get.put(ViewCounterController());
 
   bool isLiked = false;
 
@@ -483,14 +486,14 @@ Future<void> _unlikePost(String postId, var index) async {
                             // CARD
                             return InkWell(
                               onTap: () {
-                                // viewCounterController.viewCounter(getAllItemController
-                                //     .allItem[index].announcementId);
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) => InfoScreen(
-                                //         allData: getAllItemController.allItem[index]),
-                                //   ),
-                                // );
+                                viewCounterController.viewCounter(getSearchItemController
+                                    .allSearchedPost[index].announcementId);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchInfoScreen(
+                                        allData: getSearchItemController.allSearchedPost[index]),
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
