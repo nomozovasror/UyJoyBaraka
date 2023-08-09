@@ -48,7 +48,7 @@ class _ResetPassState extends State<ResetPass> {
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     MaterialButton(
@@ -57,11 +57,11 @@ class _ResetPassState extends State<ResetPass> {
                           resetCodeCheckController.resetCheckCode();
                         }
                       },
-                      child: Text(
+                      color: Colors.green,
+                      child: const Text(
                         "CHeck Code",
                         style: TextStyle(color: Colors.white),
                       ),
-                      color: Colors.green,
                     ),
                   ],
                 ),

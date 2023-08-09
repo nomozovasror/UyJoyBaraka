@@ -16,4 +16,6 @@ class _AuthEndPoints {
   final String likeCounter = "/api/announcements/";
   final String getLikedPosts = "/api/announcements/liked";
   final String search = "/api/search";
+  final String userData = "/api/users/profile";
+  final String editUserName = "/api/users/edit-full-name";
 }

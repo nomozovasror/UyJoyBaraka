@@ -49,19 +49,14 @@ class ResetCodeCheckController extends GetxController {
             Map body = {
               "password": resetController.confirmPasswordController.text.toString()
             };
-            print(headers);
-            print(body);
-
             http.Response jsonResponse = await http.patch(url, headers: headers, body: body);
-            print(jsonResponse.statusCode.toString());
-
 
             if (jsonResponse.statusCode == 201){
               final json = jsonDecode(jsonResponse.body);
               if (json['ok'] == true){
-                print(json['message']);
+                prefs.setBool('isLoggedIn', true);
+                await likeController.restoreLikedDataFromAPI();
                 Get.off(()=> const MyHomePage());
-
               }else{
                 throw jsonDecode(jsonResponse.body)['message'] ?? 'Error';
               }

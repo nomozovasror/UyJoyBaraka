@@ -32,10 +32,10 @@ class CodeCheckController extends GetxController {
         if (json['ok'] == true){
           var token = json['token'];
           final SharedPreferences prefs = await _prefs;
-
           await prefs.setString('token', token);
+          prefs.setBool('isLoggedIn', true);
+          await likeController.restoreLikedDataFromAPI();
           codeCheckController.clear();
-
           Get.off(()=> const MyHomePage());
         }else{
           throw jsonDecode(response.body)['message'] ?? 'Error';

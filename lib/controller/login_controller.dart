@@ -46,7 +46,8 @@ class LoginController extends GetxController {
           await prefs.setString('token', token);
           phoneController.clear();
           passwordController.clear();
-
+          prefs.setBool('isLoggedIn', true);
+          await likeController.restoreLikedDataFromAPI();
           Get.off(() => const MyHomePage());
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';

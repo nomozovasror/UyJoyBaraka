@@ -36,17 +36,20 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final SharedPreferences? prefs = await _prefs;
-                print(prefs!.getString('token'));
+                final SharedPreferences prefs = await _prefs;
+                print(prefs.getBool("isLoggedIn"));
+                print(prefs.getString('token'));
               },
               child: const Text('Print token'),
             ),
             ElevatedButton(
               onPressed: () async {
-                final SharedPreferences? prefs = await _prefs;
-                prefs?.clear();
-                Get.offAll(() => MyHomePage());
-                print(prefs!.getString('token'));
+                final SharedPreferences prefs = await _prefs;
+                prefs.clear();
+                prefs.setBool('isLoggedIn', false);
+                await likeController.deleteAllLikedData();
+                Get.offAll(() => const MyHomePage());
+                print(prefs.getString('token'));
               },
               child: const Text('Logout'),
             ),
@@ -59,22 +62,6 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               child: Text("Code Check"),
             ),
-
-
-            ElevatedButton(
-              onPressed: () async {
-            await likeController.deleteAllLikedData();
-            },
-              child: Text("Delete All Liked Data"),
-            ),
-
-            ElevatedButton(
-              onPressed: () async {
-                await likeController.restoreLikedDataFromAPI();
-              },
-              child: Text("Restore Liked Data From API"),
-            ),
-
           ]),
     );
   }

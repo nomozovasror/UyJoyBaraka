@@ -10,18 +10,10 @@ class LikeController {
   }
 
   Future<void> like(String postID) async {
-    // Perform the like operation here and add the post ID to _likedPostIds list
-    // ...
-
-    // Store the updated likedPostIds list in local storage
     await LocalStorageService.storeLikedPostIds(_likedPostIds);
   }
 
   Future<void> unlike(String postID) async {
-    // Perform the unlike operation here and remove the post ID from _likedPostIds list
-    // ...
-
-    // Store the updated likedPostIds list in local storage
     await LocalStorageService.storeLikedPostIds(_likedPostIds);
   }
 }

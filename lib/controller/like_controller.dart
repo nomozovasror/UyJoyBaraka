@@ -83,12 +83,11 @@ class LikeController extends GetxController {
       _likedPostIds.remove(announcementId);
       await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
-      print(e.toString());
       showDialog(
         context: Get.context!,
         builder: (context) {
           return SimpleDialog(
-            title: const Text('Error'),
+            title: const Text('Xato'),
             children: [
               SimpleDialogOption(
                 child: Text(e.toString()),
@@ -119,11 +118,8 @@ class LikeController extends GetxController {
 
       http.Response response = await http.get(url, headers: headers);
 
-      print("${response.statusCode} like ok >>>>>>>>>");
-
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
-        print(responseJson['posts'][0]);
         allLikedPost = (responseJson['posts'] as List)
             .map((e) => LikeModel.fromJson(e))
             .toList();
