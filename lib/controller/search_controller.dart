@@ -13,7 +13,7 @@ import '../models/search_model.dart';
 
 class GetSearchItemController extends GetxController {
 
-  var loadItem = true.obs;
+  var loadItem = false.obs;
   var startSearch = false.obs;
   RxList<SearchPosts> allSearchedPost = <SearchPosts>[].obs;
 
@@ -22,7 +22,6 @@ class GetSearchItemController extends GetxController {
   var isSearchLoading = false.obs;
   var hasMoreData = true.obs;
   int limit = 10;
-
 
 
   void loadNextPage() {
