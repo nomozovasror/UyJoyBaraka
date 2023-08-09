@@ -4,6 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uy_joy_baraka/auth/login.dart';
 import '../controller/like_controller.dart';
 import '../models/liked_posts.dart';
 import '../screens/liked_post_info.dart';
@@ -24,7 +26,6 @@ class _SavedScreenState extends State<SavedScreen> {
     super.initState();
     likeController.initializeLikedPostIds();
   }
-
   var likedCheck = true.obs;
 
   @override

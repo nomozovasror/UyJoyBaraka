@@ -7,6 +7,8 @@ import 'package:uy_joy_baraka/auth/login.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 
+import '../controller/user_data_controller.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -18,6 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
+  GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 prefs.clear();
                 prefs.setBool('isLoggedIn', false);
                 await likeController.deleteAllLikedData();
+                getUserDataController.deleteUserData();
                 Get.offAll(() => const MyHomePage());
                 print(prefs.getString('token'));
               },

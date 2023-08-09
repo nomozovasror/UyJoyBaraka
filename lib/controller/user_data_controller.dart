@@ -107,21 +107,22 @@ class GetUserDataController extends GetxController {
           );
         },
       );
-    } catch (e) {
-      print(e.toString());
-      showDialog(
-
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Xato'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
     }
+  }
+
+  deleteUserData(){
+    user = User(
+      userId: '',
+      fullName: '',
+      phone: '',
+      role: '',
+      userAttempts: 0,
+      avatar: 'default',
+      confirm: false,
+      status: '',
+      createdAt: '',
+      updatedAt: '',
+    );
+    update();
   }
 }

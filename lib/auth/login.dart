@@ -223,7 +223,6 @@ class _AuthScreenState extends State<AuthScreen> {
               ? MaterialButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      print("login >>>>>>>>>>>>>>>>");
                       loginController.login();;
                     }
                   },

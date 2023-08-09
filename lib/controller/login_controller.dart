@@ -33,7 +33,6 @@ class LoginController extends GetxController {
       http.Response response =
           await http.post(url, headers: headers, body: json.encode(body));
       final jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
       if (response.statusCode == 201) {
 
         if (jsonResponse['ok'] == true || jsonResponse['confirm'] == true) {
@@ -48,7 +47,7 @@ class LoginController extends GetxController {
           passwordController.clear();
           prefs.setBool('isLoggedIn', true);
           await likeController.restoreLikedDataFromAPI();
-          Get.off(() => const MyHomePage());
+          Get.offAll(() => const MyHomePage());
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';
         }
