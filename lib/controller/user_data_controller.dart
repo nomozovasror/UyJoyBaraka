@@ -117,7 +117,7 @@ class GetUserDataController extends GetxController {
       phone: '',
       role: '',
       userAttempts: 0,
-      avatar: 'default',
+      avatar: '',
       confirm: false,
       status: '',
       createdAt: '',

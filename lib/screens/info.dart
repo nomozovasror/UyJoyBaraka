@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
@@ -68,6 +69,17 @@ class _InfoScreenState extends State<InfoScreen> {
   void initState() {
     super.initState();
     likeController.initializeLikedPostIds();
+  }
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  Future<bool> getLoginStatus() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool('isLoggedIn') ?? false;
   }
 
   @override
@@ -175,66 +187,93 @@ class _InfoScreenState extends State<InfoScreen> {
                                 topLeft: Radius.circular(8),
                                 bottomLeft: Radius.circular(8),
                               ),),
-                          child: LikeButton(
-                            size: 20,
-                            circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
-                            bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
-                            ),
-                            likeBuilder: (bool isLiked) {
-                              return Icon(
-                                likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
-                                color: const  Color(0xffFF8D08),
-                                size: 26,
-                              );
-                            },
-                            onTap: (bool isLiked) async {
-                              this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
-                              _toggleLikeStatus(widget.allData.announcementId!);
-                              likeController.isPostLiked(widget.allData.announcementId!)
-                                  ? ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(
-                                      milliseconds: 1000),
-                                  content: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                          "  Saqlanganlardan o'chirildi")
-                                    ],
+                          child: FutureBuilder<bool>(
+                          future: getLoginStatus(),
+                          builder: (context, snapshot) {
+                            bool userLoggedIn = snapshot.data ?? false;
+                            return LikeButton(
+                              size: 20,
+                              circleColor: const CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: const BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
+                                  color: const  Color(0xffFF8D08),
+                                  size: 26,
+                                );
+                              },
+                              onTap: userLoggedIn ? (bool isLiked) async {
+                                this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
+                                _toggleLikeStatus(widget.allData.announcementId!);
+                                likeController.isPostLiked(widget.allData.announcementId!)
+                                    ? ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(
+                                        milliseconds: 1000),
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                            "  Saqlanganlardan o'chirildi")
+                                      ],
+                                    ),
+                                    backgroundColor:
+                                    Color(0xffFF8D08),
                                   ),
-                                  backgroundColor:
-                                  Color(0xffFF8D08),
-                                ),
-                              )
-                                  : ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(
-                                      milliseconds: 1000),
-                                  content: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                          "  Saqlanglarga qo'shildi")
-                                    ],
-                                  ),
-                                  backgroundColor:
-                                  Colors.green,
-                                ),);
+                                )
+                                    : ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(
+                                        milliseconds: 1000),
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                            "  Saqlanglarga qo'shildi")
+                                      ],
+                                    ),
+                                    backgroundColor:
+                                    Colors.green,
+                                  ),);
 
-                              return !isLiked;
-                            },
+                                return !isLiked;
+                              } : (isLiked) async {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(
+                                        milliseconds: 1500),
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.heart_broken_outlined,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Text(
+                                            "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                      ],
+                                    ),
+                                    backgroundColor:
+                                    Color(0xffFF8D08),
+                                  ),
+                                );
+                                return !isLiked;
+                              },
+                            ); }
                           ),
 
                         ),

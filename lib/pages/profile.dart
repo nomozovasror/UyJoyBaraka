@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
-                              child: controller.user.avatar != 'default'
+                              child: controller.user.avatar != ''
                                   ? Row(
                                       children: [
                                         CircleAvatar(

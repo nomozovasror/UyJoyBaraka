@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,6 +94,18 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollController.position.maxScrollExtent) {
       getAllItemController.loadNextPage();
     }
+  }
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  Future<bool> getLoginStatus() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool('isLoggedIn') ?? false;
   }
 
 
@@ -520,7 +533,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(right: 6),
-                                      child: LikeButton(
+                                      child:
+                                      FutureBuilder<bool>(
+                                      future: getLoginStatus(),
+                                      builder: (context, snapshot) {
+                                      bool userLoggedIn = snapshot.data ?? false;
+                                      return LikeButton(
                                         size: 20,
                                         circleColor: const CircleColor(
                                             start: Color(0xff00ddff),
@@ -536,7 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             size: 26,
                                           );
                                         },
-                                        onTap: (isLiked) async {
+                                        onTap: userLoggedIn ? (isLiked) async {
                                           this.isLiked = likeController.isPostLiked(postId);
                                           _toggleLikeStatus(postId, index);
                                           likeController.isPostLiked(postId)
@@ -579,8 +597,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),);
 
                                           return !isLiked;
-                                        },
-                                      ),
+                                        } : (isLiked) async {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              duration: Duration(
+                                                  milliseconds: 1500),
+                                              content: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.heart_broken_outlined,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Text(
+                                                      "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                ],
+                                              ),
+                                              backgroundColor:
+                                              Color(0xffFF8D08),
+                                            ),
+                                          );
+                                          return !isLiked;
+                                        }
+                                      ); }),
                                     ),
                                   ],
                                 ),
