@@ -43,8 +43,6 @@ class GetAllItemController extends GetxController {
         url,
         headers: {'Content-Type': 'application/json'},
       );
-      print(url);
-      print(page.value);
 
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);

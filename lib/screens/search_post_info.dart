@@ -423,11 +423,11 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
-                      // CircleAvatar(
-                      //   backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar
-                      //       .toString().replaceAll("https", "http",),),
-                      //   radius: 30,
-                      // ),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar
+                            .toString().replaceAll("https", "http",),),
+                        radius: 30,
+                      ),
                       const SizedBox(
                         width: 10,
                       ),
@@ -436,7 +436,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "test",
+                            widget.allData.fullName.toString(),
                             // widget.allData.announcementFullName.toString(),
                             style: const TextStyle(
                                 fontSize: 21,

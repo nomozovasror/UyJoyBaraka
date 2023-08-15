@@ -50,6 +50,8 @@ class SearchPosts {
   int? likeCount;
   int? viewCount;
   bool? rec;
+  String? fullName;
+  String? avatar;
   String? createdAt;
   String? updatedAt;
   String? userId;
@@ -71,6 +73,8 @@ class SearchPosts {
         this.likeCount,
         this.viewCount,
         this.rec,
+        this.fullName,
+        this.avatar,
         this.createdAt,
         this.updatedAt,
         this.userId});
@@ -92,6 +96,8 @@ class SearchPosts {
     likeCount = json['likeCount'];
     viewCount = json['viewCount'];
     rec = json['rec'];
+    fullName = json['full_name'];
+    avatar = json['avatar'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     userId = json['user_id'];
@@ -115,6 +121,8 @@ class SearchPosts {
     data['likeCount'] = likeCount;
     data['viewCount'] = viewCount;
     data['rec'] = rec;
+    data['full_name'] = fullName;
+    data['avatar'] = avatar;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['user_id'] = userId;

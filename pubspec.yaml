@@ -53,6 +53,8 @@ dependencies:
   shimmer: ^3.0.0
   like_button: ^2.0.5
 
+  mime: ^1.0.4 #for image upload
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

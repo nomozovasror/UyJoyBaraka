@@ -1,268 +1,82 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:uy_joy_baraka/controller/login_controller.dart';
-import 'package:uy_joy_baraka/controller/register_controller.dart';
-import 'package:uy_joy_baraka/controller/reset_pass_controller.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uy_joy_baraka/controller/edit_number_controller.dart';
+import 'package:http/http.dart' as http;
+import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 class EditUserDataScreen extends StatefulWidget {
   const EditUserDataScreen({Key? key}) : super(key: key);
 
   @override
   State<EditUserDataScreen> createState() => _EditUserDataScreenState();
-}
+}final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+
+GlobalKey _formKey = GlobalKey<FormState>();
+EditPhoneController editPhoneController = EditPhoneController();
+
+
+
 
 class _EditUserDataScreenState extends State<EditUserDataScreen> {
-
-  final _formKey = GlobalKey<FormState>();
-
-  var isLogin = false.obs;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
-              child: Obx(
-                    () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Welcome to Joy Baraka",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    // isLogin.value ? loginWidget() : registerWidget(),
-                  ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: GestureDetector(
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Image.asset('assets/images/logo.png', height: 40),
+          backgroundColor: const Color(0xff008B51),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
+              TextFormField(
+                controller: editPhoneController.phoneController,
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  hintText: "Enter Name",
+                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-          )),
-    );
-  }
+              ElevatedButton(onPressed: (){
+                editPhoneController.editPhone();
+              }, child: const Text('Save'),),
 
-  Widget editNameWidget() {
-    return Column(
-      children: [
-        TextFormField(
-          // controller: registerationController.nameController,
-          decoration: const InputDecoration(
-            labelText: "Name",
-            hintText: "Enter your name",
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextFormField(
-          // controller: registerationController.phoneController,
-          decoration: const InputDecoration(
-            labelText: "Phone",
-            hintText: "Enter your phone",
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextFormField(
-          // controller: registerationController.passwordController,
-          decoration: const InputDecoration(
-            labelText: "Password",
-            hintText: "Enter your password",
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        MaterialButton(
-          onPressed: () {
-            // registerationController.register();
-          },
-          color: Colors.green,
-          child: const Text(
-            "Register",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Already have an account?"),
-            MaterialButton(
-              onPressed: () {
-                isLogin.value = true;
-              },
-              child: const Text(
-                "Login",
-                style: TextStyle(color: Colors.green),
+              TextFormField(
+                controller: editPhoneController.nameController,
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  hintText: "Enter Name",
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-          ],
+              ElevatedButton(onPressed: (){
+                editPhoneController.editName();
+              }, child: const Text('Save'),),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
-
-  // Widget loginWidget() {
-  //   return Form(
-  //     key: _formKey,
-  //     child: Column(
-  //       children: [
-  //         resetPass.value
-  //             ? Container()
-  //             : IconButton(
-  //           onPressed: () {
-  //             resetPass.value = true;
-  //           },
-  //           icon: Icon(Icons.arrow_back),
-  //         ),
-  //         TextFormField(
-  //           validator: (value) {
-  //             if (value!.isEmpty) {
-  //               return "Please enter your phone";
-  //             }else if(value.length < 10){
-  //               return "Please enter your phone";
-  //             }
-  //             return null;
-  //           },
-  //           controller: resetPass.value ? loginController.phoneController : resetController.phoneController,
-  //           decoration: const InputDecoration(
-  //             labelText: "Phone",
-  //             hintText: "Enter your phone",
-  //             border: OutlineInputBorder(),
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         TextFormField(
-  //           validator: (value) {
-  //             if (value!.isEmpty) {
-  //               return "Iltimos parolini kiriting";
-  //             }else if(value.length < 5){
-  //               return "Parol kamida 5 ta belgidan iborat bo'lishi kerak";
-  //             }
-  //             return null;
-  //           },
-  //           controller: loginController.passwordController,
-  //           decoration: InputDecoration(
-  //             labelText: "Password",
-  //             hintText: "Enter your password",
-  //             border: OutlineInputBorder(),
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         resetPass.value
-  //             ? Container()
-  //             : TextFormField(
-  //           validator: (value) {
-  //             if (value!.isEmpty) {
-  //               return "Iltimos parolini kiriting";
-  //             }else if(value.length < 5){
-  //               return "Parol kamida 5 ta belgidan iborat bo'lishi kerak";
-  //             }else if(value != loginController.passwordController.text){
-  //               return "Parol mos kelmadi";
-  //             }
-  //             return null;
-  //           },
-  //           controller: resetController.confirmPasswordController,
-  //           decoration: InputDecoration(
-  //             labelText: "Password",
-  //             hintText: "Enter your password",
-  //             border: OutlineInputBorder(),
-  //           ),
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           children: [
-  //             resetPass.value
-  //                 ? TextButton(
-  //               onPressed: () {
-  //                 showDialog(
-  //                   context: context,
-  //                   builder: (context) => AlertDialog(
-  //                     title: Text("Parolni tiklamoqchimisiz"),
-  //                     actions: [
-  //                       TextButton(
-  //                         onPressed: () {},
-  //                         child: Text('Yo\'q'),
-  //                       ),
-  //                       TextButton(
-  //                         onPressed: () {
-  //                           resetPass.value = false;
-  //                           Navigator.pop(context);
-  //                         },
-  //                         child: Text('Ha'),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 );
-  //               },
-  //               child: Text("Parolni tiklash"),
-  //             )
-  //                 : Container(),
-  //           ],
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         resetPass.value
-  //             ? MaterialButton(
-  //           onPressed: () {
-  //             if (_formKey.currentState!.validate()) {
-  //               print("login >>>>>>>>>>>>>>>>");
-  //               loginController.login();;
-  //             }
-  //           },
-  //           color: Colors.green,
-  //           child: Text(
-  //             "Login",
-  //             style: TextStyle(color: Colors.white),
-  //           ),
-  //         )
-  //             : MaterialButton(
-  //           onPressed: () {
-  //
-  //             if (_formKey.currentState!.validate()) {
-  //               print("reset >>>>>>>>>>>>>>>>");
-  //               resetController.resetPassword();
-  //             }
-  //           },
-  //           color: Colors.green,
-  //           child: Text(
-  //             "Parolni tiklash",
-  //             style: TextStyle(color: Colors.white),
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Text("Don't have an account?"),
-  //             MaterialButton(
-  //               onPressed: () {
-  //                 isLogin.value = false;
-  //               },
-  //               child: Text(
-  //                 "Register",
-  //                 style: TextStyle(color: Colors.green),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
