@@ -25,5 +25,6 @@ class _AuthEndPoints {
 
   final String activePost = "/api/announcements/active";
   final String inactivePost = "/api/announcements/inactive";
-  final String activePatch = "/api/announcements/activation";
+  final String activePatch = "/api/announcements/activation/";
+  final String deletePost = "/api/announcements/delete/";
 }
