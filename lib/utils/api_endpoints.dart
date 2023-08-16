@@ -20,5 +20,10 @@ class _AuthEndPoints {
   final String editUserName = "/api/users/edit-full-name";
   final String editUserPhone = "/api/users/edit-phone";
   final String checkPhone = "/api/users/check-phone";
+
   final String editUserAvatar = "/api/users/avatar";
+
+  final String activePost = "/api/announcements/active";
+  final String inactivePost = "/api/announcements/inactive";
+  final String activePatch = "/api/announcements/activation";
 }

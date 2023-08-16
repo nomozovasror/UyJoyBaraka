@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/auth/login.dart';
+import 'package:uy_joy_baraka/controller/get_active_post_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 
@@ -21,6 +22,8 @@ class _ChatScreenState extends State<ChatScreen> {
   
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
   GetUserDataController getUserDataController = Get.put(GetUserDataController());
+  GetActivePostController getActivePostController =
+      Get.put(GetActivePostController());
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +68,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 );
               },
               child: Text("Code Check"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                getActivePostController.getActivePosts();
+              },
+              child: Text("print Active Posts"),
             ),
           ]),
     );
