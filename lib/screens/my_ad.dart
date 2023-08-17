@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uy_joy_baraka/controller/active_inactive_patch_controller.dart';
 import 'package:uy_joy_baraka/controller/delete_post_controller.dart';
@@ -115,177 +116,202 @@ class _AdScreenState extends State<AdScreen> {
                         if (getActivePostController.loadItem.value) {
                           return GridView.builder(
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisExtent: 330, crossAxisCount: 2),
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisExtent: 330, crossAxisCount: 2),
                             itemCount: 4,
                             itemBuilder: (BuildContext context, int index) {
                               return homeShimmer();
                             },
                           );
                         } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisExtent: 330, crossAxisCount: 2),
-                            itemCount:
-                                getActivePostController.allActiveItem.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final active =
-                                  getActivePostController.allActiveItem[index];
-                              bool status = getActivePostController
-                                  .allActiveItem[index].status!;
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(
-                                          0, 0), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                margin: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8)),
+                          if (getActivePostController.allActiveItem.isNotEmpty){
+                            return GridView.builder(
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 330, crossAxisCount: 2),
+                              itemCount:
+                              getActivePostController.allActiveItem.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final active =
+                                getActivePostController.allActiveItem[index];
+                                bool status = getActivePostController
+                                    .allActiveItem[index].status!;
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(
+                                            0, 0), // changes position of shadow
                                       ),
-                                      height: 200,
-                                      width: double.infinity,
-                                      child: Stack(children: [
-                                        CachedNetworkImage(
-                                          imageUrl: ApiEndPoints.BASE_URL +
-                                              getActivePostController
-                                                  .allActiveItem[index]
-                                                  .thumb![0],
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8)),
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover),
+                                    ],
+                                  ),
+                                  margin: const EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8)),
+                                        ),
+                                        height: 200,
+                                        width: double.infinity,
+                                        child: Stack(children: [
+                                          CachedNetworkImage(
+                                            imageUrl: ApiEndPoints.BASE_URL +
+                                                getActivePostController
+                                                    .allActiveItem[index]
+                                                    .thumb![0],
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    const BorderRadius.only(
+                                                        topLeft:
+                                                        Radius.circular(8),
+                                                        topRight:
+                                                        Radius.circular(8)),
+                                                    image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                ),
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                CircularProgressIndicator(
+                                                  color: Color(0xff008B51),
+                                                )),
+                                            errorWidget: (context, url, error) =>
+                                            const Icon(
+                                              Icons.error,
+                                              color: Colors.red,
                                             ),
                                           ),
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                            color: Color(0xff008B51),
-                                          )),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(
-                                            Icons.error,
-                                            color: Colors.red,
+                                          Transform.scale(
+                                            scale: .6,
+                                            alignment: Alignment.centerLeft,
+                                            child: CupertinoSwitch(
+                                                trackColor:
+                                                const Color(0xffFF8D08),
+                                                thumbColor: !temp.contains(active.announcementId!)
+                                                    ? const Color(0xff008B51)
+                                                    : Colors.white,
+                                                activeColor: Colors.white,
+                                                value: !temp.contains(active.announcementId!),
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    getActivePostController.allActiveItem.removeAt(index);
+                                                    getInactivePostController.allActiveItem.add(active);
+                                                    if (!temp.contains(active.announcementId!)) {
+                                                      temp.add(active.announcementId!);
+                                                      Get.snackbar(
+                                                        "Muaffaqiyatli",
+                                                        "E'lon nofaollashtirildi",
+                                                        snackPosition: SnackPosition.BOTTOM,
+                                                        backgroundColor: const Color(0xFFFF8D08),
+                                                        forwardAnimationCurve: Curves.ease,
+                                                        colorText: Colors.white,
+                                                        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                                        duration: const Duration(milliseconds: 2000),
+                                                        animationDuration: const Duration(milliseconds: 500),
+                                                      );
+                                                    }
+                                                    print(temp.contains(active.announcementId!));
+                                                  });
+                                                  activePostController.activePost(active.announcementId!);
+                                                }),
                                           ),
-                                        ),
-                                        Transform.scale(
-                                          scale: .6,
-                                          alignment: Alignment.centerLeft,
-                                          child: CupertinoSwitch(
-                                              trackColor:
-                                                  const Color(0xffFF8D08),
-                                              thumbColor: !temp.contains(active.announcementId!)
-                                                  ? const Color(0xff008B51)
-                                                  : Colors.white,
-                                              activeColor: Colors.white,
-                                              value: !temp.contains(active.announcementId!),
-                                              onChanged: (newValue) {
-                                                    setState(() {
-                                                      getActivePostController.allActiveItem.removeAt(index);
-                                                      getInactivePostController.allActiveItem.add(active);
-                                                      if (!temp.contains(active.announcementId!)) {
-                                                        temp.add(active.announcementId!);
-                                                        Get.snackbar(
-                                                          "Muaffaqiyatli",
-                                                          "E'lon nofaollashtirildi",
-                                                          snackPosition: SnackPosition.BOTTOM,
-                                                          backgroundColor: const Color(0xFFFF8D08),
-                                                          forwardAnimationCurve: Curves.ease,
-                                                          colorText: Colors.white,
-                                                          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                                                          duration: const Duration(milliseconds: 2000),
-                                                          animationDuration: const Duration(milliseconds: 500),
-                                                        );
-                                                      }
-                                                      print(temp.contains(active.announcementId!));
-                                                    });
-                                                    activePostController.activePost(active.announcementId!);
-                                              }),
-                                        ),
-                                      ]),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SizedBox(
-                                              child: Text(
-                                                "${active.city}",
-                                                style: const TextStyle(
-                                                    color: Color(0xff666666),
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ]),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: SizedBox(
-                                        child: Text(
-                                          active.title!.toString(),
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: SizedBox(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 6),
                                         child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              '${active.price} ${active.priceType! == 'dollar' ? '\$' : 'so\'m'}',
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Color(0xff008B51)),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                                            Expanded(
+                                              child: SizedBox(
+                                                child: Text(
+                                                  "${active.city}",
+                                                  style: const TextStyle(
+                                                      color: Color(0xff666666),
+                                                      overflow:
+                                                      TextOverflow.ellipsis),
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 6),
+                                        child: SizedBox(
+                                          child: Text(
+                                            active.title!.toString(),
+                                            style: const TextStyle(fontSize: 12),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 6),
+                                        child: SizedBox(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '${active.price} ${active.priceType! == 'dollar' ? '\$' : 'so\'m'}',
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Color(0xff008B51)),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }else{
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    'assets/lottie/empty.json',
+                                    width: 200,
+                                    height: 200,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Text(
+                                    'Sizda faol e\'lonlar yo\'q',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         }
                       }),
                       Obx(() {
@@ -300,76 +326,77 @@ class _AdScreenState extends State<AdScreen> {
                             },
                           );
                         } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisExtent: 350, crossAxisCount: 2),
-                            itemCount:
-                                getInactivePostController.allActiveItem.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final inactive = getInactivePostController
-                                  .allActiveItem[index];
-                              bool status = getInactivePostController
-                                  .allActiveItem[index].status!;
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(
-                                          0, 0), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                margin: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8)),
+                          if (getInactivePostController.allActiveItem.isNotEmpty){
+                            return GridView.builder(
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 350, crossAxisCount: 2),
+                              itemCount:
+                              getInactivePostController.allActiveItem.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final inactive = getInactivePostController
+                                    .allActiveItem[index];
+                                bool status = getInactivePostController
+                                    .allActiveItem[index].status!;
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(
+                                            0, 0), // changes position of shadow
                                       ),
-                                      height: 200,
-                                      width: double.infinity,
-                                      child: Stack(
-                                        children: [CachedNetworkImage(
-                                          imageUrl: ApiEndPoints.BASE_URL +
-                                              getInactivePostController
-                                                  .allActiveItem[index].thumb![0],
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft: Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8)),
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover),
+                                    ],
+                                  ),
+                                  margin: const EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8)),
+                                        ),
+                                        height: 200,
+                                        width: double.infinity,
+                                        child: Stack(
+                                          children: [CachedNetworkImage(
+                                            imageUrl: ApiEndPoints.BASE_URL +
+                                                getInactivePostController
+                                                    .allActiveItem[index].thumb![0],
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    const BorderRadius.only(
+                                                        topLeft: Radius.circular(8),
+                                                        topRight:
+                                                        Radius.circular(8)),
+                                                    image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                ),
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                CircularProgressIndicator(
+                                                  color: Color(0xff008B51),
+                                                )),
+                                            errorWidget: (context, url, error) =>
+                                            const Icon(
+                                              Icons.error,
+                                              color: Colors.red,
                                             ),
-                                          ),
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                            color: Color(0xff008B51),
-                                          )),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(
-                                            Icons.error,
-                                            color: Colors.red,
-                                          ),
-                                        ), Align(
-                                          alignment: Alignment.topRight,
+                                          ), Align(
+                                            alignment: Alignment.topRight,
                                             child: IconButton(onPressed: (){
                                               Get.defaultDialog(
                                                 title: "E'lonni o'chirish",
@@ -389,111 +416,135 @@ class _AdScreenState extends State<AdScreen> {
                                                 },
                                               );
                                             }, icon: const Icon(Icons.delete, color: Colors.red,),),),],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SizedBox(
-                                              child: Text(
-                                                "${inactive.city}",
-                                                style: const TextStyle(
-                                                    color: Color(0xff666666),
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                      ),
-                                      child: SizedBox(
-                                        child: Text(
-                                          inactive.title!.toString(),
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: SizedBox(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 6),
                                         child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              '${inactive.price} ${inactive.priceType! == 'dollar' ? '\$' : 'so\'m'}',
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Color(0xff008B51)),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                                            Expanded(
+                                              child: SizedBox(
+                                                child: Text(
+                                                  "${inactive.city}",
+                                                  style: const TextStyle(
+                                                      color: Color(0xff666666),
+                                                      overflow:
+                                                      TextOverflow.ellipsis),
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    inactive.confirm! ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 4, right: 4, bottom: 6, top: 2),
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            getInactivePostController.allActiveItem.removeAt(index);
-                                            getActivePostController.allActiveItem.add(inactive);
-                                            if (temp.contains(inactive.announcementId!)){
-                                              temp.remove(inactive.announcementId!);
-                                              Get.snackbar(
-                                                "Muaffaqiyatli",
-                                                "E'lon faollashtirildi",
-                                                snackPosition: SnackPosition.BOTTOM,
-                                                backgroundColor: Colors.green,
-                                                forwardAnimationCurve: Curves.ease,
-                                                colorText: Colors.white,
-                                                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                                                duration: const Duration(milliseconds: 2000),
-                                                animationDuration: const Duration(milliseconds: 500),
-                                              );
-                                            }
-                                          });
-                                          activePostController.activePost(
-                                              inactive.announcementId!);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5),
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xffFF8D08),
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: const Center(
-                                            child: Text(
-                                              "Faollashtirish",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: SizedBox(
+                                          child: Text(
+                                            inactive.title!.toString(),
+                                            style: const TextStyle(fontSize: 12),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
-                                    ) : const Text("E'lon tasdiqlanishi\nkutilmoda", style: TextStyle(color: Colors.red), textAlign: TextAlign.center,),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 6),
+                                        child: SizedBox(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '${inactive.price} ${inactive.priceType! == 'dollar' ? '\$' : 'so\'m'}',
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Color(0xff008B51)),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      inactive.confirm! ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4, bottom: 6, top: 2),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              getInactivePostController.allActiveItem.removeAt(index);
+                                              getActivePostController.allActiveItem.add(inactive);
+                                              if (temp.contains(inactive.announcementId!)){
+                                                temp.remove(inactive.announcementId!);
+                                                Get.snackbar(
+                                                  "Muaffaqiyatli",
+                                                  "E'lon faollashtirildi",
+                                                  snackPosition: SnackPosition.BOTTOM,
+                                                  backgroundColor: Colors.green,
+                                                  forwardAnimationCurve: Curves.ease,
+                                                  colorText: Colors.white,
+                                                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                                  duration: const Duration(milliseconds: 2000),
+                                                  animationDuration: const Duration(milliseconds: 500),
+                                                );
+                                              }
+                                            });
+                                            activePostController.activePost(
+                                                inactive.announcementId!);
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xffFF8D08),
+                                                borderRadius:
+                                                BorderRadius.circular(4)),
+                                            child: const Center(
+                                              child: Text(
+                                                "Faollashtirish",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ) : const Text("E'lon tasdiqlanishi\nkutilmoda", style: TextStyle(color: Colors.red), textAlign: TextAlign.center,),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }else{
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    'assets/lottie/empty.json',
+                                    width: 200,
+                                    height: 200,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Text(
+                                    'Sizda nofaol e\'lonlar yo\'q',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         }
                       }),
                     ],

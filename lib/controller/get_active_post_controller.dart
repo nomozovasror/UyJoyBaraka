@@ -19,6 +19,8 @@ class GetActivePostController extends GetxController {
   var page = 1.obs;
   int limit = 50;
 
+  var isEmptyCheck = false.obs;
+
 
   @override
   void onInit() {
@@ -47,6 +49,11 @@ class GetActivePostController extends GetxController {
           allActiveItem = (responseJson['posts'] as List)
               .map((e) => Active.fromJson(e))
               .toList();
+          if (allActiveItem.isEmpty) {
+            isEmptyCheck.value = true;
+          }else{
+            isEmptyCheck.value = false;
+          }
           update();
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';

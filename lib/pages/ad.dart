@@ -275,6 +275,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
