@@ -54,6 +54,7 @@ class Inactive {
   String? description;
   int? price;
   String? priceType;
+  String? phone;
   bool? status;
   bool? confirm;
   int? likeCount;
@@ -75,6 +76,7 @@ class Inactive {
         this.description,
         this.price,
         this.priceType,
+        this.phone,
         this.status,
         this.confirm,
         this.likeCount,
@@ -96,6 +98,7 @@ class Inactive {
     description = json['description'];
     price = json['price'];
     priceType = json['price_type'];
+    phone = json['phone'];
     status = json['status'];
     confirm = json['confirm'];
     likeCount = json['likeCount'];
@@ -119,6 +122,7 @@ class Inactive {
     data['description'] = description;
     data['price'] = price;
     data['price_type'] = priceType;
+    data['phone'] = phone;
     data['status'] =status;
     data['confirm'] = confirm;
     data['likeCount'] = likeCount;

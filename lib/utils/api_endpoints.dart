@@ -1,5 +1,5 @@
 class ApiEndPoints{
-  static const String BASE_URL = "http://test.uyjoybaraka.uz";
+  static const String BASE_URL = "https://test.uyjoybaraka.uz";
   static _AuthEndPoints authEndPoints = _AuthEndPoints();
 }
 
@@ -27,4 +27,5 @@ class _AuthEndPoints {
   final String inactivePost = "/api/announcements/inactive";
   final String activePatch = "/api/announcements/activation/";
   final String deletePost = "/api/announcements/delete/";
+  final String updatePost = "/api/announcements/update/";
 }
