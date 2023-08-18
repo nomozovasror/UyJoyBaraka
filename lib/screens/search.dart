@@ -143,8 +143,8 @@ Future<void> _unlikePost(String postId, var index) async {
                   tilePadding: const EdgeInsets.symmetric(horizontal: 10),
                   controlAffinity: ListTileControlAffinity.leading,
                   leading: Container(
-                    height: 40,
-                    width: 46,
+                    height: 48,
+                    width: 52,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
@@ -181,6 +181,15 @@ Future<void> _unlikePost(String postId, var index) async {
                                   color: Color(0xff008B51), width: 2),
                             ),
                             hintText: "Qidirish",
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                getSearchItemController.searchController.clear();
+                              },
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.grey,
+                              ),
+                            ),
                             hintStyle: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
@@ -194,7 +203,7 @@ Future<void> _unlikePost(String postId, var index) async {
                       Expanded(
                         flex: 2,
                         child: SizedBox(
-                          height: 43,
+                          height: 48,
                           child: ElevatedButton(
                             onPressed: () {
                               getSearchItemController.hasMoreData.value = true;
@@ -331,7 +340,7 @@ Future<void> _unlikePost(String postId, var index) async {
                                     DropdownMenuItem(
                                       value: "Fargona",
                                       child: Text(
-                                        'fargona',
+                                        'Farg\'ona',
                                         softWrap: true,
                                       ),
                                     ),
@@ -364,7 +373,7 @@ Future<void> _unlikePost(String postId, var index) async {
                                       ),
                                     ),
                                     DropdownMenuItem(
-                                      value: "Qoraqalpogiston",
+                                      value: "Qoraqalpog'iston",
                                       child: Text(
                                         'Qoraqalpogʻiston',
                                         softWrap: true,

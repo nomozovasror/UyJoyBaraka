@@ -38,7 +38,10 @@ class GetSearchItemController extends GetxController {
   getSearchItem([String? valyuta, String? viloyat, String? ijaraValue]) async {
     if (!hasMoreData.value || isSearchLoading.value) return;
     if (page.value == 1) {
+      // viloyat = viloyat?.replaceAll(RegExp(r'[^\w\s]+'),'');
+      // print("viloyat: $viloyat");
       city.value = viloyat ?? "";
+      print("city: ${city.value}");
       type.value = ijaraValue ?? "";
       price_type.value = valyuta ?? "";
     }
