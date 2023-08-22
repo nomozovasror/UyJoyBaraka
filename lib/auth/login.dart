@@ -150,7 +150,7 @@ class _AuthScreenState extends State<AuthScreen> {
             validator: (value) {
               if (value!.isEmpty) {
                 return "Iltimos parolini kiriting";
-              }else if(value.length < 5){
+              }else if(value.length < 4){
                 return "Parol kamida 5 ta belgidan iborat bo'lishi kerak";
               }
               return null;

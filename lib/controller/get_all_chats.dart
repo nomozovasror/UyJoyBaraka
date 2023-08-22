@@ -29,6 +29,7 @@ class GetAllChatsController extends GetxController {
 
   getAllChats() async {
     try {
+      loadItem.value = true;
       var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}');
       SharedPreferences prefs = await SharedPreferences.getInstance();
 

@@ -40,36 +40,44 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-        itemCount: getAllChatsController.allChat.length,
-        itemBuilder: (context, index){
-        final chat = getAllChatsController.allChat[index];
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0x19008b51),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 1),
-            ],
-          ),
-          child: ListTile(
-            onTap: (){
-              getMessagesController.getMessage(chat.chatId.toString());
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(userId: chat.userId.toString(), chatId: chat.chatId.toString(),)));
-            },
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage('${ApiEndPoints.BASE_URL}${chat.user!.avatar}'),
-            ),
-            title: Text(chat.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-            subtitle: Text(chat.message!.content.toString()),
-            trailing: Text(timeSlicer(chat.message!.timestamp.toString())),
-          ),
-        ),
-      );
+    return Obx((){
+      if (getAllChatsController.loadItem.value == true) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }else{
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: getAllChatsController.allChat.length,
+            itemBuilder: (context, index){
+              final chat = getAllChatsController.allChat[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0x19008b51),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 1),
+                    ],
+                  ),
+                  child: ListTile(
+                    onTap: (){
+                      getMessagesController.getMessage(chat.chatId.toString());
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(members: chat)));
+                    },
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage('${ApiEndPoints.BASE_URL}${chat.user!.avatar}'),
+                    ),
+                    title: Text(chat.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+                    subtitle: Text(chat.message!.content.toString()),
+                    trailing: Text(timeSlicer(chat.message!.timestamp.toString())),
+                  ),
+                ),
+              );
+            });
+      }
     });
   }
 }
