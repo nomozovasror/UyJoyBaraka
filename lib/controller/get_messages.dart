@@ -135,4 +135,19 @@ class GetMessagesController extends GetxController {
     _messageStreamController.close();
     super.onClose();
   }
+
+  Future<void> deleteChat(chatId) async{
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var headers = {
+        'authorization': prefs.getString('token') ?? '',
+      };
+      var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}/$chatId');
+      http.Response response = await http.delete(url, headers: headers);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+  }
 }

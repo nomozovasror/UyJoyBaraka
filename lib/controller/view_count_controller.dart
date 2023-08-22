@@ -8,7 +8,7 @@ class ViewCounterController extends GetxController {
   Future<void> viewCounter(announcementId) async{
     try {
       var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.viewCounter + announcementId.toString());
-      await http.patch(url);
+      http.Response response = await http.patch(url);
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/controller/send_message.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
@@ -85,11 +86,32 @@ class _ChatDetailState extends State<ChatDetail> {
                             ],
 
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset('assets/icons/trash.svg'),
-                              const Text(" Chatni o'chirish", style: TextStyle(color: Color(0xFFFF0000), fontSize: 16),)
-                            ],
+                          InkWell(
+                            onTap: () {
+                              Get.defaultDialog(
+                                title: "Chatni o'chirish",
+                                content: const Text("Chatni o'chirishni xohlaysizmi?"),
+                                textCancel: "Yo'q",
+                                textConfirm: "Ha",
+                                confirmTextColor: Colors.white,
+                                cancelTextColor: Colors.red,
+                                buttonColor: Colors.red,
+                                onConfirm: (){
+                                  getMessagesController.deleteChat(widget.members.chatId.toString());
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    Get.find<GetAllChatsController>().getAllChats();
+                                    Get.close(0);
+                                  });
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/icons/trash.svg'),
+                                const Text(" Chatni o'chirish", style: TextStyle(color: Color(0xFFFF0000), fontSize: 16),)
+                              ],
+                            ),
                           )
                         ],),
                     ),
