@@ -5,8 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/auth/login.dart';
 import 'package:uy_joy_baraka/controller/get_active_post_controller.dart';
+import 'package:uy_joy_baraka/controller/get_all_chats.dart';
+import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
+import 'package:uy_joy_baraka/screens/chat_detail.dart';
+import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 import '../controller/user_data_controller.dart';
 
@@ -19,63 +23,53 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  
-  GetAllItemController getAllItemController = Get.put(GetAllItemController());
-  GetUserDataController getUserDataController = Get.put(GetUserDataController());
-  GetActivePostController getActivePostController =
-      Get.put(GetActivePostController());
+
+  GetAllChatsController getAllChatsController = Get.put(GetAllChatsController());
+  GetMessagesController getMessagesController = Get.put(GetMessagesController());
+
+  String timeSlicer(time) {
+    String timeSliced = time.substring(11, 16);
+    return timeSliced.toString();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAllChatsController.getAllChats();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AuthScreen()),
-                );
-              },
-              child: const Text('Auth screen  '),
+    return ListView.builder(
+      shrinkWrap: true,
+        itemCount: getAllChatsController.allChat.length,
+        itemBuilder: (context, index){
+        final chat = getAllChatsController.allChat[index];
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0x19008b51),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 1),
+            ],
+          ),
+          child: ListTile(
+            onTap: (){
+              getMessagesController.getMessage(chat.chatId.toString());
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(userId: chat.userId.toString(), chatId: chat.chatId.toString(),)));
+            },
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundImage: NetworkImage('${ApiEndPoints.BASE_URL}${chat.user!.avatar}'),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final SharedPreferences prefs = await _prefs;
-                print(prefs.getBool("isLoggedIn"));
-                print(prefs.getString('token'));
-              },
-              child: const Text('Print token'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final SharedPreferences prefs = await _prefs;
-                prefs.clear();
-                prefs.setBool('isLoggedIn', false);
-                await likeController.deleteAllLikedData();
-                getUserDataController.deleteUserData();
-                Get.offAll(() => const MyHomePage());
-                print(prefs.getString('token'));
-              },
-              child: const Text('Logout'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CheckCode()),
-                );
-              },
-              child: Text("Code Check"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                getActivePostController.getActivePosts();
-              },
-              child: Text("print Active Posts"),
-            ),
-          ]),
-    );
+            title: Text(chat.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+            subtitle: Text(chat.message!.content.toString()),
+            trailing: Text(timeSlicer(chat.message!.timestamp.toString())),
+          ),
+        ),
+      );
+    });
   }
 }

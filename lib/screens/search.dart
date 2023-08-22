@@ -375,7 +375,7 @@ Future<void> _unlikePost(String postId, var index) async {
                                     DropdownMenuItem(
                                       value: "Qoraqalpog'iston",
                                       child: Text(
-                                        'Qoraqalpogʻiston',
+                                        'Qoraqalpog\'iston',
                                         softWrap: true,
                                       ),
                                     ),

@@ -12,6 +12,7 @@ import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/chat_info_send_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/models/home_item.dart';
@@ -81,6 +82,10 @@ class _InfoScreenState extends State<InfoScreen> {
     final SharedPreferences prefs = await _prefs;
     return prefs.getBool('isLoggedIn') ?? false;
   }
+
+  InChatMessageController inChatMessageController = Get.put(InChatMessageController());
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -340,20 +345,30 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
-                  maxLines: 8,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          )),
-                      filled: true,
-                      fillColor: const Color(0xffF1F1F1),
-                      hintText: "Uy egasiga yozish",
-                      hintStyle: const TextStyle(
-                          color: Color(0xffABABAB), fontSize: 14)),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: inChatMessageController.messageController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Xabar yozilmagan";
+                      }
+                      return null;
+                    },
+                    maxLines: 8,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            )),
+                        filled: true,
+                        fillColor: const Color(0xffF1F1F1),
+                        hintText: "Uy egasiga yozish",
+                        hintStyle: const TextStyle(
+                            color: Color(0xffABABAB), fontSize: 14)),
+                  ),
                 ),
               ),
               Padding(
@@ -391,7 +406,16 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (
+                              _formKey.currentState!
+                              .validate()) {
+                            inChatMessageController.inChatMessage( widget.allData.userId!,
+                                widget.allData.announcementId!);
+                            print(widget.allData.userId);
+                            print(widget.allData.announcementId);
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xffFF8D08),
                           padding: const EdgeInsets.symmetric(

@@ -28,4 +28,5 @@ class _AuthEndPoints {
   final String activePatch = "/api/announcements/activation/";
   final String deletePost = "/api/announcements/delete/";
   final String updatePost = "/api/announcements/update/";
+  final String getChats = "/api/chats";
 }
