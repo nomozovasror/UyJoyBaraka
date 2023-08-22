@@ -13,6 +13,7 @@ import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/chat_info_send_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/models/liked_posts.dart';
@@ -36,6 +37,10 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
 
   LikeController likeController = Get.put(LikeController());
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
+  InChatMessageController inChatMessageController =
+      Get.put(InChatMessageController());
+
+  final formKey = GlobalKey<FormState>();
 
   String timeSlicer(time) {
     String timeSliced = time.substring(0, 10);
@@ -341,7 +346,16 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
+                child: Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: inChatMessageController.messageController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Xabar yozilmagan";
+                    }
+                    return null;
+                  },
                   maxLines: 8,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -357,6 +371,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                           color: Color(0xffABABAB), fontSize: 14)),
                 ),
               ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
@@ -365,7 +380,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // launch("tel:+${widget.allData.phone.toString()}");
+                          launch("tel:+${widget.allData.phone.toString()}");
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff008B51),
@@ -392,7 +407,16 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (
+                          formKey.currentState!
+                              .validate()) {
+                            inChatMessageController.inChatMessage( widget.allData.userId!,
+                                widget.allData.announcementId!);
+                            print(widget.allData.userId);
+                            print(widget.allData.announcementId);
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xffFF8D08),
                           padding: const EdgeInsets.symmetric(

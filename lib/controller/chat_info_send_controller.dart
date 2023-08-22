@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/screens/chat_detail.dart';
@@ -32,6 +33,17 @@ class InChatMessageController extends GetxController {
       if (response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['ok'] == true) {
+          Get.snackbar(
+            "Muaffaqiyatli",
+            "Habar yuborildi",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            forwardAnimationCurve: Curves.ease,
+            colorText: Colors.white,
+            margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            duration: const Duration(milliseconds: 2000),
+            animationDuration: const Duration(milliseconds: 500),
+          );
         }
         messageController.clear();
       }

@@ -45,6 +45,7 @@ class SearchPosts {
   String? description;
   int? price;
   String? priceType;
+  String? phone;
   bool? status;
   bool? confirm;
   int? likeCount;
@@ -68,6 +69,7 @@ class SearchPosts {
         this.description,
         this.price,
         this.priceType,
+        this.phone,
         this.status,
         this.confirm,
         this.likeCount,
@@ -91,6 +93,7 @@ class SearchPosts {
     description = json['description'];
     price = json['price'];
     priceType = json['price_type'];
+    phone = json['phone'];
     status = json['status'];
     confirm = json['confirm'];
     likeCount = json['likeCount'];
@@ -116,6 +119,7 @@ class SearchPosts {
     data['description'] = description;
     data['price'] = price;
     data['price_type'] = priceType;
+    data['phone'] = phone;
     data['status'] = status;
     data['confirm'] = confirm;
     data['likeCount'] = likeCount;
