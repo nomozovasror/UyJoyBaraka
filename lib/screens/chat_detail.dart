@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/controller/send_message.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
+import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/models/get_all_chats_model.dart';
 import 'package:uy_joy_baraka/models/meseeages_model.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -17,10 +19,10 @@ class ChatDetail extends StatefulWidget {
   State<ChatDetail> createState() => _ChatDetailState();
 }
 
-String userID = Get.find<GetUserDataController>().user.userId.toString();
 
 GetMessagesController getMessagesController = Get.put(GetMessagesController());
 SendMessageController sendMessageController = Get.put(SendMessageController());
+GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
 class _ChatDetailState extends State<ChatDetail> {
   String timeSlicer(time, start, end) {
@@ -28,22 +30,26 @@ class _ChatDetailState extends State<ChatDetail> {
     return timeSliced.toString();
   }
 
+  SharedPreferences? prefs;
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences();
+    getMessagesController.resetMessageStream(); // Reset the stream
+  }
+
+  Future<void> initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+
   final formKey = GlobalKey<FormState>();
-
-
-
   bool isMeCheck(index) {
-    if (getMessagesController.messageList[index].senderId == userID) {
+    if (getMessagesController.messageList[index].senderId == prefs?.getString('userId')) {
       return true;
     } else {
       return false;
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMessagesController.resetMessageStream(); // Reset the stream
   }
 
 
@@ -139,8 +145,10 @@ class _ChatDetailState extends State<ChatDetail> {
                         itemBuilder: (context, index) {
                           final reversedIndex = snapshot.data!.length - 1 - index;
                           final message = snapshot.data![reversedIndex];
+
+                          final isMe = isMeCheck(reversedIndex);
                           return Align(
-                            alignment: isMeCheck(reversedIndex)
+                            alignment: isMe
                                 ? Alignment.centerRight
                                 : Alignment.centerLeft,
                             child: Container(

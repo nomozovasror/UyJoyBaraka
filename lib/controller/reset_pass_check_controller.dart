@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/reset_pass_controller.dart';
+import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,7 @@ class ResetCodeCheckController extends GetxController {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   ResetController resetController = Get.put(ResetController());
+  GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
   Future<void> resetCheckCode() async {
     try {
@@ -57,6 +59,7 @@ class ResetCodeCheckController extends GetxController {
                 prefs.setBool('isLoggedIn', true);
                 await likeController.restoreLikedDataFromAPI();
                 Get.off(()=> const MyHomePage());
+                getUserDataController.getUserData();
               }else{
                 throw jsonDecode(jsonResponse.body)['message'] ?? 'Error';
               }

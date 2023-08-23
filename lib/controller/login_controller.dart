@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/auth/check_phone.dart';
+import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +13,10 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  formKey() {}
 
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+  GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
   Future<void> login() async {
     try {
@@ -37,9 +37,6 @@ class LoginController extends GetxController {
 
         if (jsonResponse['ok'] == true || jsonResponse['confirm'] == true) {
           var token = jsonResponse['token'];
-          if (kDebugMode) {
-            print(token);
-          }
           final SharedPreferences prefs = await _prefs;
 
           await prefs.setString('token', token);
@@ -48,6 +45,7 @@ class LoginController extends GetxController {
           prefs.setBool('isLoggedIn', true);
           await likeController.restoreLikedDataFromAPI();
           Get.offAll(() => const MyHomePage());
+          getUserDataController.getUserData();
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';
         }

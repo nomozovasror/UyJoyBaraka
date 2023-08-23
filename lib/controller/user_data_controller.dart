@@ -60,8 +60,9 @@ class GetUserDataController extends GetxController {
           createdAt: jsonData['user']['created_at'],
           updatedAt: jsonData['user']['updated_at'],);
         update();
-      }
-      else {
+        var userId = jsonData['user']['user_id'];
+        await prefs.setString('userId', userId);
+      } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } on SocketException catch (e) {
