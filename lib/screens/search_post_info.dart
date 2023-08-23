@@ -406,36 +406,52 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                       width: 40,
                     ),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (
-                          formKey.currentState!
-                              .validate()) {
-                            inChatMessageController.inChatMessage( widget.allData.userId!,
-                                widget.allData.announcementId!);
-                            print(widget.allData.userId);
-                            print(widget.allData.announcementId);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffFF8D08),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Yuborish ",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Icon(
-                              Icons.send_outlined,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
+                        child: FutureBuilder<bool>(
+                          future: getLoginStatus(),
+                          builder: (context, snapshot){
+                            bool userLoggedIn = snapshot.data ?? false;
+                            return ElevatedButton(
+                              onPressed: userLoggedIn ? () {
+                                if (
+                                formKey.currentState!
+                                    .validate()) {
+                                  inChatMessageController.inChatMessage( widget.allData.userId!,
+                                      widget.allData.announcementId!);
+                                }
+                              } : (){
+                                Get.snackbar(
+                                  "Siz tizimga kirmagansiz",
+                                  "Xabar yozish uchun iltimos tizimga kiring",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: const Color(0xFFFF8D08),
+                                  forwardAnimationCurve: Curves.ease,
+                                  colorText: Colors.white,
+                                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                  duration: const Duration(milliseconds: 2000),
+                                  animationDuration: const Duration(milliseconds: 500),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xffFF8D08),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Yuborish ",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Icon(
+                                    Icons.send_outlined,
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
                     )
                   ],
                 ),

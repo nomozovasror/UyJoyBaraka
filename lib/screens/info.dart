@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
@@ -71,6 +72,7 @@ class _InfoScreenState extends State<InfoScreen> {
     super.initState();
     likeController.initializeLikedPostIds();
   }
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> saveLoginStatus(bool isLoggedIn) async {
@@ -405,36 +407,52 @@ class _InfoScreenState extends State<InfoScreen> {
                       width: 40,
                     ),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (
+                      child: FutureBuilder<bool>(
+                        future: getLoginStatus(),
+                        builder: (context, snapshot){
+                          bool userLoggedIn = snapshot.data ?? false;
+                          return ElevatedButton(
+                            onPressed: userLoggedIn ? () {
+                              if (
                               _formKey.currentState!
-                              .validate()) {
-                            inChatMessageController.inChatMessage( widget.allData.userId!,
-                                widget.allData.announcementId!);
-                            print(widget.allData.userId);
-                            print(widget.allData.announcementId);
-                          }
+                                  .validate()) {
+                                inChatMessageController.inChatMessage( widget.allData.userId!,
+                                    widget.allData.announcementId!);
+                              }
+                            } : (){
+                              Get.snackbar(
+                                "Siz tizimga kirmagansiz",
+                                "Xabar yozish uchun iltimos tizimga kiring",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: const Color(0xFFFF8D08),
+                                forwardAnimationCurve: Curves.ease,
+                                colorText: Colors.white,
+                                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                duration: const Duration(milliseconds: 2000),
+                                animationDuration: const Duration(milliseconds: 500),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffFF8D08),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 6),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Yuborish ",
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                Icon(
+                                  Icons.send_outlined,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                          );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffFF8D08),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Yuborish ",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Icon(
-                              Icons.send_outlined,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
+                      )
                     )
                   ],
                 ),
