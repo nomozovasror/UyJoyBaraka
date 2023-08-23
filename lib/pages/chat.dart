@@ -115,7 +115,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             const SizedBox(height: 4,),
                             Text(chat.message!.content.toString(), maxLines: 1,
                               overflow: TextOverflow.ellipsis,),
-                            const SizedBox(height: 4,)
+                            const SizedBox(height: 2,),
+                            Text(chat.post!.title.toString(), style: const TextStyle(color: Colors.grey), maxLines: 1,
+                              overflow: TextOverflow.ellipsis,),
                           ],
                         )),
                       ],

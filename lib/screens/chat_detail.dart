@@ -155,6 +155,14 @@ class _ChatDetailState extends State<ChatDetail> {
                           height: 0,
                           thickness: 1,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(widget.members.post!.title.toString(), style: TextStyle(color: Colors.grey[700]), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                        ),
+                        const Divider(
+                          height: 0,
+                          thickness: 1,
+                        ),
                       ],
                     )
                 ),
