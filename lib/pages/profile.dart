@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -64,12 +65,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: controller.user.avatar != ''
                                   ? Row(
                                       children: [
-                                        CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            ApiEndPoints.BASE_URL +
-                                                controller.user.avatar!,
+                                        CachedNetworkImage(
+                                          imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
+                                          imageBuilder: (context, imageProvider) =>
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(50),
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => const Center(
+                                              child: CircularProgressIndicator(
+                                                color: Color(0xff008B51),
+                                              )),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(
+                                            Icons.error,
+                                            color: Colors.red,
                                           ),
-                                          radius: 30,
                                         ),
                                         const SizedBox(
                                           width: 16,

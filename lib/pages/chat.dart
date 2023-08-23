@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -66,9 +67,29 @@ class _ChatScreenState extends State<ChatScreen> {
                       getMessagesController.getMessage(chat.chatId.toString());
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(members: chat)));
                     },
-                    leading: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage('${ApiEndPoints.BASE_URL}${chat.user!.avatar}'),
+                    leading: CachedNetworkImage(
+                      imageUrl: ApiEndPoints.BASE_URL + chat.user!.avatar.toString(),
+                      imageBuilder: (context, imageProvider) =>
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xff008B51),
+                          )),
+                      errorWidget: (context, url, error) =>
+                      const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
                     ),
                     title: Text(chat.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
                     subtitle: Text(chat.message!.content.toString()),
