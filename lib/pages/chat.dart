@@ -1,19 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uy_joy_baraka/auth/check_phone.dart';
-import 'package:uy_joy_baraka/auth/login.dart';
-import 'package:uy_joy_baraka/controller/get_active_post_controller.dart';
 import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
-import 'package:uy_joy_baraka/controller/home_item_controller.dart';
-import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/screens/chat_detail.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
-
-import '../controller/user_data_controller.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -23,10 +14,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  GetAllChatsController getAllChatsController = Get.put(GetAllChatsController());
-  GetMessagesController getMessagesController = Get.put(GetMessagesController());
+  GetAllChatsController getAllChatsController =
+      Get.put(GetAllChatsController());
+  GetMessagesController getMessagesController =
+      Get.put(GetMessagesController());
 
   String timeSlicer(time) {
     String timeSliced = time.substring(11, 16);
@@ -41,59 +32,94 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx((){
+    return Obx(() {
       if (getAllChatsController.loadItem.value == true) {
         return const Center(
           child: CircularProgressIndicator(),
         );
-      }else{
+      } else {
         return ListView.builder(
             shrinkWrap: true,
             itemCount: getAllChatsController.allChat.length,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
               final chat = getAllChatsController.allChat[index];
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0x19008b51),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 1),
-                    ],
-                  ),
-                  child: ListTile(
-                    onTap: (){
-                      getMessagesController.getMessage(chat.chatId.toString());
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(members: chat)));
-                    },
-                    leading: CachedNetworkImage(
-                      imageUrl: ApiEndPoints.BASE_URL + chat.user!.avatar.toString(),
-                      imageBuilder: (context, imageProvider) =>
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xff008B51),
-                          )),
-                      errorWidget: (context, url, error) =>
-                      const Icon(
-                        Icons.error,
-                        color: Colors.red,
-                      ),
+                child: InkWell(
+                  onTap: (){
+                    getMessagesController.getMessage(chat.chatId.toString());
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetail(members: chat)));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
                     ),
-                    title: Text(chat.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-                    subtitle: Text(chat.message!.content.toString()),
-                    trailing: Text(timeSlicer(chat.message!.timestamp.toString())),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CachedNetworkImage(
+                          imageUrl: ApiEndPoints.BASE_URL +
+                                  chat.user!.avatar.toString(),
+                          imageBuilder: (context, imageProvider) => Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                ),
+                          ),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(
+                                color: Color(0xff008B51),
+                          )),
+                          errorWidget: (context, url, error) => const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                          ),
+                        ),
+                              ],
+                            )),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          flex: 8,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 12,
+                                  child: Text(
+                                    chat.user!.fullName.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 22, fontWeight: FontWeight.w500),
+                                    maxLines: 1, overflow: TextOverflow.ellipsis
+                                ),),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    timeSlicer(chat.message!.timestamp.toString()),
+                                    style: const TextStyle(
+                                        fontSize: 14, fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4,),
+                            Text(chat.message!.content.toString(), maxLines: 1,
+                              overflow: TextOverflow.ellipsis,),
+                            const SizedBox(height: 4,)
+                          ],
+                        )),
+                      ],
+                    ),
                   ),
                 ),
               );

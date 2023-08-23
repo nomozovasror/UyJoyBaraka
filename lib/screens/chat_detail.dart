@@ -52,6 +52,30 @@ class _ChatDetailState extends State<ChatDetail> {
     }
   }
 
+  bool isButtonDisabled = false;
+  void _handleButtonClick() {
+    if (!isButtonDisabled) {
+      setState(() {
+        isButtonDisabled = true;
+      });
+
+      Future.delayed(const Duration(seconds: 1), () {
+        if (sendMessageController.messageController.text.isNotEmpty) {
+          sendMessageController
+              .sendMessage(widget.members.chatId.toString());
+          Future.delayed(const Duration(seconds: 1), () {
+            getMessagesController
+                .getMessage(widget.members.chatId.toString());
+          });
+        }
+        setState(() {
+          isButtonDisabled = false;
+        });
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -212,17 +236,8 @@ class _ChatDetailState extends State<ChatDetail> {
                     hintText: 'Xabar yozish',
                     suffixIcon: IconButton(
                       disabledColor: Colors.cyan,
-                      onPressed: () {
-                        if (sendMessageController.messageController.text.isNotEmpty) {
-                          sendMessageController
-                              .sendMessage(widget.members.chatId.toString());
-                          Future.delayed(const Duration(seconds: 1), () {
-                            getMessagesController
-                                .getMessage(widget.members.chatId.toString());
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.send, color: Color(0xFFFF8D08),),
+                      onPressed: () => _handleButtonClick(),
+                      icon: Icon(Icons.send, color: isButtonDisabled ?Colors.grey : const Color(0xFFFF8D08) ),
                     ),
                   ),
                 ),

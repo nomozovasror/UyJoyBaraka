@@ -65,81 +65,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: controller.user.avatar != ''
                                   ? Row(
                                       children: [
-                                        CachedNetworkImage(
-                                          imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
-                                          imageBuilder: (context, imageProvider) =>
-                                              Container(
-                                                width: 60,
-                                                height: 60,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(50),
-                                                  image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover),
-                                                ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Row(
+                                            children: [
+                                              CachedNetworkImage(
+                                              imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
+                                              imageBuilder: (context, imageProvider) =>
+                                                  Container(
+                                                    width: 65,
+                                                    height: 65,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(50),
+                                                      image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover),
+                                                    ),
+                                                  ),
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) => const Center(
+                                                  child: CircularProgressIndicator(
+                                                    color: Color(0xff008B51),
+                                                  )),
+                                              errorWidget: (context, url, error) =>
+                                              const Icon(
+                                                Icons.error,
+                                                color: Colors.red,
                                               ),
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => const Center(
-                                              child: CircularProgressIndicator(
-                                                color: Color(0xff008B51),
-                                              )),
-                                          errorWidget: (context, url, error) =>
-                                          const Icon(
-                                            Icons.error,
-                                            color: Colors.red,
-                                          ),
                                         ),
+                                            ],
+                                          ),),
                                         const SizedBox(
-                                          width: 16,
+                                          width: 10,
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  controller.user.fullName
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Color(0xff181725),
-                                                      letterSpacing: .8),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const EditUserDataScreen()),
-                                                    );
-                                                  },
-                                                  child: const SizedBox(
-                                                      width: 40,
-                                                      height: 25,
-                                                      child: Icon(
-                                                        Icons.edit_outlined,
-                                                        color:
-                                                            Color(0xFF53B175),
-                                                        size: 22,
-                                                      )),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              "+${controller.user.phone.toString()}",
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(0xff7C7C7C),
-                                                  letterSpacing: .8),
-                                            ),
-                                          ],
+                                        Expanded(
+                                          flex: 8,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    constraints: const BoxConstraints(maxWidth: 220),
+                                                    child: Expanded(
+                                                      child:
+                                                          Text(
+                                                            controller.user.fullName
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                              fontSize: 22,
+                                                              fontWeight:
+                                                              FontWeight.w500,
+                                                              color: Color(0xff181725),
+                                                              letterSpacing: .8,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                            maxLines: 1,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                            const EditUserDataScreen()),
+                                                      );
+                                                    },
+                                                    child: const SizedBox(
+                                                        width: 40,
+                                                        height: 25,
+                                                        child: Icon(
+                                                          Icons.edit_outlined,
+                                                          color:
+                                                          Color(0xFF53B175),
+                                                          size: 24,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 4,),
+                                              Text(
+                                                "+${controller.user.phone.toString()}",
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Color(0xff7C7C7C),
+                                                    letterSpacing: .8),
+                                              ),
+                                            ],
+                                          ),
                                         )
                                       ],
                                     )
