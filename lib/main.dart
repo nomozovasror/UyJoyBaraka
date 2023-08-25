@@ -10,6 +10,7 @@ import 'package:uy_joy_baraka/pages/chat.dart';
 import 'package:uy_joy_baraka/pages/home.dart';
 import 'package:uy_joy_baraka/pages/profile.dart';
 import 'package:uy_joy_baraka/pages/saved.dart';
+import 'package:uy_joy_baraka/screens/start_screen.dart';
 
 Future<void> initSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -24,17 +25,24 @@ void main() async {
   await initSharedPreferences();
   LikeController likeController = Get.put(LikeController());
   await likeController.fetchAndStoreLikedPosts();
-  runApp(const MyApp());
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final isFirst = prefs.getBool('isFirst') ?? false;
+
+  runApp(MyApp(isFirst: isFirst,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+  final bool isFirst;
+
+  const MyApp({Key? key, required this.isFirst}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
-      home: MyHomePage(),
+      home: isFirst ? const MyHomePage() : const StartScreen()
     );
   }
 }

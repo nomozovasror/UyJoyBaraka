@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class StartScreen extends StatefulWidget {
@@ -94,7 +95,9 @@ class _StartScreenState extends State<StartScreen> {
                     child: currentIndex == 0
                         ? const Text('')
                         : InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              final prefs = await SharedPreferences.getInstance();
+                              prefs.setBool('isFirst', true);
                               Get.offAll(const MyHomePage());
                             },
                             child: const Center(

@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -67,101 +70,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: controller.user.avatar != ''
                                   ? Row(
                                       children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              CachedNetworkImage(
-                                              imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
-                                              imageBuilder: (context, imageProvider) =>
-                                                  Container(
-                                                    width: 65,
-                                                    height: 65,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(50),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover),
-                                                    ),
-                                                  ),
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) => const Center(
-                                                  child: CircularProgressIndicator(
-                                                    color: Color(0xff008B51),
-                                                  )),
-                                              errorWidget: (context, url, error) =>
-                                              const Icon(
-                                                Icons.error,
-                                                color: Colors.red,
+                                        CachedNetworkImage(
+                                        imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
+                                        imageBuilder: (context, imageProvider) =>
+                                            Container(
+                                              width: 65,
+                                              height: 65,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover),
                                               ),
+                                            ),
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xff008B51),
+                                            )),
+                                        errorWidget: (context, url, error) =>
+                                        const Icon(
+                                          Icons.error,
+                                          color: Colors.red,
                                         ),
-                                            ],
-                                          ),),
+                                        ),
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Expanded(
-                                          flex: 8,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Container(
-                                                    constraints: const BoxConstraints(maxWidth: 220),
-                                                    child: Expanded(
-                                                      child:
-                                                          Text(
-                                                            controller.user.fullName
-                                                                .toString(),
-                                                            style: const TextStyle(
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                              FontWeight.w500,
-                                                              color: Color(0xff181725),
-                                                              letterSpacing: .8,
-                                                            ),
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                          ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  constraints: const BoxConstraints(maxWidth: 220),
+                                                  child: Text(
+                                                    controller.user.fullName
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                      color: Color(0xff181725),
+                                                      letterSpacing: .8,
                                                     ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 1,
                                                   ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                            const EditUserDataScreen()),
-                                                      );
-                                                    },
-                                                    child: const SizedBox(
-                                                        width: 40,
-                                                        height: 25,
-                                                        child: Icon(
-                                                          Icons.edit_outlined,
-                                                          color:
-                                                          Color(0xFF53B175),
-                                                          size: 24,
-                                                        )),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 4,),
-                                              Text(
-                                                "+${controller.user.phone.toString()}",
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Color(0xff7C7C7C),
-                                                    letterSpacing: .8),
-                                              ),
-                                            ],
-                                          ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                          const EditUserDataScreen()),
+                                                    );
+                                                  },
+                                                  child: const SizedBox(
+                                                      width: 40,
+                                                      height: 25,
+                                                      child: Icon(
+                                                        Icons.edit_outlined,
+                                                        color:
+                                                        Color(0xFF53B175),
+                                                        size: 24,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4,),
+                                            Text(
+                                              "+${controller.user.phone.toString()}",
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xff7C7C7C),
+                                                  letterSpacing: .8),
+                                            ),
+                                          ],
                                         )
                                       ],
                                     )
@@ -333,15 +324,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 }),
                 userLoggedIn ? GestureDetector(
-                  onTap: () async {
-                    final SharedPreferences prefs = await _prefs;
-                    prefs.clear();
-                    prefs.setBool('isLoggedIn', false);
-                    await likeController.deleteAllLikedData();
-                    getUserDataController.deleteUserData();
-                    Get.offAll(() => const MyHomePage());
-                    print(prefs.getString('token'));
-                },
+                  onTap: () {
+                    if (Platform.isAndroid) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Tizimdan chiqmoqchimisiz"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Yo\'q'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                final SharedPreferences prefs = await _prefs;
+                                prefs.clear();
+                                prefs.setBool('isLoggedIn', false);
+                                await likeController.deleteAllLikedData();
+                                getUserDataController.deleteUserData();
+                                Get.offAll(() => const MyHomePage());
+
+
+                              },
+                              child: const Text('Ha'),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) => CupertinoAlertDialog(
+                          title: const Text("Parolni tiklamoqchimisiz"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Yo\'q'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                final SharedPreferences prefs = await _prefs;
+                                prefs.clear();
+                                prefs.setBool('isLoggedIn', false);
+                                await likeController.deleteAllLikedData();
+                                getUserDataController.deleteUserData();
+                                Get.offAll(() => const MyHomePage());
+                              },
+                              child: const Text('Ha'),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
