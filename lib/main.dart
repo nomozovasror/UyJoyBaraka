@@ -19,7 +19,6 @@ Future<void> initSharedPreferences() async {
   }
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initSharedPreferences();
@@ -28,22 +27,21 @@ void main() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final isFirst = prefs.getBool('isFirst') ?? false;
 
-  runApp(MyApp(isFirst: isFirst,));
+  runApp(MyApp(
+    isFirst: isFirst,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-
   final bool isFirst;
-
   const MyApp({Key? key, required this.isFirst}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      home: isFirst ? const MyHomePage() : const StartScreen()
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        home: isFirst ? const MyHomePage() : const StartScreen());
   }
 }
 

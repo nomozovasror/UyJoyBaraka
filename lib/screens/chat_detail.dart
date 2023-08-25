@@ -19,7 +19,6 @@ class ChatDetail extends StatefulWidget {
   State<ChatDetail> createState() => _ChatDetailState();
 }
 
-
 GetMessagesController getMessagesController = Get.put(GetMessagesController());
 SendMessageController sendMessageController = Get.put(SendMessageController());
 GetUserDataController getUserDataController = Get.put(GetUserDataController());
@@ -43,10 +42,10 @@ class _ChatDetailState extends State<ChatDetail> {
     prefs = await SharedPreferences.getInstance();
   }
 
-
   final formKey = GlobalKey<FormState>();
   bool isMeCheck(index) {
-    if (getMessagesController.messageList[index].senderId == prefs?.getString('userId')) {
+    if (getMessagesController.messageList[index].senderId ==
+        prefs?.getString('userId')) {
       return true;
     } else {
       return false;
@@ -62,11 +61,9 @@ class _ChatDetailState extends State<ChatDetail> {
 
       Future.delayed(const Duration(seconds: 1), () {
         if (sendMessageController.messageController.text.isNotEmpty) {
-          sendMessageController
-              .sendMessage(widget.members.chatId.toString());
+          sendMessageController.sendMessage(widget.members.chatId.toString());
           Future.delayed(const Duration(seconds: 1), () {
-            getMessagesController
-                .getMessage(widget.members.chatId.toString());
+            getMessagesController.getMessage(widget.members.chatId.toString());
           });
         }
         setState(() {
@@ -105,130 +102,147 @@ class _ChatDetailState extends State<ChatDetail> {
               children: [
                 Container(
                     child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                          '${ApiEndPoints.BASE_URL}${widget.members.user!.avatar}')
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(widget.members.user!.fullName.toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w300),)
-                                ],
-
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.defaultDialog(
-                                    title: "Chatni o'chirish",
-                                    content: const Text("Chatni o'chirishni xohlaysizmi?"),
-                                    textCancel: "Yo'q",
-                                    textConfirm: "Ha",
-                                    confirmTextColor: Colors.white,
-                                    cancelTextColor: Colors.red,
-                                    buttonColor: Colors.red,
-                                    onConfirm: (){
-                                      getMessagesController.deleteChat(widget.members.chatId.toString());
-                                      Navigator.pop(context);
-                                      setState(() {
-                                        Get.find<GetAllChatsController>().getAllChats();
-                                        Get.close(0);
-                                      });
-                                    },
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset('assets/icons/trash.svg'),
-                                    const Text(" Chatni o'chirish", style: TextStyle(color: Color(0xFFFF0000), fontSize: 16),)
-                                  ],
-                                ),
+                              CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      '${ApiEndPoints.BASE_URL}${widget.members.user!.avatar}')),
+                              const SizedBox(width: 10),
+                              Text(
+                                widget.members.user!.fullName.toString(),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w300),
                               )
-                            ],),
-                        ),
-                        const Divider(
-                          height: 0,
-                          thickness: 1,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(widget.members.post!.title.toString(), style: TextStyle(color: Colors.grey[700]), maxLines: 2, overflow: TextOverflow.ellipsis,),
-                        ),
-                        const Divider(
-                          height: 0,
-                          thickness: 1,
-                        ),
-                      ],
-                    )
-                ),
-                Expanded(
-                    child: StreamBuilder<List<MessagesList>>(
-                      stream: getMessagesController.messageStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return const Center(child: Text('Sizda xabarlar yoq'));
-                        } else {
-                          return ListView.builder(
-                            reverse: true, // This property reverses the list
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              final reversedIndex = snapshot.data!.length - 1 - index;
-                              final message = snapshot.data![reversedIndex];
-
-                              final isMe = isMeCheck(reversedIndex);
-                              return Align(
-                                alignment: isMe
-                                    ? Alignment.centerRight
-                                    : Alignment.centerLeft,
-                                child: Container(
-                                    constraints: const BoxConstraints(
-                                      maxWidth: 250,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                                    padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 3),
-                                    decoration: BoxDecoration(
-                                      color: isMeCheck(reversedIndex) ? Colors.green : Colors.grey,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          message.content.toString(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          timeSlicer(message.timestamp.toString(), 11, 16),
-                                          style: TextStyle(
-                                            color: Colors.grey[300],
-                                            fontSize: 10,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.defaultDialog(
+                                title: "Chatni o'chirish",
+                                content: const Text(
+                                    "Chatni o'chirishni xohlaysizmi?"),
+                                textCancel: "Yo'q",
+                                textConfirm: "Ha",
+                                confirmTextColor: Colors.white,
+                                cancelTextColor: Colors.red,
+                                buttonColor: Colors.red,
+                                onConfirm: () {
+                                  Navigator.pop(context);
+                                  getMessagesController.deleteChat(widget.members.chatId.toString());
+                                  setState(() {
+                                    Get.find<GetAllChatsController>().getAllChats();
+                                    Get.close(0);
+                                  });
+                                },
                               );
                             },
-                          );
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/icons/trash.svg'),
+                                const Text(
+                                  " Chatni o'chirish",
+                                  style: TextStyle(
+                                      color: Color(0xFFFF0000), fontSize: 16),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      height: 0,
+                      thickness: 1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.members.post!.title.toString(),
+                        style: TextStyle(color: Colors.grey[700]),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const Divider(
+                      height: 0,
+                      thickness: 1,
+                    ),
+                  ],
+                )),
+                Expanded(
+                    child: StreamBuilder<List<MessagesList>>(
+                  stream: getMessagesController.messageStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('Sizda xabarlar yoq'));
+                    } else {
+                      return ListView.builder(
+                        reverse: true, // This property reverses the list
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final reversedIndex =
+                              snapshot.data!.length - 1 - index;
+                          final message = snapshot.data![reversedIndex];
 
-                        }
-                      },
-                    )),
+                          final isMe = isMeCheck(reversedIndex);
+                          return Align(
+                            alignment: isMe
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                            child: Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 250,
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 3),
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 10, right: 10, bottom: 3),
+                                decoration: BoxDecoration(
+                                  color: isMeCheck(reversedIndex)
+                                      ? Colors.green
+                                      : Colors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      message.content.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      timeSlicer(
+                                          message.timestamp.toString(), 11, 16),
+                                      style: TextStyle(
+                                        color: Colors.grey[300],
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          );
+                        },
+                      );
+                    }
+                  },
+                )),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
                   padding: const EdgeInsets.only(left: 10, top: 3),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -251,7 +265,10 @@ class _ChatDetailState extends State<ChatDetail> {
                         suffixIcon: IconButton(
                           disabledColor: Colors.cyan,
                           onPressed: () => _handleButtonClick(),
-                          icon: Icon(Icons.send, color: isButtonDisabled ?Colors.grey : const Color(0xFFFF8D08) ),
+                          icon: Icon(Icons.send,
+                              color: isButtonDisabled
+                                  ? Colors.grey
+                                  : const Color(0xFFFF8D08)),
                         ),
                       ),
                     ),
