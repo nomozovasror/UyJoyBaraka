@@ -65,6 +65,7 @@ class ResetCodeCheckController extends GetxController {
                 prefs.setBool('isLoggedIn', true);
                 await likeController.restoreLikedDataFromAPI();
                 Get.offAll(() => const MyHomePage());
+                TextEditingController().clear();
                 Get.snackbar(
                   "Muaffaqiyatli",
                   "Parol muvaffaqiyatli tiklandi",

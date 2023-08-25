@@ -44,7 +44,7 @@ class CodeCheckController extends GetxController {
           await likeController.restoreLikedDataFromAPI();
           loginController.phoneController.clear();
           loginController.passwordController.clear();
-
+          TextEditingController().clear();
           Get.offAll(()=> const MyHomePage());
           getUserDataController.getUserData();
         }else{
