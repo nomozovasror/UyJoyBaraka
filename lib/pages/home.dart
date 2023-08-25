@@ -31,9 +31,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int activeIndex = 0;
   final imgList = [
-        'assets/images/carusel_1.avif,'
-        'assets/images/carusel_2.avif,'
-        'assets/images/carusel_3.avif,'
+        'assets/images/carusel_1.jpg',
+        'assets/images/carusel_2.jpg',
+        'assets/images/carusel_3.jpg',
   ];
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
