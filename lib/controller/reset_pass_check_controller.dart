@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uy_joy_baraka/controller/login_controller.dart';
 import 'package:uy_joy_baraka/controller/reset_pass_controller.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
@@ -11,15 +12,16 @@ import 'package:http/http.dart' as http;
 
 
 class ResetCodeCheckController extends GetxController {
-  TextEditingController codeCheckController = TextEditingController();
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   ResetController resetController = Get.put(ResetController());
   GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
-  Future<void> resetCheckCode() async {
+  var loading = false.obs;
+  Future<void> resetCheckCode(String code) async {
     try {
+      loading.value = true;
       final SharedPreferences prefs = await _prefs;
       var headers = {
         'Content-Type': 'application/json',
@@ -27,7 +29,7 @@ class ResetCodeCheckController extends GetxController {
       };
       var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.checkCode);
       Map body = {
-        "code": codeCheckController.text,
+        "code": code.toString(),
       };
 
       http.Response response = await http.post(url, headers: headers, body: json.encode(body));
@@ -36,10 +38,8 @@ class ResetCodeCheckController extends GetxController {
         final json = jsonDecode(response.body);
         if (json['ok'] == true){
           var token = json['token'];
-          print(token);
           final SharedPreferences prefs = await _prefs;
           await prefs.setString('token', token);
-
 
           try {
             final SharedPreferences prefs = await _prefs;
@@ -56,9 +56,26 @@ class ResetCodeCheckController extends GetxController {
             if (jsonResponse.statusCode == 201){
               final json = jsonDecode(jsonResponse.body);
               if (json['ok'] == true){
+                var token = json['token'];
+                final SharedPreferences prefs = await _prefs;
+                await prefs.setString('token', token);
+                Get.find<ResetController>().confirmPasswordController.clear();
+                Get.find<LoginController>().passwordController.clear();
+                Get.find<LoginController>().phoneController.clear();
                 prefs.setBool('isLoggedIn', true);
                 await likeController.restoreLikedDataFromAPI();
-                Get.off(()=> const MyHomePage());
+                Get.offAll(() => const MyHomePage());
+                Get.snackbar(
+                  "Muaffaqiyatli",
+                  "Parol muvaffaqiyatli tiklandi",
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: const Color(0xFFFF8D08),
+                  forwardAnimationCurve: Curves.ease,
+                  colorText: Colors.white,
+                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                  duration: const Duration(milliseconds: 2000),
+                  animationDuration: const Duration(milliseconds: 500),
+                );
                 getUserDataController.getUserData();
               }else{
                 throw jsonDecode(jsonResponse.body)['message'] ?? 'Error';
@@ -67,7 +84,7 @@ class ResetCodeCheckController extends GetxController {
               throw jsonDecode(jsonResponse.body)['message'] ?? 'Error';
             }
           } catch (e) {
-            print(e.toString());
+            loading.value = false;
             Get.back();
             showDialog(context: Get.context!, builder: (context){
               return SimpleDialog(
@@ -80,7 +97,6 @@ class ResetCodeCheckController extends GetxController {
               );
             });
           }
-          codeCheckController.clear();
         }else{
           throw jsonDecode(response.body)['message'] ?? 'Error';
         }
@@ -88,7 +104,7 @@ class ResetCodeCheckController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Error';
       }
     } catch (e) {
-      Get.back();
+      loading.value = false;
       showDialog(context: Get.context!, builder: (context){
         return SimpleDialog(
           title: const Text('Error'),
@@ -99,6 +115,8 @@ class ResetCodeCheckController extends GetxController {
           ],
         );
       });
+    }finally{
+      loading.value = false;
     }
   }
 }

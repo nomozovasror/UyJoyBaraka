@@ -13,20 +13,21 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  var loading = false.obs;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   GetUserDataController getUserDataController = Get.put(GetUserDataController());
 
   Future<void> login() async {
     try {
+      loading.value = true;
       var headers = {
         'Content-Type': 'application/json',
       };
       var url =
           Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.login);
       Map body = {
-        "phone": phoneController.text,
+        "phone": "998${phoneController.text}",
         "password": passwordController.text,
       };
 
@@ -34,11 +35,9 @@ class LoginController extends GetxController {
           await http.post(url, headers: headers, body: json.encode(body));
       final jsonResponse = jsonDecode(response.body);
       if (response.statusCode == 201) {
-
         if (jsonResponse['ok'] == true || jsonResponse['confirm'] == true) {
           var token = jsonResponse['token'];
           final SharedPreferences prefs = await _prefs;
-
           await prefs.setString('token', token);
           phoneController.clear();
           passwordController.clear();
@@ -58,26 +57,21 @@ class LoginController extends GetxController {
             var urlTwo = Uri.parse(
                 ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.phoneCheck);
             Map bodyy = {
-              "phone": phoneController.text,
+              "phone": "998${phoneController.text}",
             };
             http.Response responsee = await http.post(urlTwo,
                 headers: headerss, body: json.encode(bodyy));
             if (responsee.statusCode == 200) {
               final jsonResponsee = jsonDecode(responsee.body);
               if (jsonResponsee['ok'] == true) {
-                var code = jsonResponsee['code'];
                 var codeValidationId = jsonResponsee['codeValidationId'];
                 if (kDebugMode) {
                   print(jsonResponsee['massage'].toString());
                 }
                 final SharedPreferences prefs = await _prefs;
 
-                await prefs.setString('code', code);
                 await prefs.setString(
                     'code_validation_id', codeValidationId);
-                phoneController.clear();
-                passwordController.clear();
-
                 Get.off(() => const CheckCode());
               } else {
                 throw jsonResponsee['message'] ?? 'Xato';
@@ -109,6 +103,8 @@ class LoginController extends GetxController {
               ],
             );
           });
+    }finally{
+      loading.value = false;
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/auth/check_phone.dart';
+import 'package:uy_joy_baraka/controller/login_controller.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +14,45 @@ class RegisterationController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  LoginController loginController = Get.put(LoginController());
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> sendCode() async{
+    try {
+      var headerss = {
+        'Content-Type': 'application/json',
+      };
+      var urlTwo = Uri.parse(
+          ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.phoneCheck);
+      Map bodyy = {
+        "phone": "998${loginController.phoneController.text}",
+      };
+      http.Response responsee = await http.post(urlTwo,
+          headers: headerss, body: json.encode(bodyy));
+      if (responsee.statusCode == 200) {
+        final jsonResponsee = jsonDecode(responsee.body);
+        if (jsonResponsee['ok'] == true) {
+          var codeValidationId = jsonResponsee['codeValidationId'];
+          if (kDebugMode) {
+            print(jsonResponsee['massage'].toString());
+          }
+          final SharedPreferences prefs = await _prefs;
+          await prefs.setString(
+              'code_validation_id', codeValidationId);
+        } else {
+          throw jsonResponsee['message'] ?? 'Xato';
+        }
+      } else {
+        throw jsonDecode(responsee.body)['message'] ?? 'Xato';
+      }
+    } catch (e) {
+      print(e.toString());
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
   Future<void> register() async {
     try {
@@ -24,7 +63,7 @@ class RegisterationController extends GetxController {
           ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.register);
       Map body = {
         "name": nameController.text,
-        "phone": phoneController.text,
+        "phone": "998${phoneController.text}",
         "password": passwordController.text,
       };
 
@@ -44,7 +83,7 @@ class RegisterationController extends GetxController {
             var urlTwo = Uri.parse(
                 ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.phoneCheck);
             Map bodyy = {
-              "phone": phoneController.text,
+              "phone": "998${phoneController.text}",
             };
             http.Response responsee = await http.post(urlTwo,
                 headers: headerss, body: json.encode(bodyy));
@@ -58,14 +97,8 @@ class RegisterationController extends GetxController {
                   print(jsonResponsee['massage'].toString());
                 }
                 final SharedPreferences prefs = await _prefs;
-
-                await prefs.setString('code', code);
                 await prefs.setString(
                     'code_validation_id', codeValidationId);
-                nameController.clear();
-                phoneController.clear();
-                passwordController.clear();
-
                 Get.off(() => const CheckCode());
               } else {
                 throw jsonResponsee['message'] ?? 'Xato';
@@ -85,7 +118,6 @@ class RegisterationController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } catch (e) {
-      Get.back();
       showDialog(
           context: Get.context!,
           builder: (context) {

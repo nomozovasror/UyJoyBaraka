@@ -6,11 +6,13 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/auth/edit_user_data.dart';
 import 'package:uy_joy_baraka/auth/login.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/screens/about.dart';
 import 'package:uy_joy_baraka/screens/my_ad.dart';
+import 'package:uy_joy_baraka/screens/start_screen.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 import '../main.dart';
@@ -311,7 +313,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     );
                                   },
                                   icon: const Icon(
-                                      Icons.arrow_forward_ios_rounded))
+                                      Icons.arrow_forward_ios_rounded)),
+
+
                             ],
                           ),
                         ),
@@ -319,6 +323,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Divider(
                         thickness: 1.6,
                       ),
+                      TextButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const StartScreen()));
+                      }, child: Text("Start Screen")),
+                      TextButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const CheckCode()));
+                      }, child: Text("Check code"))
                     ],
                   );
                 }),

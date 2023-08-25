@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uy_joy_baraka/controller/login_controller.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -10,14 +11,16 @@ import 'package:http/http.dart' as http;
 
 
 class CodeCheckController extends GetxController {
-  TextEditingController codeCheckController = TextEditingController();
 
   GetUserDataController getUserDataController = Get.put(GetUserDataController());
+  LoginController loginController = Get.put(LoginController());
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var loading = false.obs;
 
-  Future<void> checkCode() async {
+  Future<void> checkCode(String code) async {
     try {
+      loading.value = true;
       final SharedPreferences prefs = await _prefs;
       var headers = {
         'Content-Type': 'application/json',
@@ -25,8 +28,9 @@ class CodeCheckController extends GetxController {
       };
       var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.checkCode);
       Map body = {
-        "code": codeCheckController.text,
+        "code": code.toString(),
       };
+      print(code.toString());
 
       http.Response response = await http.post(url, headers: headers, body: json.encode(body));
 
@@ -38,7 +42,9 @@ class CodeCheckController extends GetxController {
           await prefs.setString('token', token);
           prefs.setBool('isLoggedIn', true);
           await likeController.restoreLikedDataFromAPI();
-          codeCheckController.clear();
+          loginController.phoneController.clear();
+          loginController.passwordController.clear();
+
           Get.offAll(()=> const MyHomePage());
           getUserDataController.getUserData();
         }else{
@@ -48,7 +54,7 @@ class CodeCheckController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Error';
       }
     } catch (e) {
-      Get.back();
+      loading.value = false;
       showDialog(context: Get.context!, builder: (context){
         return SimpleDialog(
           title: const Text('Error'),
@@ -59,6 +65,8 @@ class CodeCheckController extends GetxController {
           ],
         );
       });
+    }finally{
+      loading.value = false;
     }
   }
 }

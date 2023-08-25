@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uy_joy_baraka/controller/login_controller.dart';
@@ -20,6 +23,15 @@ class _AuthScreenState extends State<AuthScreen> {
 
   var isLogin = false.obs;
   var resetPass = true.obs;
+  var _passwordVisible = false;
+  var _passwordVisible2 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+    _passwordVisible2 = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +39,46 @@ class _AuthScreenState extends State<AuthScreen> {
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Obx(
-            () => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Welcome to Joy Baraka",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                isLogin.value ? loginWidget() : registerWidget(),
-              ],
-            ),
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
+              IconButton(
+                  onPressed: () {
+                    if (!resetPass.value) {
+                      setState(() {
+                        resetPass.value = true;
+                      });
+                    } else {
+                      Get.back();
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(isLogin.value ? "Ro'yxatdan o'tish" : "Kirish",
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w600,
+                  ),),
+              const SizedBox(
+                height: 10,
+              ),
+              Text("Telefon raqam va parol kiriting",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey[700],
+                  )),
+              const SizedBox(
+                height: 30,
+              ),
+              isLogin.value ? registerWidget() : loginWidget()
+            ],
           ),
         ),
       )),
@@ -47,70 +86,171 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget registerWidget() {
-    return Column(
-      children: [
-        TextFormField(
-          controller: registerationController.nameController,
-          decoration: const InputDecoration(
-            labelText: "Name",
-            hintText: "Enter your name",
-            border: OutlineInputBorder(),
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Ism Familya",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextFormField(
-          controller: registerationController.phoneController,
-          decoration: const InputDecoration(
-            labelText: "Phone",
-            hintText: "Enter your phone",
-            border: OutlineInputBorder(),
+          TextFormField(
+            controller: registerationController.nameController,
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        TextFormField(
-          controller: registerationController.passwordController,
-          decoration: const InputDecoration(
-            labelText: "Password",
-            hintText: "Enter your password",
-            border: OutlineInputBorder(),
+          const SizedBox(
+            height: 20,
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        MaterialButton(
-          onPressed: () {
-            registerationController.register();
-          },
-          color: Colors.green,
-          child: const Text(
-            "Register",
-            style: TextStyle(color: Colors.white),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Telefon raqam",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Already have an account?"),
-            MaterialButton(
-              onPressed: () {
-                isLogin.value = true;
-              },
-              child: const Text(
-                "Login",
-                style: TextStyle(color: Colors.green),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Iltimos telefon raqamingizni kiriting";
+              } else if (value.length < 7) {
+                return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+              }
+              return null;
+            },
+            controller: registerationController.phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              prefixIcon: Align(
+                  widthFactor: 0.0,
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0, left: 5.0),
+                    child: Text(
+                      "+998",
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.grey[700],
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  )),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Parol",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Iltimos parol kiriting";
+              } else if (value.length < 8) {
+                return "Parol 8 ta belgidan kam bo'lmasligi kerak";
+              }
+              return null;
+            },
+            keyboardType: TextInputType.text,
+            controller: registerationController.passwordController,
+            obscureText: !_passwordVisible2,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  _passwordVisible2 ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible2 = !_passwordVisible2;
+                  });
+                },
               ),
             ),
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Parolni qayta kiriting",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Iltimos parolini kiriting";
+              } else if (value.length < 8) {
+                return "Parol kamida 8 ta belgidan iborat bo'lishi kerak";
+              } else if (value != registerationController.passwordController.text) {
+                return "Parol mos kelmadi";
+              }
+              return null;
+            },
+            obscureText: !_passwordVisible2,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 55,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(19),
+                color: Color(0xff008b51)),
+            child: TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  registerationController.register();
+                }
+              },
+              child: const Text(
+                "Ro'yxatdan o'tish",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Sizda akkaunt bormi?"),
+              MaterialButton(
+                onPressed: () {
+                  isLogin.value = false;
+                },
+                child: const Text(
+                  "Kirish",
+                  style: TextStyle(color: Colors.green),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -119,146 +259,234 @@ class _AuthScreenState extends State<AuthScreen> {
       key: _formKey,
       child: Column(
         children: [
-          resetPass.value
-              ? Container()
-              : IconButton(
-                  onPressed: () {
-                    resetPass.value = true;
-                  },
-                  icon: Icon(Icons.arrow_back),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Telefon raqam",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Iltimos telefon raqamingizni kiriting";
+              } else if (value.length < 7) {
+                return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+              }
+              return null;
+            },
+            controller: resetPass.value
+                ? loginController.phoneController
+                : resetController.phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              prefixIcon: Align(
+                widthFactor: 0.0,
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0, left: 5.0),
+                  child: Text(
+                    "+998",
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
-          TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Please enter your phone";
-              }else if(value.length < 10){
-                return "Please enter your phone";
-              }
-              return null;
-            },
-            controller: resetPass.value ? loginController.phoneController : resetController.phoneController,
-            decoration: const InputDecoration(
-              labelText: "Phone",
-              hintText: "Enter your phone",
-              border: OutlineInputBorder(),
+              ),
             ),
           ),
-          SizedBox(
-            height: 10,
+          const SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Parol",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w400,
+                )),
           ),
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos parolini kiriting";
-              }else if(value.length < 4){
-                return "Parol kamida 5 ta belgidan iborat bo'lishi kerak";
+                return "Iltimos parol kiriting";
+              } else if (value.length < 8) {
+                return "Parol 8 ta belgidan kam bo'lmasligi kerak";
               }
               return null;
             },
+            keyboardType: TextInputType.text,
             controller: loginController.passwordController,
+            obscureText: !_passwordVisible,
             decoration: InputDecoration(
-              labelText: "Password",
-              hintText: "Enter your password",
-              border: OutlineInputBorder(),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           resetPass.value
               ? Container()
-              : TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Iltimos parolini kiriting";
-              }else if(value.length < 5){
-                return "Parol kamida 5 ta belgidan iborat bo'lishi kerak";
-              }else if(value != loginController.passwordController.text){
-                return "Parol mos kelmadi";
-              }
-              return null;
-            },
-            controller: resetController.confirmPasswordController,
-            decoration: InputDecoration(
-              labelText: "Password",
-              hintText: "Enter your password",
-              border: OutlineInputBorder(),
-            ),
-          ),
+              : Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Parolni qayta kiriting",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w400,
+                          )),
+                    ),
+                    TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Iltimos parolini kiriting";
+                        } else if (value.length < 8) {
+                          return "Parol kamida 8 ta belgidan iborat bo'lishi kerak";
+                        } else if (value !=
+                            loginController.passwordController.text) {
+                          return "Parol mos kelmadi";
+                        }
+                        return null;
+                      },
+                      controller: resetController.confirmPasswordController,
+                      obscureText: !_passwordVisible,
+                    ),
+                  ],
+                ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               resetPass.value
                   ? TextButton(
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text("Parolni tiklamoqchimisiz"),
-                            actions: [
-                              TextButton(
-                                onPressed: () {},
-                                child: Text('Yo\'q'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  resetPass.value = false;
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Ha'),
-                              )
-                            ],
-                          ),
-                        );
+                        if (Platform.isAndroid) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Parolni tiklamoqchimisiz"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Yo\'q'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    resetPass.value = false;
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Ha'),
+                                )
+                              ],
+                            ),
+                          );
+                        } else {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CupertinoAlertDialog(
+                              title: const Text("Parolni tiklamoqchimisiz"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Yo\'q'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    resetPass.value = false;
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Ha'),
+                                )
+                              ],
+                            ),
+                          );
+                        }
                       },
-                      child: Text("Parolni tiklash"),
-                    )
+                      child: Text("Parolni unutdingizmi?",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.w400,
+                          )))
                   : Container(),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           resetPass.value
-              ? MaterialButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      loginController.login();;
-                    }
-                  },
-                  color: Colors.green,
-                  child: Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white),
-                  ),
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 55,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(19),
+                      color: const Color(0xff008b51)),
+                  child: TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          loginController.login();
+                        }
+                      },
+                      child: loginController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text(
+                        "Kirish",
+                        style: TextStyle(color: Colors.white),
+                      )),
                 )
-              : MaterialButton(
-                  onPressed: () {
-
-                    if (_formKey.currentState!.validate()) {
-                      print("reset >>>>>>>>>>>>>>>>");
-                      resetController.resetPassword();
-                    }
-                  },
-                  color: Colors.green,
-                  child: Text(
-                    "Parolni tiklash",
-                    style: TextStyle(color: Colors.white),
-                  ),
+              : Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 55,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(19),
+                      color: const Color(0xff008b51)),
+                  child: TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          resetController.resetPassword();
+                        }
+                      },
+                      child: resetController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text(
+                        "Parolni tiklash",
+                        style: TextStyle(color: Colors.white),
+                      )),
                 ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Don't have an account?"),
+              const Text("Akkauntingiz yo'qmi?"),
               MaterialButton(
                 onPressed: () {
-                  isLogin.value = false;
+                  isLogin.value = true;
+                  resetPass.value = true;
                 },
-                child: Text(
-                  "Register",
+                child: const Text(
+                  "Ro'yxatdan o'tish",
                   style: TextStyle(color: Colors.green),
                 ),
               ),
