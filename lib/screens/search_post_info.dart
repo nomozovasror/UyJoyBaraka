@@ -124,10 +124,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                   itemCount: widget.allData.thumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                    final imgL = Uri(
-                        scheme: 'http',
-                        host: 'test.uyjoybaraka.uz',
-                        path: widget.allData.thumb![index]);
+                        final imgL = ApiEndPoints.BASE_URL + widget.allData.thumb![index].toString();
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(

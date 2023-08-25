@@ -123,11 +123,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   itemCount: widget.allData.thumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                    final imgL = Uri(
-                        scheme: 'http',
-                        host: 'test.uyjoybaraka.uz',
-                        path: widget.allData.thumb![index]);
-
+                    final imgL = ApiEndPoints.BASE_URL + widget.allData.thumb![index].toString();
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(
@@ -465,8 +461,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar
-                            .toString().replaceAll("https", "http",),),
+                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.avatar.toString()),
                         radius: 30,
                       ),
                       const SizedBox(
