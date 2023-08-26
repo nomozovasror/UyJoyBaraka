@@ -11,13 +11,12 @@ import 'package:uy_joy_baraka/models/meseeages_model.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
-
 class GetMessagesController extends GetxController {
-
   var loadItem = true.obs;
   List<MessagesList> messageList = [];
   late StreamController<List<MessagesList>> _messageStreamController;
-  Stream<List<MessagesList>> get messageStream => _messageStreamController.stream;
+  Stream<List<MessagesList>> get messageStream =>
+      _messageStreamController.stream;
 
   @override
   void onInit() {
@@ -38,16 +37,16 @@ class GetMessagesController extends GetxController {
     super.dispose();
   }
 
-
   Future<void> getMessage([String? chatId]) async {
     try {
-      var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}/$chatId');
+      var url = Uri.parse(
+          '${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}/$chatId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      print(url);
 
       http.Response response = await http.get(
         url,
-        headers: {'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'authorization': prefs.getString('token') ?? '',
         },
       );
@@ -56,22 +55,19 @@ class GetMessagesController extends GetxController {
       if (response.statusCode == 200) {
         var responseJson = jsonDecode(response.body);
         if (responseJson['ok'] == true) {
-
           messageList = (responseJson['messages'] as List)
               .map((e) => MessagesList.fromJson(e))
               .toList();
 
           _messageStreamController.add(messageList);
-
-          print(messageList[0].timestamp);
-          print(messageList.length);
+          update();
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';
         }
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
-    } on SocketException catch(e){
+    } on SocketException catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -80,10 +76,15 @@ class GetMessagesController extends GetxController {
         context: Get.context!,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: const Column(children: [
-              Text('Sizda internet mavjud emas'),
-              Text("Yoki server bilan bog'lanishda xatolik yuz berdi", style: TextStyle(fontSize: 12, color: Colors.grey),)
-            ],),
+            title: const Column(
+              children: [
+                Text('Sizda internet mavjud emas'),
+                Text(
+                  "Yoki server bilan bog'lanishda xatolik yuz berdi",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                )
+              ],
+            ),
             children: [
               SimpleDialogOption(
                   padding: EdgeInsets.zero,
@@ -92,7 +93,11 @@ class GetMessagesController extends GetxController {
                       SizedBox(
                         width: 200,
                         height: 200,
-                        child: Lottie.asset("assets/lottie/internet_error.json", height: 200, options: LottieOptions(enableMergePaths: true,)),
+                        child: Lottie.asset("assets/lottie/internet_error.json",
+                            height: 200,
+                            options: LottieOptions(
+                              enableMergePaths: true,
+                            )),
                       ),
                       TextButton(
                         onPressed: () {
@@ -102,14 +107,12 @@ class GetMessagesController extends GetxController {
                         child: const Text('Qayta urinib ko\'rish'),
                       )
                     ],
-                  )
-              )
+                  ))
             ],
           );
         },
       );
-    }
-    catch (e) {
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -125,25 +128,33 @@ class GetMessagesController extends GetxController {
               ],
             );
           });
-    }finally {
+    } finally {
       loadItem.value = false;
       update();
     }
   }
+
   @override
   void onClose() {
     _messageStreamController.close();
     super.onClose();
   }
 
-  Future<void> deleteChat(chatId) async{
+  Future<void> deleteChat(chatId) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var headers = {
         'authorization': prefs.getString('token') ?? '',
       };
-      var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}/$chatId');
+      var url = Uri.parse(
+          '${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}/$chatId');
       http.Response response = await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        if (kDebugMode) {
+          print(jsonResponse['message'].toString());
+        }
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());

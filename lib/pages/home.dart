@@ -31,9 +31,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int activeIndex = 0;
   final imgList = [
-        'assets/images/carusel_1.jpg',
-        'assets/images/carusel_2.jpg',
-        'assets/images/carusel_3.jpg',
+    'assets/images/carusel_1.jpg',
+    'assets/images/carusel_2.jpg',
+    'assets/images/carusel_3.jpg',
   ];
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
@@ -70,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await likeController
         .getAllLikedPosts(); // Fetch the liked posts from the API
     likeController.updateLikedPosts(likeController.allLikedPost);
-    likeController.removeLikedPost(likeController.allLikedPost[index].announcementId!);
+    likeController
+        .removeLikedPost(likeController.allLikedPost[index].announcementId!);
   }
 
   final scrollController = ScrollController();
@@ -108,7 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -117,8 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchScreen()));
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SearchScreen()));
             },
             child: Row(
               children: [
@@ -126,11 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   flex: 8,
                   child: Container(
                     height: 43,
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: const Color(0xff008B51), width: 2),
+                      border:
+                          Border.all(color: const Color(0xff008B51), width: 2),
                     ),
                     child: const Row(
                       children: [
@@ -138,12 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 10,
                         ),
                         Text(
-                          "E'lonlar orasidan qidirish", style: TextStyle(color: Colors.grey, fontSize: 16,),
+                          "E'lonlar orasidan qidirish",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
-                    ),
                   ),
+                ),
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -153,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(8),
                       color: const Color(0xff008B51),
                     ),
-                    child: const  Center(
+                    child: const Center(
                       child: Icon(
                         Icons.search,
                         color: Colors.white,
@@ -215,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  launch("tel:+998919998877");
+                                  launch(ApiEndPoints.authEndPoints.phone);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff008B51),
@@ -274,15 +283,15 @@ class _HomeScreenState extends State<HomeScreen> {
             if (getAllItemController.loadItem.value &&
                 getAllItemController.page.value == 1) {
               return StaggeredGridView.countBuilder(
-                crossAxisCount: 2,
-                itemCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return homeShimmer();
-                }, staggeredTileBuilder: (int index) =>
-                  const StaggeredTile.fit(1)
-              );
+                  crossAxisCount: 2,
+                  itemCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return homeShimmer();
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1));
             } else {
               return Flexible(
                 child: StaggeredGridView.countBuilder(
@@ -326,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        launch("tel:+998919998877");
+                                        launch(ApiEndPoints.authEndPoints.phone);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
@@ -533,55 +542,75 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(right: 6),
-                                      child:
-                                      FutureBuilder<bool>(
-                                      future: getLoginStatus(),
-                                      builder: (context, snapshot) {
-                                      bool userLoggedIn = snapshot.data ?? false;
-                                      return LikeButton(
-                                        size: 20,
-                                        circleColor: const CircleColor(
-                                            start: Color(0xff00ddff),
-                                            end: Color(0xff0099cc)),
-                                        bubblesColor: const BubblesColor(
-                                          dotPrimaryColor: Color(0xff33b5e5),
-                                          dotSecondaryColor: Color(0xff0099cc),
-                                        ),
-                                        likeBuilder: (bool isLiked) {
-                                          return Icon(
-                                            likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-                                            color: const Color(0xffFF8D08),
-                                            size: 26,
-                                          );
-                                        },
-                                        onTap: userLoggedIn ? (isLiked) async {
-                                          this.isLiked = likeController.isPostLiked(postId);
-                                          _toggleLikeStatus(postId, index);
-                                          return !isLiked;
-                                        } : (isLiked) async {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              duration: Duration(
-                                                  milliseconds: 1500),
-                                              content: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.heart_broken_outlined,
-                                                    color: Colors.white,
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text(
-                                                      "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
-                                                ],
-                                              ),
-                                              backgroundColor:
-                                              Color(0xffFF8D08),
-                                            ),
-                                          );
-                                          return !isLiked;
-                                        }
-                                      ); }),
+                                      child: FutureBuilder<bool>(
+                                          future: getLoginStatus(),
+                                          builder: (context, snapshot) {
+                                            bool userLoggedIn =
+                                                snapshot.data ?? false;
+                                            return LikeButton(
+                                                size: 20,
+                                                circleColor: const CircleColor(
+                                                    start: Color(0xff00ddff),
+                                                    end: Color(0xff0099cc)),
+                                                bubblesColor:
+                                                    const BubblesColor(
+                                                  dotPrimaryColor:
+                                                      Color(0xff33b5e5),
+                                                  dotSecondaryColor:
+                                                      Color(0xff0099cc),
+                                                ),
+                                                likeBuilder: (bool isLiked) {
+                                                  return Icon(
+                                                    likeController
+                                                            .isPostLiked(postId)
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    color:
+                                                        const Color(0xffFF8D08),
+                                                    size: 26,
+                                                  );
+                                                },
+                                                onTap: userLoggedIn
+                                                    ? (isLiked) async {
+                                                        this.isLiked =
+                                                            likeController
+                                                                .isPostLiked(
+                                                                    postId);
+                                                        _toggleLikeStatus(
+                                                            postId, index);
+                                                        return !isLiked;
+                                                      }
+                                                    : (isLiked) async {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    1500),
+                                                            content: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons
+                                                                      .heart_broken_outlined,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Text(
+                                                                    "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                              ],
+                                                            ),
+                                                            backgroundColor:
+                                                                Color(
+                                                                    0xffFF8D08),
+                                                          ),
+                                                        );
+                                                        return !isLiked;
+                                                      });
+                                          }),
                                     ),
                                   ],
                                 ),
@@ -637,10 +666,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
-                  return homeShimmer();
-                  }, staggeredTileBuilder: (int index) =>
-                  const StaggeredTile.fit(1)
-                  )
+                    return homeShimmer();
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1))
               : const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Center(
@@ -656,132 +685,126 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget homeShimmer() => Container(
-    margin: const EdgeInsets.all(10),
-    height: 327,
-    child: Column(
-      children: [
-        Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        margin: const EdgeInsets.all(10),
+        height: 327,
+        child: Column(
           children: [
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Row(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: 110,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    width: 110,
-                    height: 12,
+                    margin: const EdgeInsets.only(right: 10),
+                    height: 26,
+                    width: 26,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(50),
                       color: Colors.white,
                     ),
                   ),
                 ),
               ],
             ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                height: 26,
-                width: 26,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.white,
-                ),
-              ),
+            const SizedBox(
+              height: 14,
             ),
-          ],
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 9,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            Row(
+              children: [
+                Expanded(
+                  flex: 9,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 1, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 1,
-                child: SizedBox())
-          ],
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 8,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            const SizedBox(
+              height: 4,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 2, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 2,
-                child: SizedBox())
-          ],
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 7,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 18,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            const SizedBox(
+              height: 14,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 18,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 3, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 3,
-                child: SizedBox())
           ],
         ),
-      ],
-    ),
-  );
+      );
 }

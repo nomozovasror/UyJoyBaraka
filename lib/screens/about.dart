@@ -59,15 +59,21 @@ class AboutScreen extends StatelessWidget {
                   ),
                   Container(
                     height: 80,
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
                     decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xff008B51), width: 1)
-                    ),
+                        border: Border.all(
+                            color: const Color(0xff008B51), width: 1)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const SizedBox(width: 5,),
-                        Image.asset('assets/images/green3.png', width: 70,),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Image.asset(
+                          'assets/images/green3.png',
+                          width: 70,
+                        ),
                         Container(
                           margin: const EdgeInsets.only(left: 35),
                           width: 140,
@@ -79,50 +85,62 @@ class AboutScreen extends StatelessWidget {
                           child: const Center(
                             child: SizedBox(
                               width: 138,
-                              child: Text("Bizni ijtimoiy tarmoqlarda kuzating", textAlign: TextAlign.center,  style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w600),),
+                              child: Text(
+                                "Bizni ijtimoiy tarmoqlarda kuzating",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
                         ),
                         Row(
-
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               decoration: BoxDecoration(
                                   color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)
-                              ),
+                                  borderRadius: BorderRadius.circular(50)),
                               height: 25,
                               width: 25,
                               child: Center(
-                                child: SvgPicture.asset('assets/icons/ri_facebook-fill.svg'),
+                                child: SvgPicture.asset(
+                                    'assets/icons/ri_facebook-fill.svg'),
                               ),
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)
-                              ),
+                                  borderRadius: BorderRadius.circular(50)),
                               height: 25,
                               width: 25,
                               child: Center(
-                                child: SvgPicture.asset('assets/icons/mdi_instagram.svg'),
+                                child: SvgPicture.asset(
+                                    'assets/icons/mdi_instagram.svg'),
                               ),
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)
-                              ),
+                                  borderRadius: BorderRadius.circular(50)),
                               height: 25,
                               width: 25,
                               child: Center(
-                                child: SvgPicture.asset('assets/icons/mingcute_telegram-line.svg'),
+                                child: SvgPicture.asset(
+                                    'assets/icons/mingcute_telegram-line.svg'),
                               ),
                             ),
-                            const SizedBox(width: 5,),
+                            const SizedBox(
+                              width: 5,
+                            ),
                           ],
                         )
                       ],
@@ -141,7 +159,6 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
                 ],
               ),
             )

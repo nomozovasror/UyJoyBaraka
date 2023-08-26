@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 import 'package:uy_joy_baraka/controller/phone_check_controller.dart';
 import 'package:uy_joy_baraka/controller/register_controller.dart';
@@ -14,7 +13,6 @@ class CheckCode extends StatefulWidget {
 }
 
 CodeCheckController checkCodeController = Get.put(CodeCheckController());
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 RegisterationController registerationController = Get.put(RegisterationController());
 
 var isCheck = true.obs;

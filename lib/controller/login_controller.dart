@@ -16,7 +16,8 @@ class LoginController extends GetxController {
   var loading = false.obs;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  GetUserDataController getUserDataController = Get.put(GetUserDataController());
+  GetUserDataController getUserDataController =
+      Get.put(GetUserDataController());
 
   Future<void> login() async {
     try {
@@ -49,7 +50,8 @@ class LoginController extends GetxController {
         } else {
           throw jsonDecode(response.body)['message'] ?? 'Xato';
         }
-      } else if(response.statusCode == 400 && jsonResponse['confirm'] == false){
+      } else if (response.statusCode == 400 &&
+          jsonResponse['confirm'] == false) {
         if (jsonResponse['ok'] != true) {
           try {
             var headerss = {
@@ -71,8 +73,7 @@ class LoginController extends GetxController {
                 }
                 final SharedPreferences prefs = await _prefs;
 
-                await prefs.setString(
-                    'code_validation_id', codeValidationId);
+                await prefs.setString('code_validation_id', codeValidationId);
                 Get.off(() => const CheckCode());
               } else {
                 throw jsonResponsee['message'] ?? 'Xato';
@@ -104,7 +105,7 @@ class LoginController extends GetxController {
               ],
             );
           });
-    }finally{
+    } finally {
       loading.value = false;
     }
   }

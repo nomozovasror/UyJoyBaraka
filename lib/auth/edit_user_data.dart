@@ -1,27 +1,19 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 import 'package:uy_joy_baraka/controller/edit_number_controller.dart';
-import 'package:http/http.dart' as http;
-import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 class EditUserDataScreen extends StatefulWidget {
   const EditUserDataScreen({Key? key}) : super(key: key);
 
   @override
   State<EditUserDataScreen> createState() => _EditUserDataScreenState();
-}final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+}
 
 
-GlobalKey _formKey = GlobalKey<FormState>();
+
 EditPhoneController editPhoneController = EditPhoneController();
 
-
+final formKey = GlobalKey<FormState>();
 
 
 class _EditUserDataScreenState extends State<EditUserDataScreen> {
@@ -44,36 +36,76 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
           backgroundColor: const Color(0xff008B51),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
-              ),
-              TextFormField(
-                controller: editPhoneController.phoneController,
-                decoration: const InputDecoration(
-                  labelText: "Name",
-                  hintText: "Enter Name",
-                  border: OutlineInputBorder(),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 40,
                 ),
-              ),
-              ElevatedButton(onPressed: (){
-                editPhoneController.editPhone();
-              }, child: const Text('Save'),),
-
-              TextFormField(
-                controller: editPhoneController.nameController,
-                decoration: const InputDecoration(
-                  labelText: "Name",
-                  hintText: "Enter Name",
-                  border: OutlineInputBorder(),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Iltimos telefon raqamingizni kiriting";
+                    } else if (value.length < 7) {
+                      return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+                    }
+                    return null;
+                  },
+                  controller: editPhoneController.phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    prefixIcon: Align(
+                        widthFactor: 0.0,
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5.0, left: 5.0),
+                          child: Text(
+                            "+998",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        )),
+                    suffixIcon: TextButton(
+                      onPressed: (){
+                        if (formKey.currentState!.validate()) {
+                          editPhoneController.editPhone();
+                        }
+                      },
+                      child: const Text('Saqlash', style: TextStyle(color: Colors.blue),),
+                    )
+                  ),
                 ),
-              ),
-              ElevatedButton(onPressed: (){
-                editPhoneController.editName();
-              }, child: const Text('Save'),),
-            ],
+                const SizedBox(
+                  height: 40,
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Iltimos ism va familyangizni kiriting";
+                    }
+                    return null;
+                  },
+                  controller: editPhoneController.nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Ism va familya',
+                    suffixIcon: TextButton(
+                      onPressed: (){
+                        if (formKey.currentState!.validate()) {
+                          editPhoneController.editName();
+                        }
+                      },
+                      child: const Text('Saqlash', style: TextStyle(color: Colors.blue),),
+                    )
+                  )
+                ),
+              ],
+            ),
           ),
         ),
       ),

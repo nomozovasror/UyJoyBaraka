@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -25,13 +26,15 @@ class CreatePostController extends GetxController {
 
 
   Future<void> pickImagesFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     List<XFile>? pickedFiles;
 
     try {
-      pickedFiles = await _picker.pickMultiImage(); // Use pickMultiImage() for multi-image selection
+      pickedFiles = await picker.pickMultiImage(); // Use pickMultiImage() for multi-image selection
     } catch (e) {
-      print('Error while picking the images: $e');
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     if (pickedFiles != null) {
@@ -57,7 +60,6 @@ class CreatePostController extends GetxController {
 
       // Check if images are selected
       if (selectedImages == null || selectedImages!.isEmpty) {
-        print('No images selected');
         return;
       }
 

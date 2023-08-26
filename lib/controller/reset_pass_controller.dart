@@ -26,7 +26,7 @@ class ResetController extends GetxController {
         "phone": "998${phoneController.text}",
       };
       http.Response response =
-      await http.post(url, headers: headers, body: json.encode(body));
+          await http.post(url, headers: headers, body: json.encode(body));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['ok'] == true) {
@@ -57,7 +57,7 @@ class ResetController extends GetxController {
               ],
             );
           });
-    }finally {
+    } finally {
       loading.value = false;
     }
   }
@@ -73,7 +73,7 @@ class ResetController extends GetxController {
         "phone": "998${phoneController.text}",
       };
       http.Response response =
-      await http.post(url, headers: headers, body: json.encode(body));
+          await http.post(url, headers: headers, body: json.encode(body));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['ok'] == true) {
@@ -88,19 +88,18 @@ class ResetController extends GetxController {
       }
     } catch (e) {
       showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Xato'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          },);
+        context: Get.context!,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Xato'),
+            children: [
+              SimpleDialogOption(
+                child: Text(e.toString()),
+              )
+            ],
+          );
+        },
+      );
     }
   }
 }
-
-

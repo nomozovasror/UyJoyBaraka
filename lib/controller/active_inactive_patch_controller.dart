@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -21,9 +19,13 @@ class ActivePostController extends GetxController {
 
       http.Response response = await http.patch(url, headers: headers);
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
         if (kDebugMode) {
-          print(jsonResponse['message'].toString());
+          print(response.body);
+        }
+        switchValue.value = true;
+      } else {
+        if (kDebugMode) {
+          print(response.body);
         }
       }
     } catch (e) {

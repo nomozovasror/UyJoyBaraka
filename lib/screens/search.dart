@@ -7,7 +7,6 @@ import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/search_controller.dart';
 import 'package:uy_joy_baraka/controller/view_count_controller.dart';
 import 'package:uy_joy_baraka/models/search_model.dart';
@@ -159,7 +158,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         "assets/icons/filter-alt.svg",
                         height: 24,
                         width: 24,
-                        color: const Color(0xff008B51),
                       ),
                     ),
                   ),

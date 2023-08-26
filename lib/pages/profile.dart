@@ -9,13 +9,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uy_joy_baraka/auth/check_phone.dart';
 import 'package:uy_joy_baraka/auth/edit_user_data.dart';
 import 'package:uy_joy_baraka/auth/login.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/screens/about.dart';
 import 'package:uy_joy_baraka/screens/my_ad.dart';
-import 'package:uy_joy_baraka/screens/start_screen.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 import '../main.dart';
@@ -71,28 +69,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ? Row(
                                       children: [
                                         CachedNetworkImage(
-                                        imageUrl: ApiEndPoints.BASE_URL + controller.user.avatar.toString(),
-                                        imageBuilder: (context, imageProvider) =>
-                                            Container(
-                                              width: 65,
-                                              height: 65,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(50),
-                                                image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover),
-                                              ),
+                                          imageUrl: ApiEndPoints.BASE_URL +
+                                              controller.user.avatar.toString(),
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            width: 65,
+                                            height: 65,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover),
                                             ),
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xff008B51),
-                                            )),
-                                        errorWidget: (context, url, error) =>
-                                        const Icon(
-                                          Icons.error,
-                                          color: Colors.red,
-                                        ),
+                                          ),
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                            color: Color(0xff008B51),
+                                          )),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
                                         ),
                                         const SizedBox(
                                           width: 10,
@@ -107,18 +110,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Container(
-                                                  constraints: const BoxConstraints(maxWidth: 220),
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                          maxWidth: 220),
                                                   child: Text(
                                                     controller.user.fullName
                                                         .toString(),
                                                     style: const TextStyle(
                                                       fontSize: 22,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: Color(0xff181725),
                                                       letterSpacing: .8,
                                                     ),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                   ),
                                                 ),
@@ -128,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                          const EditUserDataScreen()),
+                                                              const EditUserDataScreen()),
                                                     );
                                                   },
                                                   child: const SizedBox(
@@ -137,13 +143,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       child: Icon(
                                                         Icons.edit_outlined,
                                                         color:
-                                                        Color(0xFF53B175),
+                                                            Color(0xFF53B175),
                                                         size: 24,
                                                       )),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(height: 4,),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
                                             Text(
                                               "+${controller.user.phone.toString()}",
                                               style: const TextStyle(
@@ -186,56 +194,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                      userLoggedIn ? const Divider(
-                        thickness: 1.6,
-                      ) : Container(),
-                      userLoggedIn ? InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AdScreen()),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  SvgPicture.asset("assets/icons/Orders.svg"),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  const Text("E’lonlarim",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff181725)))
-                                ],
+                      userLoggedIn
+                          ? const Divider(
+                              thickness: 1.6,
+                            )
+                          : Container(),
+                      userLoggedIn
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AdScreen()),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 14),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            "assets/icons/Orders.svg"),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        const Text("E’lonlarim",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff181725)))
+                                      ],
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const AdScreen()),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                            Icons.arrow_forward_ios_rounded))
+                                  ],
+                                ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdScreen()),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                      Icons.arrow_forward_ios_rounded))
-                            ],
-                          ),
-                        ),
-                      ) : Container(),
+                            )
+                          : Container(),
                       const Divider(
                         thickness: 1.6,
                       ),
                       InkWell(
                         onTap: () {
-                          launch("https://t.me/D34th5hot");
+                          launch(ApiEndPoints.authEndPoints.telegramBotUrl);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 14),
@@ -257,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               IconButton(
                                   onPressed: () {
-                                    launch("https://t.me/D34th5hot");
+                                    launch(ApiEndPoints.authEndPoints.telegramBotUrl);
                                   },
                                   icon: const Icon(
                                       Icons.arrow_forward_ios_rounded))
@@ -305,8 +319,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                   icon: const Icon(
                                       Icons.arrow_forward_ios_rounded)),
-
-
                             ],
                           ),
                         ),
@@ -314,97 +326,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Divider(
                         thickness: 1.6,
                       ),
-                      TextButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const StartScreen()));
-                      }, child: Text("Start Screen")),
-                      TextButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const CheckCode()));
-                      }, child: Text("Check code"))
                     ],
                   );
                 }),
-                userLoggedIn ? GestureDetector(
-                  onTap: () {
-                    if (Platform.isAndroid) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("Tizimdan chiqmoqchimisiz"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Yo\'q'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                final SharedPreferences prefs = await _prefs;
-                                prefs.clear();
-                                prefs.setBool('isLoggedIn', false);
-                                await likeController.deleteAllLikedData();
-                                getUserDataController.deleteUserData();
-                                Get.offAll(() => const MyHomePage());
-
-
-                              },
-                              child: const Text('Ha'),
-                            )
-                          ],
+                userLoggedIn
+                    ? GestureDetector(
+                        onTap: () {
+                          if (Platform.isAndroid) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Tizimdan chiqmoqchimisiz"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Yo\'q'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      final SharedPreferences prefs =
+                                          await _prefs;
+                                      prefs.clear();
+                                      prefs.setBool('isLoggedIn', false);
+                                      await likeController.deleteAllLikedData();
+                                      getUserDataController.deleteUserData();
+                                      Get.offAll(() => const MyHomePage());
+                                    },
+                                    child: const Text('Ha'),
+                                  )
+                                ],
+                              ),
+                            );
+                          } else {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: const Text("Parolni tiklamoqchimisiz"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Yo\'q'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      final SharedPreferences prefs =
+                                          await _prefs;
+                                      prefs.clear();
+                                      prefs.setBool('isLoggedIn', false);
+                                      await likeController.deleteAllLikedData();
+                                      getUserDataController.deleteUserData();
+                                      Get.offAll(() => const MyHomePage());
+                                    },
+                                    child: const Text('Ha'),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          decoration: BoxDecoration(
+                              color: const Color(0xffF2F3F2),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset("assets/icons/exit.svg"),
+                              const Text(
+                                "Chiqish",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff53B175)),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                            ],
+                          ),
                         ),
-                      );
-                    } else {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) => CupertinoAlertDialog(
-                          title: const Text("Parolni tiklamoqchimisiz"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Yo\'q'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                final SharedPreferences prefs = await _prefs;
-                                prefs.clear();
-                                prefs.setBool('isLoggedIn', false);
-                                await likeController.deleteAllLikedData();
-                                getUserDataController.deleteUserData();
-                                Get.offAll(() => const MyHomePage());
-                              },
-                              child: const Text('Ha'),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    decoration: BoxDecoration(
-                        color: const Color(0xffF2F3F2),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset("assets/icons/exit.svg"),
-                        const Text(
-                          "Chiqish",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff53B175)),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                      ],
-                    ),
-                  ),
-                ) : Container(),
+                      )
+                    : Container(),
               ],
             ),
           );

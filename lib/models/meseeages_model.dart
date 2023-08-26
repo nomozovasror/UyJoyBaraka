@@ -33,7 +33,7 @@ class MessagesList {
   String? createdAt;
   String? updatedAt;
   String? chatId;
-  Null? chatChatId;
+  Null chatChatId;
 
   MessagesList(
       {this.messageId,

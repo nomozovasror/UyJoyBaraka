@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -25,13 +26,15 @@ class UpdatePostController extends GetxController {
 
 
   Future<void> pickImagesFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     List<XFile>? pickedFiles;
 
     try {
-      pickedFiles = await _picker.pickMultiImage(); // Use pickMultiImage() for multi-image selection
+      pickedFiles = await picker.pickMultiImage(); // Use pickMultiImage() for multi-image selection
     } catch (e) {
-      print('Error while picking the images: $e');
+      if (kDebugMode) {
+        print('Error while picking the images: $e');
+      }
     }
 
     if (pickedFiles != null) {
@@ -46,7 +49,7 @@ class UpdatePostController extends GetxController {
     }
   }
 
-  Future<void> updatePost(String ijaravalue, String viloyat, String tuman, String valyuta, String announcement_id) async {
+  Future<void> updatePost(String ijaravalue, String viloyat, String tuman, String valyuta, String announcementId) async {
     try {
       final SharedPreferences prefs = await _prefs;
       var headers = {
@@ -70,7 +73,7 @@ class UpdatePostController extends GetxController {
       request.fields['price'] = priceController.text;
       request.fields['price_type'] = valyuta.toString();
       request.fields['phone'] = phoneController.text;
-      request.fields['announcement_id'] = announcement_id.toString();
+      request.fields['announcement_id'] = announcementId.toString();
 
 
       for (int i = 0; i < selectedImages!.length; i++) {

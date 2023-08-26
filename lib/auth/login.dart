@@ -100,6 +100,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 )),
           ),
           TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Iltimos ism va familyangizni kiriting";
+              }
+              return null;
+            },
             controller: registerationController.nameController,
           ),
           const SizedBox(
@@ -214,7 +220,7 @@ class _AuthScreenState extends State<AuthScreen> {
             height: 55,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(19),
-                color: Color(0xff008b51)),
+                color: const Color(0xff008b51)),
             child: TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {

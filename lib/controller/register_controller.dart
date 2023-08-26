@@ -18,7 +18,7 @@ class RegisterationController extends GetxController {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<void> sendCode() async{
+  Future<void> sendCode() async {
     try {
       var headerss = {
         'Content-Type': 'application/json',
@@ -28,8 +28,8 @@ class RegisterationController extends GetxController {
       Map bodyy = {
         "phone": "998${loginController.phoneController.text}",
       };
-      http.Response responsee = await http.post(urlTwo,
-          headers: headerss, body: json.encode(bodyy));
+      http.Response responsee =
+          await http.post(urlTwo, headers: headerss, body: json.encode(bodyy));
       if (responsee.statusCode == 200) {
         final jsonResponsee = jsonDecode(responsee.body);
         if (jsonResponsee['ok'] == true) {
@@ -38,8 +38,7 @@ class RegisterationController extends GetxController {
             print(jsonResponsee['massage'].toString());
           }
           final SharedPreferences prefs = await _prefs;
-          await prefs.setString(
-              'code_validation_id', codeValidationId);
+          await prefs.setString('code_validation_id', codeValidationId);
         } else {
           throw jsonResponsee['message'] ?? 'Xato';
         }
@@ -47,7 +46,6 @@ class RegisterationController extends GetxController {
         throw jsonDecode(responsee.body)['message'] ?? 'Xato';
       }
     } catch (e) {
-      print(e.toString());
       if (kDebugMode) {
         print(e);
       }
@@ -91,14 +89,12 @@ class RegisterationController extends GetxController {
             if (responsee.statusCode == 200) {
               final jsonResponsee = jsonDecode(responsee.body);
               if (jsonResponsee['ok'] == true) {
-                var code = jsonResponsee['code'];
                 var codeValidationId = jsonResponsee['codeValidationId'];
                 if (kDebugMode) {
                   print(jsonResponsee['massage'].toString());
                 }
                 final SharedPreferences prefs = await _prefs;
-                await prefs.setString(
-                    'code_validation_id', codeValidationId);
+                await prefs.setString('code_validation_id', codeValidationId);
                 Get.off(() => const CheckCode());
               } else {
                 throw jsonResponsee['message'] ?? 'Xato';

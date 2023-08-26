@@ -1,27 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class EditPhoneController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-
-
-
-  Future<void>editPhone() async {
+  Future<void> editPhone() async {
     try {
       var headers = {
         'Content-Type': 'application/json',
@@ -35,7 +26,7 @@ class EditPhoneController extends GetxController {
       };
 
       http.Response response =
-      await http.post(url, headers: headers, body: json.encode(body));
+          await http.post(url, headers: headers, body: json.encode(body));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -52,8 +43,10 @@ class EditPhoneController extends GetxController {
             Map body = {
               "phone": phoneController.text,
             };
-            var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.editUserPhone);
-            http.Response response = await http.patch(url, headers: headers, body: json.encode(body));
+            var url = Uri.parse(ApiEndPoints.BASE_URL +
+                ApiEndPoints.authEndPoints.editUserPhone);
+            http.Response response = await http.patch(url,
+                headers: headers, body: json.encode(body));
 
             if (response.statusCode == 200) {
               final jsonResponse = jsonDecode(response.body);
@@ -67,7 +60,8 @@ class EditPhoneController extends GetxController {
                   backgroundColor: Colors.green,
                   forwardAnimationCurve: Curves.ease,
                   colorText: Colors.white,
-                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                  margin:
+                      const EdgeInsets.only(bottom: 10, left: 10, right: 10),
                   duration: const Duration(milliseconds: 2000),
                   animationDuration: const Duration(milliseconds: 500),
                 );
@@ -82,7 +76,7 @@ class EditPhoneController extends GetxController {
               }
             }
           } catch (e) {
-            if(kDebugMode){
+            if (kDebugMode) {
               print(e.toString());
             }
           }
@@ -103,7 +97,6 @@ class EditPhoneController extends GetxController {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
     } catch (e) {
-      print(e.toString());
       showDialog(
         context: Get.context!,
         builder: (context) {
@@ -120,7 +113,7 @@ class EditPhoneController extends GetxController {
     }
   }
 
-  Future<void>editName() async {
+  Future<void> editName() async {
     try {
       final SharedPreferences prefs = await _prefs;
       var headers = {
@@ -136,7 +129,7 @@ class EditPhoneController extends GetxController {
       };
 
       http.Response response =
-      await http.patch(url, headers: headers, body: json.encode(body));
+          await http.patch(url, headers: headers, body: json.encode(body));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -185,5 +178,4 @@ class EditPhoneController extends GetxController {
       );
     }
   }
-
 }

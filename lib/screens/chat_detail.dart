@@ -6,7 +6,6 @@ import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/controller/send_message.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
-import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/models/get_all_chats_model.dart';
 import 'package:uy_joy_baraka/models/meseeages_model.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -100,81 +99,80 @@ class _ChatDetailState extends State<ChatDetail> {
             ),
             body: Column(
               children: [
-                Container(
-                    child: Column(
+                Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      '${ApiEndPoints.BASE_URL}${widget.members.user!.avatar}')),
-                              const SizedBox(width: 10),
-                              Text(
-                                widget.members.user!.fullName.toString(),
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w300),
-                              )
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: "Chatni o'chirish",
-                                content: const Text(
-                                    "Chatni o'chirishni xohlaysizmi?"),
-                                textCancel: "Yo'q",
-                                textConfirm: "Ha",
-                                confirmTextColor: Colors.white,
-                                cancelTextColor: Colors.red,
-                                buttonColor: Colors.red,
-                                onConfirm: () {
-                                  Navigator.pop(context);
-                                  getMessagesController.deleteChat(widget.members.chatId.toString());
-                                  setState(() {
-                                    Get.find<GetAllChatsController>().getAllChats();
-                                    Get.close(0);
-                                  });
-                                },
-                              );
-                            },
-                            child: Row(
-                              children: [
-                                SvgPicture.asset('assets/icons/trash.svg'),
-                                const Text(
-                                  " Chatni o'chirish",
-                                  style: TextStyle(
-                                      color: Color(0xFFFF0000), fontSize: 16),
-                                )
-                              ],
-                            ),
+                          CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  '${ApiEndPoints.BASE_URL}${widget.members.user!.avatar}')),
+                          const SizedBox(width: 10),
+                          Text(
+                            widget.members.user!.fullName.toString(),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w300),
                           )
                         ],
                       ),
-                    ),
-                    const Divider(
-                      height: 0,
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.members.post!.title.toString(),
-                        style: TextStyle(color: Colors.grey[700]),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const Divider(
-                      height: 0,
-                      thickness: 1,
-                    ),
+                      InkWell(
+                        onTap: () {
+                          Get.defaultDialog(
+                            title: "Chatni o'chirish",
+                            content: const Text(
+                                "Chatni o'chirishni xohlaysizmi?"),
+                            textCancel: "Yo'q",
+                            textConfirm: "Ha",
+                            confirmTextColor: Colors.white,
+                            cancelTextColor: Colors.red,
+                            buttonColor: Colors.red,
+                            onConfirm: () {
+                              Navigator.pop(context);
+                              getMessagesController.deleteChat(widget.members.chatId.toString());
+                              setState(() {
+                                Get.find<GetAllChatsController>().getAllChats();
+                                Get.close(0);
+                              });
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset('assets/icons/trash.svg'),
+                            const Text(
+                              " Chatni o'chirish",
+                              style: TextStyle(
+                                  color: Color(0xFFFF0000), fontSize: 16),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Divider(
+                  height: 0,
+                  thickness: 1,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.members.post!.title.toString(),
+                    style: TextStyle(color: Colors.grey[700]),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const Divider(
+                  height: 0,
+                  thickness: 1,
+                ),
                   ],
-                )),
+                ),
                 Expanded(
                     child: StreamBuilder<List<MessagesList>>(
                   stream: getMessagesController.messageStream,

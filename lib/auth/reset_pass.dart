@@ -71,9 +71,7 @@ class _ResetPassState extends State<ResetPass> {
                       setState(() {
                         _codeReset = value;
                       });
-                      print(_codeReset);
                       resetCodeCheckController.resetCheckCode(_codeReset!);
-
                     },
                     onEditing: (bool value) {
                       setState(() {

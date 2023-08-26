@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/user_model.dart';
 
 class GetUserDataController extends GetxController {
@@ -29,6 +27,7 @@ class GetUserDataController extends GetxController {
     getUserData();
     super.onInit();
   }
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> getUserData() async {
@@ -42,9 +41,7 @@ class GetUserDataController extends GetxController {
         'authorization': prefs.getString('token').toString(),
       };
 
-      http.Response response = await http.get(
-        url,headers: headers
-      );
+      http.Response response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
 
@@ -58,7 +55,8 @@ class GetUserDataController extends GetxController {
           confirm: jsonData['user']['confirm'],
           status: jsonData['user']['status'],
           createdAt: jsonData['user']['created_at'],
-          updatedAt: jsonData['user']['updated_at'],);
+          updatedAt: jsonData['user']['updated_at'],
+        );
         update();
         var userId = jsonData['user']['user_id'];
         await prefs.setString('userId', userId);
@@ -101,7 +99,10 @@ class GetUserDataController extends GetxController {
                         },
                         child: const Text('Qayta urinib ko\'rish'),
                       ),
-                      Text(e.toString(), style: const TextStyle(fontSize: 6, color: Colors.grey),)
+                      Text(
+                        e.toString(),
+                        style: const TextStyle(fontSize: 6, color: Colors.grey),
+                      )
                     ],
                   ))
             ],
@@ -111,7 +112,7 @@ class GetUserDataController extends GetxController {
     }
   }
 
-  deleteUserData(){
+  deleteUserData() {
     user = User(
       userId: '',
       fullName: '',

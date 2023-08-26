@@ -202,7 +202,6 @@ class GetInactivePostController extends GetxController {
       );
     }
     catch (e) {
-      print(e.toString());
       showDialog(
           context: Get.context!,
           builder: (context) {

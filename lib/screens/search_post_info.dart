@@ -5,10 +5,7 @@ import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -16,11 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uy_joy_baraka/controller/chat_info_send_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
-import 'package:uy_joy_baraka/models/liked_posts.dart';
-import 'package:uy_joy_baraka/pages/saved.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
-
-import '../main.dart';
 import '../models/search_model.dart';
 
 class SearchInfoScreen extends StatefulWidget {

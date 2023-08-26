@@ -51,11 +51,8 @@ class _StartScreenState extends State<StartScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                  AnimatedAlign(
-                    curve: Curves.easeInOut,
-                    alignment: currentIndex == 0
-                        ? const Alignment(7, 0)
-                        : Alignment.center,
+                  AnimatedOpacity(
+                    opacity: currentIndex == 0 ? 0 : 1,
                     duration: const Duration(milliseconds: 500),
                     child: const Text(
                       "Xush kelibsiz\nUy joy baraka",
@@ -96,7 +93,8 @@ class _StartScreenState extends State<StartScreen> {
                         ? const Text('')
                         : InkWell(
                             onTap: () async {
-                              final prefs = await SharedPreferences.getInstance();
+                              final prefs =
+                                  await SharedPreferences.getInstance();
                               prefs.setBool('isFirst', true);
                               Get.offAll(const MyHomePage());
                             },

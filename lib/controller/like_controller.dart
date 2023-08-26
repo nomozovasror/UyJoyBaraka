@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,13 +10,11 @@ import 'package:http/http.dart' as http;
 import 'package:uy_joy_baraka/utils/local_storage_service.dart';
 
 class LikeController extends GetxController {
-
   final RxList<LikeModel> _likedPosts = RxList<LikeModel>([]);
   List<LikeModel> get likedPosts => _likedPosts.toList();
   List<String> _likedPostIds = [];
 
   List<String> get likedPostIds => _likedPostIds;
-
 
   @override
   void onInit() {
@@ -32,24 +31,25 @@ class LikeController extends GetxController {
   }
 
   Future<void> like(String announcementId) async {
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
 
     try {
       var url = Uri.parse(
           "${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.likeCounter}$announcementId/like");
 
-      final SharedPreferences prefs = await _prefs;
+      final SharedPreferences prefs = await prefs0;
       var headers = {
         'authorization': prefs.getString('token') ?? '',
       };
 
       http.Response jsonResponse = await http.patch(url, headers: headers);
-
+      if (kDebugMode) {
+        print(jsonResponse.body);
+      }
       _likedPostIds.add(announcementId);
 
       await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
-      print(e.toString());
       showDialog(
         context: Get.context!,
         builder: (context) {
@@ -67,19 +67,21 @@ class LikeController extends GetxController {
   }
 
   Future<void> unlike(String announcementId) async {
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
 
     try {
       var url = Uri.parse(
           "${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.likeCounter}$announcementId/unlike");
 
-      final SharedPreferences prefs = await _prefs;
+      final SharedPreferences prefs = await prefs0;
       var headers = {
         'authorization': prefs.getString('token') ?? '',
       };
 
       http.Response jsonResponse = await http.patch(url, headers: headers);
-
+      if (kDebugMode) {
+        print(jsonResponse.body);
+      }
       _likedPostIds.remove(announcementId);
       await LocalStorageService.storeLikedPostIds(_likedPostIds);
     } catch (e) {
@@ -103,14 +105,14 @@ class LikeController extends GetxController {
   List<LikeModel> allLikedPost = [];
 
   getAllLikedPosts() async {
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
 
     try {
       loadLike.value = true;
       var url = Uri.parse(
           ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.getLikedPosts);
 
-      final SharedPreferences prefs = await _prefs;
+      final SharedPreferences prefs = await prefs0;
       var headers = {
         'Content-Type': 'application/json',
         'authorization': prefs.getString('token') ?? '',
@@ -129,8 +131,7 @@ class LikeController extends GetxController {
       }
     } on RangeError {
       loadLike.value = false;
-    }
-    catch (e) {
+    } catch (e) {
       showDialog(
         context: Get.context!,
         builder: (context) {
@@ -154,7 +155,7 @@ class LikeController extends GetxController {
 
       // Store the liked posts locally using shared preferences
       List<String> likedPostIds =
-      likedPosts.map((post) => post.announcementId!).toList();
+          likedPosts.map((post) => post.announcementId!).toList();
       await LocalStorageService.storeLikedPostIds(likedPostIds);
     } catch (e) {
       // Handle any errors that may occur during the fetch and store process
@@ -166,7 +167,6 @@ class LikeController extends GetxController {
     return likedPostIds.contains(postId);
   }
 
-
   void removeLikedPost(String postId) {
     allLikedPost.removeWhere((post) => post.announcementId == postId);
   }
@@ -175,14 +175,14 @@ class LikeController extends GetxController {
     await LocalStorageService.storeLikedPostIds([]);
     _likedPostIds.clear();
     _likedPosts.clear();
-
   }
 
   Future<void> restoreLikedDataFromAPI() async {
     try {
       await getAllLikedPosts();
 
-      List<String> likedPostIds = allLikedPost.map((post) => post.announcementId!).toList();
+      List<String> likedPostIds =
+          allLikedPost.map((post) => post.announcementId!).toList();
 
       await LocalStorageService.storeLikedPostIds(likedPostIds);
 
@@ -192,7 +192,4 @@ class LikeController extends GetxController {
       // You can show an error message or take appropriate actions here
     }
   }
-
-
-
 }

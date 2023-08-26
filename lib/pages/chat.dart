@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/screens/chat_detail.dart';
@@ -25,11 +26,25 @@ class _ChatScreenState extends State<ChatScreen> {
     return timeSliced.toString();
   }
 
+  void checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    if (isLoggedIn) {
+      getAllChatsController.getAllChats();
+    }
+  }
+  Future<bool> checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    return isLoggedIn;
+  }
+
   @override
   void initState() {
     super.initState();
-    getAllChatsController.getAllChats();
+    checkLoginStatus();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Lottie.asset('assets/lottie/chat.json', width: 200, height: 200),
                 const SizedBox(height: 10,),
-                const Text("Yozishmalar topilmadi", style: TextStyle(color: Colors.grey, fontSize: 20),)
+                 Text("Yozishmalar topilmadi", style: TextStyle(color: Colors.grey, fontSize: 20),)
               ],
             )
           );

@@ -11,7 +11,6 @@ import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class GetAllChatsController extends GetxController {
-
   var loadItem = true.obs;
   List<Members> allChat = [];
   var page = 1.obs;
@@ -19,23 +18,23 @@ class GetAllChatsController extends GetxController {
 
   var isEmptyCheck = false.obs;
 
-
   @override
   void onInit() {
     getAllChats();
     super.onInit();
   }
 
-
   getAllChats() async {
     try {
       loadItem.value = true;
-      var url = Uri.parse('${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}');
+      var url = Uri.parse(
+          '${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getChats}');
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       http.Response response = await http.get(
         url,
-        headers: {'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'authorization': prefs.getString('token') ?? '',
         },
       );
@@ -46,10 +45,9 @@ class GetAllChatsController extends GetxController {
           allChat = (responseJson['members'] as List)
               .map((e) => Members.fromJson(e))
               .toList();
-          print(allChat);
           if (allChat.isEmpty) {
             isEmptyCheck.value = true;
-          }else{
+          } else {
             isEmptyCheck.value = false;
           }
           update();
@@ -59,7 +57,7 @@ class GetAllChatsController extends GetxController {
       } else {
         throw jsonDecode(response.body)['message'] ?? 'Xato';
       }
-    } on SocketException catch(e){
+    } on SocketException catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -68,10 +66,15 @@ class GetAllChatsController extends GetxController {
         context: Get.context!,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: const Column(children: [
-              Text('Sizda internet mavjud emas'),
-              Text("Yoki server bilan bog'lanishda xatolik yuz berdi", style: TextStyle(fontSize: 12, color: Colors.grey),)
-            ],),
+            title: const Column(
+              children: [
+                Text('Sizda internet mavjud emas'),
+                Text(
+                  "Yoki server bilan bog'lanishda xatolik yuz berdi",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                )
+              ],
+            ),
             children: [
               SimpleDialogOption(
                   padding: EdgeInsets.zero,
@@ -80,7 +83,11 @@ class GetAllChatsController extends GetxController {
                       SizedBox(
                         width: 200,
                         height: 200,
-                        child: Lottie.asset("assets/lottie/internet_error.json", height: 200, options: LottieOptions(enableMergePaths: true,)),
+                        child: Lottie.asset("assets/lottie/internet_error.json",
+                            height: 200,
+                            options: LottieOptions(
+                              enableMergePaths: true,
+                            )),
                       ),
                       TextButton(
                         onPressed: () {
@@ -90,33 +97,18 @@ class GetAllChatsController extends GetxController {
                         child: const Text('Qayta urinib ko\'rish'),
                       )
                     ],
-                  )
-              )
+                  ))
             ],
           );
         },
       );
-    }
-    catch (e) {
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Xato'),
-              children: [
-                SimpleDialogOption(
-                  child: Text(e.toString()),
-                )
-              ],
-            );
-          });
-    }finally {
+    } finally {
       loadItem.value = false;
       update();
     }
   }
-
 }

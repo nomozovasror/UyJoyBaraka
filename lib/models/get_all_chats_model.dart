@@ -128,7 +128,7 @@ class Message {
   String? createdAt;
   String? updatedAt;
   String? chatId;
-  Null? chatChatId;
+  Null chatChatId;
 
   Message(
       {this.messageId,

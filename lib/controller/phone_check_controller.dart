@@ -9,10 +9,9 @@ import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 
-
 class CodeCheckController extends GetxController {
-
-  GetUserDataController getUserDataController = Get.put(GetUserDataController());
+  GetUserDataController getUserDataController =
+      Get.put(GetUserDataController());
   LoginController loginController = Get.put(LoginController());
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -26,17 +25,18 @@ class CodeCheckController extends GetxController {
         'Content-Type': 'application/json',
         'code-validation-id': prefs.getString('code_validation_id') ?? '',
       };
-      var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.checkCode);
+      var url = Uri.parse(
+          ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.checkCode);
       Map body = {
         "code": code.toString(),
       };
-      print(code.toString());
 
-      http.Response response = await http.post(url, headers: headers, body: json.encode(body));
+      http.Response response =
+          await http.post(url, headers: headers, body: json.encode(body));
 
-      if (response.statusCode == 201){
+      if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
-        if (json['ok'] == true){
+        if (json['ok'] == true) {
           var token = json['token'];
           final SharedPreferences prefs = await _prefs;
           await prefs.setString('token', token);
@@ -45,27 +45,29 @@ class CodeCheckController extends GetxController {
           loginController.phoneController.clear();
           loginController.passwordController.clear();
           TextEditingController().clear();
-          Get.offAll(()=> const MyHomePage());
+          Get.offAll(() => const MyHomePage());
           getUserDataController.getUserData();
-        }else{
+        } else {
           throw jsonDecode(response.body)['message'] ?? 'Error';
         }
-      }else{
+      } else {
         throw jsonDecode(response.body)['message'] ?? 'Error';
       }
     } catch (e) {
       loading.value = false;
-      showDialog(context: Get.context!, builder: (context){
-        return SimpleDialog(
-          title: const Text('Error'),
-          children: [
-            SimpleDialogOption(
-              child: Text(e.toString()),
-            )
-          ],
-        );
-      });
-    }finally{
+      showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Error'),
+              children: [
+                SimpleDialogOption(
+                  child: Text(e.toString()),
+                )
+              ],
+            );
+          });
+    } finally {
       loading.value = false;
     }
   }

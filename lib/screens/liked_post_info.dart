@@ -5,10 +5,7 @@ import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -17,10 +14,7 @@ import 'package:uy_joy_baraka/controller/chat_info_send_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/models/liked_posts.dart';
-import 'package:uy_joy_baraka/pages/saved.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
-
-import '../main.dart';
 
 class LikedInfoScreen extends StatefulWidget {
   final LikeModel allData;
@@ -41,6 +35,7 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
     String timeSliced = time.substring(0, 10);
     return timeSliced.toString();
   }
+
   bool isLiked = false;
 
   Future<void> _toggleLikeStatus(String postId) async {
@@ -55,8 +50,7 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
   Future<void> _likePost(String postId) async {
     await likeController.like(postId);
     await likeController.fetchAndStoreLikedPosts();
-    await likeController
-        .getAllLikedPosts();
+    await likeController.getAllLikedPosts();
     likeController.updateLikedPosts(likeController.allLikedPost);
   }
 
@@ -87,7 +81,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  InChatMessageController inChatMessageController = Get.put(InChatMessageController());
+  InChatMessageController inChatMessageController =
+      Get.put(InChatMessageController());
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +117,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                   itemCount: widget.allData.announcementThumb!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                        final imgL = ApiEndPoints.BASE_URL + widget.allData.announcementThumb![index].toString();
+                    final imgL = ApiEndPoints.BASE_URL +
+                        widget.allData.announcementThumb![index].toString();
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(
@@ -130,8 +126,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xff008B51),
-                            )),
+                          color: Color(0xff008B51),
+                        )),
                         errorWidget: (context, url, error) => const Icon(
                           Icons.error,
                           color: Colors.red,
@@ -152,10 +148,9 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                           dotColor: Colors.white),
                     ))
               ]),
-
               Container(
                 margin:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -171,11 +166,14 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                           size: 16,
                           color: Color(0xff666666),
                         ),
-                        Text(widget.allData.announcementViewCount.toString(),
+                        Text(
+                          widget.allData.announcementViewCount.toString(),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),),),
+                            color: Color(0xff666666),
+                          ),
+                        ),
                       ],
                     ),
                     Padding(
@@ -184,51 +182,59 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                           future: getLoginStatus(),
                           builder: (context, snapshot) {
                             bool userLoggedIn = snapshot.data ?? false;
-                        return LikeButton(
-                          size: 20,
-                          circleColor: const CircleColor(
-                              start: Color(0xff00ddff),
-                              end: Color(0xff0099cc)),
-                          bubblesColor: const BubblesColor(
-                            dotPrimaryColor: Color(0xff33b5e5),
-                            dotSecondaryColor: Color(0xff0099cc),
-                          ),
-                          likeBuilder: (bool isLiked) {
-                            return Icon(
-                              likeController.isPostLiked(widget.allData.announcementId!) ? Icons.favorite : Icons.favorite_border,
-                              color: const  Color(0xffFF8D08),
-                              size: 26,
-                            );
-                          },
-                          onTap: userLoggedIn ? (isLiked) async {
-                            this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
-                            _toggleLikeStatus(widget.allData.announcementId!);
-                            return !isLiked;
-                          } : (isLiked) async {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                duration: Duration(
-                                    milliseconds: 1500),
-                                content: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.heart_broken_outlined,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                        "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
-                                  ],
-                                ),
-                                backgroundColor:
-                                Color(0xffFF8D08),
+                            return LikeButton(
+                              size: 20,
+                              circleColor: const CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: const BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
                               ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  likeController.isPostLiked(
+                                          widget.allData.announcementId!)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: const Color(0xffFF8D08),
+                                  size: 26,
+                                );
+                              },
+                              onTap: userLoggedIn
+                                  ? (isLiked) async {
+                                      this.isLiked = likeController.isPostLiked(
+                                          widget.allData.announcementId!);
+                                      _toggleLikeStatus(
+                                          widget.allData.announcementId!);
+                                      return !isLiked;
+                                    }
+                                  : (isLiked) async {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          duration:
+                                              Duration(milliseconds: 1500),
+                                          content: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.heart_broken_outlined,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                  "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                            ],
+                                          ),
+                                          backgroundColor: Color(0xffFF8D08),
+                                        ),
+                                      );
+                                      return !isLiked;
+                                    },
                             );
-                            return !isLiked;
-                          },
-                        ); }
-                      ),
+                          }),
                     ),
                   ],
                 ),
@@ -237,7 +243,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text("${widget.allData.announcementPrice.toString()} ${widget.allData.announcementPriceType == 'dollar' ? '\$' : 'so\'m'}",
+                    child: Text(
+                        "${widget.allData.announcementPrice.toString()} ${widget.allData.announcementPriceType == 'dollar' ? '\$' : 'so\'m'}",
                         style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -278,30 +285,30 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: inChatMessageController.messageController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Xabar yozilmagan";
-                    }
-                    return null;
-                  },
-                  maxLines: 8,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          )),
-                      filled: true,
-                      fillColor: const Color(0xffF1F1F1),
-                      hintText: "Uy egasiga yozish",
-                      hintStyle: const TextStyle(
-                          color: Color(0xffABABAB), fontSize: 14)),
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: inChatMessageController.messageController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Xabar yozilmagan";
+                      }
+                      return null;
+                    },
+                    maxLines: 8,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            )),
+                        filled: true,
+                        fillColor: const Color(0xffF1F1F1),
+                        hintText: "Uy egasiga yozish",
+                        hintStyle: const TextStyle(
+                            color: Color(0xffABABAB), fontSize: 14)),
+                  ),
                 ),
-              ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -311,7 +318,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          launch("tel:+${widget.allData.announcementPhone.toString()}");
+                          launch(
+                              "tel:+${widget.allData.announcementPhone.toString()}");
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff008B51),
@@ -338,52 +346,55 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                     ),
                     Expanded(
                         child: FutureBuilder<bool>(
-                          future: getLoginStatus(),
-                          builder: (context, snapshot){
-                            bool userLoggedIn = snapshot.data ?? false;
-                            return ElevatedButton(
-                              onPressed: userLoggedIn ? () {
-                                if (
-                                _formKey.currentState!
-                                    .validate()) {
-                                  inChatMessageController.inChatMessage( widget.allData.userId!,
-                                      widget.allData.announcementId!);
+                      future: getLoginStatus(),
+                      builder: (context, snapshot) {
+                        bool userLoggedIn = snapshot.data ?? false;
+                        return ElevatedButton(
+                          onPressed: userLoggedIn
+                              ? () {
+                                  if (_formKey.currentState!.validate()) {
+                                    inChatMessageController.inChatMessage(
+                                        widget.allData.userId!,
+                                        widget.allData.announcementId!);
+                                  }
                                 }
-                              } : (){
-                                Get.snackbar(
-                                  "Siz tizimga kirmagansiz",
-                                  "Xabar yozish uchun iltimos tizimga kiring",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: const Color(0xFFFF8D08),
-                                  forwardAnimationCurve: Curves.ease,
-                                  colorText: Colors.white,
-                                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                                  duration: const Duration(milliseconds: 2000),
-                                  animationDuration: const Duration(milliseconds: 500),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xffFF8D08),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6),
+                              : () {
+                                  Get.snackbar(
+                                    "Siz tizimga kirmagansiz",
+                                    "Xabar yozish uchun iltimos tizimga kiring",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: const Color(0xFFFF8D08),
+                                    forwardAnimationCurve: Curves.ease,
+                                    colorText: Colors.white,
+                                    margin: const EdgeInsets.only(
+                                        bottom: 10, left: 10, right: 10),
+                                    duration:
+                                        const Duration(milliseconds: 2000),
+                                    animationDuration:
+                                        const Duration(milliseconds: 500),
+                                  );
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xffFF8D08),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Yuborish ",
+                                style: TextStyle(fontSize: 14),
                               ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Yuborish ",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  Icon(
-                                    Icons.send_outlined,
-                                    size: 20,
-                                  ),
-                                ],
+                              Icon(
+                                Icons.send_outlined,
+                                size: 20,
                               ),
-                            );
-                          },
-                        )
-                    )
+                            ],
+                          ),
+                        );
+                      },
+                    ))
                   ],
                 ),
               ),
@@ -395,8 +406,15 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(ApiEndPoints.BASE_URL + widget.allData.announcementAvatar
-                            .toString().replaceAll("https", "http",),),
+                        backgroundImage: NetworkImage(
+                          ApiEndPoints.BASE_URL +
+                              widget.allData.announcementAvatar
+                                  .toString()
+                                  .replaceAll(
+                                    "https",
+                                    "http",
+                                  ),
+                        ),
                         radius: 30,
                       ),
                       const SizedBox(
@@ -413,8 +431,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xff898989)),
                           ),
-
-                          Text("${timeSlicer(widget.allData.createdAt.toString())} dan beri",
+                          Text(
+                              "${timeSlicer(widget.allData.createdAt.toString())} dan beri",
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
