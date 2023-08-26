@@ -27,7 +27,8 @@ class _SearchScreenState extends State<SearchScreen> {
   GetSearchItemController getSearchItemController =
       Get.put(GetSearchItemController());
   LikeController likeController = Get.put(LikeController());
-  ViewCounterController viewCounterController = Get.put(ViewCounterController());
+  ViewCounterController viewCounterController =
+      Get.put(ViewCounterController());
 
   bool isLiked = false;
 
@@ -40,22 +41,23 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 // Function to perform like operation
-Future<void> _likePost(String postId) async {
-  await likeController.like(postId);
-  await likeController.fetchAndStoreLikedPosts();
-  await likeController
-      .getAllLikedPosts(); // Fetch the liked posts from the API
-  likeController.updateLikedPosts(likeController.allLikedPost);
-}
+  Future<void> _likePost(String postId) async {
+    await likeController.like(postId);
+    await likeController.fetchAndStoreLikedPosts();
+    await likeController
+        .getAllLikedPosts(); // Fetch the liked posts from the API
+    likeController.updateLikedPosts(likeController.allLikedPost);
+  }
 
-Future<void> _unlikePost(String postId, var index) async {
-  await likeController.unlike(postId);
-  await likeController.fetchAndStoreLikedPosts();
-  await likeController
-      .getAllLikedPosts(); // Fetch the liked posts from the API
-  likeController.updateLikedPosts(likeController.allLikedPost);
-  likeController.removeLikedPost(likeController.allLikedPost[index].announcementId!);
-}
+  Future<void> _unlikePost(String postId, var index) async {
+    await likeController.unlike(postId);
+    await likeController.fetchAndStoreLikedPosts();
+    await likeController
+        .getAllLikedPosts(); // Fetch the liked posts from the API
+    likeController.updateLikedPosts(likeController.allLikedPost);
+    likeController
+        .removeLikedPost(likeController.allLikedPost[index].announcementId!);
+  }
 
   String? ijaravalue = "";
   String? viloyat = "";
@@ -183,7 +185,8 @@ Future<void> _unlikePost(String postId, var index) async {
                             hintText: "Qidirish",
                             suffixIcon: GestureDetector(
                               onTap: () {
-                                getSearchItemController.searchController.clear();
+                                getSearchItemController.searchController
+                                    .clear();
                               },
                               child: const Icon(
                                 Icons.close,
@@ -210,13 +213,15 @@ Future<void> _unlikePost(String postId, var index) async {
                               getSearchItemController.allSearchedPost.clear();
                               getSearchItemController.page.value = 1;
                               setState(() {
-                                getSearchItemController.startSearch.value = true;
+                                getSearchItemController.startSearch.value =
+                                    true;
                               });
                               getSearchItemController.getSearchItem(
-                                  valyuta.toString(),
-                                  viloyat.toString(),
-                                  ijaravalue.toString(),
-                              );},
+                                valyuta.toString(),
+                                viloyat.toString(),
+                                ijaravalue.toString(),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff008B51),
                               shape: RoundedRectangleBorder(
@@ -476,7 +481,6 @@ Future<void> _unlikePost(String postId, var index) async {
                                   color: Colors.white,
                                 )),
                           ),
-
                         ],
                       ),
                     ),
@@ -492,240 +496,231 @@ Future<void> _unlikePost(String postId, var index) async {
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return homeShimmer();
-                        }, staggeredTileBuilder: (int index) =>
-                    const StaggeredTile.fit(1)
-                    );
+                        },
+                        staggeredTileBuilder: (int index) =>
+                            const StaggeredTile.fit(1));
                   } else {
                     return Flexible(
                       child: StaggeredGridView.countBuilder(
                         crossAxisCount: 2,
-                        itemCount: getSearchItemController.allSearchedPost.length,
+                        itemCount:
+                            getSearchItemController.allSearchedPost.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          SearchPosts post = getSearchItemController.allSearchedPost[index];
+                          SearchPosts post =
+                              getSearchItemController.allSearchedPost[index];
                           String postId = post.announcementId ?? '';
-                            // CARD
-                            return InkWell(
-                              onTap: () {
-                                viewCounterController.viewCounter(getSearchItemController
-                                    .allSearchedPost[index].announcementId);
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchInfoScreen(
-                                        allData: getSearchItemController.allSearchedPost[index]),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(
-                                          0, 0), // changes position of shadow
-                                    ),
-                                  ],
+                          // CARD
+                          return InkWell(
+                            onTap: () {
+                              viewCounterController.viewCounter(
+                                  getSearchItemController
+                                      .allSearchedPost[index].announcementId);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => SearchInfoScreen(
+                                      allData: getSearchItemController
+                                          .allSearchedPost[index]),
                                 ),
-                                margin: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8)),
-                                      ),
-                                      height: 200,
-                                      width: double.infinity,
-                                      child: CachedNetworkImage(
-                                        imageUrl: ApiEndPoints.BASE_URL +
-                                            getSearchItemController
-                                                .allSearchedPost[index].thumb![0],
-                                        imageBuilder: (context, imageProvider) =>
-                                            Container(
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                borderRadius: const BorderRadius.only(
-                                                    topLeft: Radius.circular(8),
-                                                    topRight: Radius.circular(8)),
-                                                image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover),
-                                              ),
-                                            ),
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xff008B51),
-                                            )),
-                                        errorWidget: (context, url, error) =>
-                                        const Icon(
-                                          Icons.error,
-                                          color: Colors.red,
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: const Offset(
+                                        0, 0), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8)),
+                                    ),
+                                    height: 200,
+                                    width: double.infinity,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ApiEndPoints.BASE_URL +
+                                          getSearchItemController
+                                              .allSearchedPost[index].thumb![0],
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8)),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover),
                                         ),
                                       ),
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child: CircularProgressIndicator(
+                                        color: Color(0xff008B51),
+                                      )),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SizedBox(
-                                              child: Text(
-                                                "${getSearchItemController.allSearchedPost[index].city}",
-                                                style: const TextStyle(
-                                                    color: Color(0xff666666),
-                                                    overflow: TextOverflow.ellipsis),
-                                              ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 6),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Text(
+                                              "${getSearchItemController.allSearchedPost[index].city}",
+                                              style: const TextStyle(
+                                                  color: Color(0xff666666),
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 6),
-                                            child: FutureBuilder<bool>(
-                                              future: getLoginStatus(),
-                                              builder: (context, snapshot) {
-                                                bool userLoggedIn = snapshot.data ?? false;
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 6),
+                                          child: FutureBuilder<bool>(
+                                            future: getLoginStatus(),
+                                            builder: (context, snapshot) {
+                                              bool userLoggedIn =
+                                                  snapshot.data ?? false;
                                               return LikeButton(
                                                 size: 20,
                                                 circleColor: const CircleColor(
                                                     start: Color(0xff00ddff),
                                                     end: Color(0xff0099cc)),
-                                                bubblesColor: const BubblesColor(
-                                                  dotPrimaryColor: Color(0xff33b5e5),
-                                                  dotSecondaryColor: Color(0xff0099cc),
+                                                bubblesColor:
+                                                    const BubblesColor(
+                                                  dotPrimaryColor:
+                                                      Color(0xff33b5e5),
+                                                  dotSecondaryColor:
+                                                      Color(0xff0099cc),
                                                 ),
                                                 likeBuilder: (bool isLiked) {
                                                   return Icon(
-                                                    likeController.isPostLiked(postId) ? Icons.favorite : Icons.favorite_border,
-                                                    color: const Color(0xffFF8D08),
+                                                    likeController
+                                                            .isPostLiked(postId)
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    color:
+                                                        const Color(0xffFF8D08),
                                                     size: 26,
                                                   );
                                                 },
-                                                onTap: userLoggedIn ? (isLiked) async {
-                                                  this.isLiked = likeController.isPostLiked(postId);
-                                                  _toggleLikeStatus(postId, index);
-                                                  likeController.isPostLiked(postId)
-                                                      ? ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      duration: Duration(
-                                                          milliseconds: 1000),
-                                                      content: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.delete_outline,
-                                                            color: Colors.white,
-                                                          ),
-                                                          Text(
-                                                              "  Saqlanganlardan o'chirildi")
-                                                        ],
-                                                      ),
-                                                      backgroundColor:
-                                                      Color(0xffFF8D08),
-                                                    ),
-                                                  )
-                                                      : ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      duration: Duration(
-                                                          milliseconds: 1000),
-                                                      content: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.favorite,
-                                                            color: Colors.white,
-                                                          ),
-                                                          Text(
-                                                              "  Saqlanglarga qo'shildi")
-                                                        ],
-                                                      ),
-                                                      backgroundColor:
-                                                      Colors.green,
-                                                    ),);
+                                                onTap: userLoggedIn
+                                                    ? (isLiked) async {
+                                                        this.isLiked =
+                                                            likeController
+                                                                .isPostLiked(
+                                                                    postId);
+                                                        _toggleLikeStatus(
+                                                            postId, index);
 
-                                                  return !isLiked;
-                                                } : (isLiked) async {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(
-                          const SnackBar(
-                          duration: Duration(
-                          milliseconds: 1500),
-                          content: Row(
-                          children: [
-                          Icon(
-                          Icons.heart_broken_outlined,
-                          color: Colors.white,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                          "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
-                          ],
-                          ),
-                          backgroundColor:
-                          Color(0xffFF8D08),
-                          ),
-                          );
-                          return !isLiked;
-                          },
-                                              ); },
-                                            ),
+                                                        return !isLiked;
+                                                      }
+                                                    : (isLiked) async {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    1500),
+                                                            content: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons
+                                                                      .heart_broken_outlined,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                Text(
+                                                                    "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                              ],
+                                                            ),
+                                                            backgroundColor:
+                                                                Color(
+                                                                    0xffFF8D08),
+                                                          ),
+                                                        );
+                                                        return !isLiked;
+                                                      },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 6),
+                                    child: SizedBox(
+                                      height: 30,
+                                      child: Text(
+                                        '${getSearchItemController.allSearchedPost[index].title}',
+                                        style: const TextStyle(fontSize: 12),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 6),
+                                    child: SizedBox(
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            '${getSearchItemController.allSearchedPost[index].price} ${getSearchItemController.allSearchedPost[index].priceType! == 'dollar' ? '\$' : 'so\'m'}',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Color(0xff008B51)),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: SizedBox(
-                                        height: 30,
-                                        child: Text(
-                                          '${getSearchItemController.allSearchedPost[index].title}',
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 6),
-                                      child: SizedBox(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              '${getSearchItemController.allSearchedPost[index].price} ${getSearchItemController.allSearchedPost[index].priceType! == 'dollar' ? '\$' : 'so\'m'}',
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Color(0xff008B51)),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            );
-
+                            ),
+                          );
                         },
-                        staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
+                        staggeredTileBuilder: (int index) =>
+                            const StaggeredTile.fit(1),
                       ),
                     );
                   }
                 }),
-                Obx((){
-                  if (getSearchItemController.startSearch.value){
-                    if (getSearchItemController.hasMoreData.value){
+                Obx(() {
+                  if (getSearchItemController.startSearch.value) {
+                    if (getSearchItemController.hasMoreData.value) {
                       return StaggeredGridView.countBuilder(
                           crossAxisCount: 2,
                           itemCount: 2,
@@ -733,15 +728,18 @@ Future<void> _unlikePost(String postId, var index) async {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return homeShimmer();
-                          }, staggeredTileBuilder: (int index) =>
-                      const StaggeredTile.fit(1)
-                      );}else{
-                      if (getSearchItemController.allSearchedPost.isEmpty){
+                          },
+                          staggeredTileBuilder: (int index) =>
+                              const StaggeredTile.fit(1));
+                    } else {
+                      if (getSearchItemController.allSearchedPost.isEmpty) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const SizedBox(height: 100,),
+                              const SizedBox(
+                                height: 100,
+                              ),
                               Lottie.asset("assets/lottie/search.json",
                                   height: 200, width: 200),
                               const SizedBox(
@@ -751,13 +749,14 @@ Future<void> _unlikePost(String postId, var index) async {
                                 "Sizning so'rovingiz bo'yicha hech narsa topilmadi",
                                 style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ],
                           ),
                         );
-                      }else{
+                      } else {
                         return const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: Center(
@@ -769,26 +768,25 @@ Future<void> _unlikePost(String postId, var index) async {
                         );
                       }
                     }
-                  }else{
+                  } else {
                     return Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 100,),
-                          Lottie.asset("assets/lottie/start_search.json",
-                              height: 200, width: 200),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            "Izlash uchun kalit so'zni kiriting",
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )
-                    );
+                        child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Lottie.asset("assets/lottie/start_search.json",
+                            height: 200, width: 200),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "Izlash uchun kalit so'zni kiriting",
+                          style: TextStyle(color: Colors.grey, fontSize: 18),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ));
                   }
                 })
               ]),
@@ -800,132 +798,126 @@ Future<void> _unlikePost(String postId, var index) async {
   }
 
   Widget homeShimmer() => Container(
-    margin: const EdgeInsets.all(10),
-    height: 327,
-    child: Column(
-      children: [
-        Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        margin: const EdgeInsets.all(10),
+        height: 327,
+        child: Column(
           children: [
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Row(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: 110,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    width: 110,
-                    height: 12,
+                    margin: const EdgeInsets.only(right: 10),
+                    height: 26,
+                    width: 26,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(50),
                       color: Colors.white,
                     ),
                   ),
                 ),
               ],
             ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                height: 26,
-                width: 26,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.white,
-                ),
-              ),
+            const SizedBox(
+              height: 14,
             ),
-          ],
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 9,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            Row(
+              children: [
+                Expanded(
+                  flex: 9,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 1, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 1,
-                child: SizedBox())
-          ],
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 8,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            const SizedBox(
+              height: 4,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 2, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 2,
-                child: SizedBox())
-          ],
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 7,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 18,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+            const SizedBox(
+              height: 14,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 18,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const Expanded(flex: 3, child: SizedBox())
+              ],
             ),
-            const Expanded(
-                flex: 3,
-                child: SizedBox())
           ],
         ),
-      ],
-    ),
-  );
+      );
 }

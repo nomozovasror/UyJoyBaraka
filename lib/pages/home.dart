@@ -557,45 +557,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: userLoggedIn ? (isLiked) async {
                                           this.isLiked = likeController.isPostLiked(postId);
                                           _toggleLikeStatus(postId, index);
-                                          likeController.isPostLiked(postId)
-                                              ? ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              duration: Duration(
-                                                  milliseconds: 1000),
-                                              content: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.delete_outline,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Text(
-                                                      "  Saqlanganlardan o'chirildi")
-                                                ],
-                                              ),
-                                              backgroundColor:
-                                              Color(0xffFF8D08),
-                                            ),
-                                          )
-                                              : ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                              const SnackBar(
-                                                duration: Duration(
-                                                    milliseconds: 1000),
-                                                content: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.favorite,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Text(
-                                                        "  Saqlanglarga qo'shildi")
-                                                  ],
-                                                ),
-                                                backgroundColor:
-                                                Colors.green,
-                                              ),);
-
                                           return !isLiked;
                                         } : (isLiked) async {
                                           ScaffoldMessenger.of(context)
