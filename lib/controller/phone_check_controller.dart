@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/login_controller.dart';
+import 'package:uy_joy_baraka/controller/register_controller.dart';
 import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/main.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -13,6 +14,8 @@ class CodeCheckController extends GetxController {
   GetUserDataController getUserDataController =
       Get.put(GetUserDataController());
   LoginController loginController = Get.put(LoginController());
+  RegisterationController registerationController =
+      Get.put(RegisterationController());
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var loading = false.obs;
@@ -44,7 +47,9 @@ class CodeCheckController extends GetxController {
           await likeController.restoreLikedDataFromAPI();
           loginController.phoneController.clear();
           loginController.passwordController.clear();
-          TextEditingController().clear();
+          registerationController.nameController.clear();
+          registerationController.phoneController.clear();
+          registerationController.passwordController.clear();
           Get.offAll(() => const MyHomePage());
           getUserDataController.getUserData();
         } else {

@@ -270,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
             margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             child: const Row(
               children: [
-                Text("Sizga mos keladigan uylar",
+                Text("TOP",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,

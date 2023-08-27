@@ -301,7 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  const Text("Sayt haqida ma'lumot",
+                                  const Text("Ilova haqida ma'lumot",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
