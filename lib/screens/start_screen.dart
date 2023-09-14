@@ -54,9 +54,9 @@ class _StartScreenState extends State<StartScreen> {
                   AnimatedOpacity(
                     opacity: currentIndex == 0 ? 0 : 1,
                     duration: const Duration(milliseconds: 500),
-                    child: const Text(
-                      "Xush kelibsiz\nUy joy baraka",
-                      style: TextStyle(
+                    child: Text(
+                      "start_title".tr,
+                      style: const TextStyle(
                         fontSize: 48,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -68,7 +68,7 @@ class _StartScreenState extends State<StartScreen> {
                     opacity: currentIndex == 0 ? 0 : 1,
                     duration: const Duration(milliseconds: 500),
                     child: Text(
-                      "O’zingizga kerakli uyni tez va oson toping",
+                      "start_text".tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -98,10 +98,10 @@ class _StartScreenState extends State<StartScreen> {
                               prefs.setBool('isFirst', true);
                               Get.offAll(const MyHomePage());
                             },
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "Boshlash",
-                                style: TextStyle(
+                                "start_button".tr,
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,

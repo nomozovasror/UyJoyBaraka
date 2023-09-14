@@ -33,7 +33,6 @@ class MessagesList {
   String? createdAt;
   String? updatedAt;
   String? chatId;
-  Null chatChatId;
 
   MessagesList(
       {this.messageId,
@@ -43,8 +42,7 @@ class MessagesList {
         this.timestamp,
         this.createdAt,
         this.updatedAt,
-        this.chatId,
-        this.chatChatId});
+        this.chatId,});
 
   MessagesList.fromJson(Map<String, dynamic> json) {
     messageId = json['message_id'];
@@ -55,7 +53,6 @@ class MessagesList {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     chatId = json['chat_id'];
-    chatChatId = json['chatChatId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -68,7 +65,6 @@ class MessagesList {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['chat_id'] = chatId;
-    data['chatChatId'] = chatChatId;
     return data;
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, constant_identifier_names
+
 class ApiEndPoints{
   static const String BASE_URL = "https://api.uyjoybaraka.uz";
   static _AuthEndPoints authEndPoints = _AuthEndPoints();

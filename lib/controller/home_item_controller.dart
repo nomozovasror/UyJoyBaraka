@@ -31,8 +31,9 @@ class GetAllItemController extends GetxController {
 
   getAllItem() async {
     try {
-      if (!hasMoreData || isLoading)
+      if (!hasMoreData || isLoading) {
         return; // Don't fetch if there is no more data or an ongoing API call
+      }
       isLoading = true;
 
       var url = Uri.parse(

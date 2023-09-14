@@ -150,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Lottie.asset('assets/lottie/chat.json', width: 200, height: 200),
                 const SizedBox(height: 10,),
-                 Text("Yozishmalar topilmadi", style: TextStyle(color: Colors.grey, fontSize: 20),)
+                Text("not_chat".tr, style: const TextStyle(color: Colors.grey, fontSize: 20),)
               ],
             )
           );

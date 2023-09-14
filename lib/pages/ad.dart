@@ -288,22 +288,22 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 30),
                         child: Text(
-                          "E’lon joylash",
-                          style: TextStyle(
+                          "adAdd".tr,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF008B51),
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 20, bottom: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 20, bottom: 5),
                         child: Text(
-                          "Uy rasmini yuklang:",
-                          style: TextStyle(
+                          "adPictureTitle".tr,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.black87,
@@ -447,18 +447,18 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                           const SizedBox(
                                             height: 16,
                                           ),
-                                          const Row(
+                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.add,
+                                              const Icon(Icons.add,
                                                   color: Color(0xff008B51)),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 6,
                                               ),
                                               Text(
-                                                "Rasm yuklang",
-                                                style: TextStyle(
+                                                "adPicture".tr,
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                   color: Color(0xff008B51),
                                                 ),
@@ -479,19 +479,19 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               key: _formKey,
                               child: Column(
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                       top: 25,
                                       left: 10,
                                     ),
                                     child: Row(
                                       children: [
-                                        Text("Sarlavha kiriting",
-                                            style: TextStyle(
+                                        Text("adTitle".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -525,10 +525,10 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             .titleController,
                                         validator: (sarlavha) {
                                           if (sarlavha!.isEmpty) {
-                                            return 'Iltimos matn kiriting';
+                                            return "input_text".tr;
                                           }
                                           if (sarlavha.length < 10) {
-                                            return 'Sarlavha uzunligi yetarli emas';
+                                            return "title_short".tr;
                                           }
                                           return null;
                                         },
@@ -543,27 +543,26 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             ),
                                             filled: true,
                                             fillColor: const Color(0xffffffff),
-                                            hintText:
-                                                "Masalan: olmazor uy arenda",
+                                            hintText: "hint_title".tr,
                                             hintStyle: const TextStyle(
                                                 color: Color(0xffABABAB),
                                                 fontSize: 14)),
                                       ),
                                     ]),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                       top: 25,
                                       left: 10,
                                     ),
                                     child: Row(
                                       children: [
-                                        Text("Kategroiya",
-                                            style: TextStyle(
+                                        Text("category".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -593,7 +592,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton(
                                           value: ijaravalue,
-                                          hint: const Text("Sotuv"),
+                                          hint: Text("sale_hint".tr),
                                           borderRadius:
                                               BorderRadius.circular(6),
                                           icon: const Icon(Icons
@@ -603,17 +602,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                               color: Color(0xff272727),
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400),
-                                          items: const [
+                                          items: [
                                             DropdownMenuItem(
                                               value: "sale",
                                               child: Text(
-                                                'Sotuv',
+                                                "sale_hint".tr,
                                               ),
                                             ),
                                             DropdownMenuItem(
                                               value: "rent",
                                               child: Text(
-                                                'Ijara',
+                                                "rent".tr,
                                               ),
                                             ),
                                           ],
@@ -624,19 +623,19 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                           }),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                       top: 25,
                                       left: 10,
                                     ),
                                     child: Row(
                                       children: [
-                                        Text("Shaxarni tanlang",
-                                            style: TextStyle(
+                                        Text("city_hint".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -668,7 +667,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton(
                                         value: viloyat,
-                                        hint: const Text("Toshkent"),
+                                        hint: Text("hint_city".tr),
                                         borderRadius: BorderRadius.circular(6),
                                         icon: const Icon(
                                             Icons.keyboard_arrow_down_outlined),
@@ -710,7 +709,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                         borderRadius: BorderRadius.circular(6)),
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton(
-                                        hint: const Text("Tumanni tanlang"),
+                                        hint: Text("district_hint".tr),
                                         value: tuman,
                                         borderRadius: BorderRadius.circular(6),
                                         icon: const Icon(
@@ -783,17 +782,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                   ),
 
                                   //MANZIL
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                         top: 25, left: 10, bottom: 5),
                                     child: Row(
                                       children: [
-                                        Text("Manzil",
-                                            style: TextStyle(
+                                        Text("adress".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -827,9 +826,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             .addressController,
                                         validator: (manzil) {
                                           if (manzil!.isEmpty) {
-                                            return 'Iltimos matn kiriting';
+                                            return "input_text".tr;
                                           } else if (manzil.length < 8) {
-                                            return 'Manzil uzunligi yetarli emas';
+                                            return "adress_short".tr;
                                           }
                                           return null;
                                         },
@@ -844,7 +843,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             ),
                                             filled: true,
                                             fillColor: const Color(0xffffffff),
-                                            hintText: "Masalan: 17-mavze, 3-uy",
+                                            hintText: "adress_hint".tr,
                                             hintStyle: const TextStyle(
                                                 color: Color(0xffABABAB),
                                                 fontSize: 14)),
@@ -853,22 +852,22 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                   ),
 
                                   //UY HAQIDA MA"LUMOT
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                         top: 25, left: 10, bottom: 5),
                                     child: Row(
                                       children: [
-                                        Text("Uy haqida ma'lumot",
-                                            style: TextStyle(
+                                        Text("description".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
                                               color: Color(0xffFF0707),
-                                            ))
+                                            ),),
                                       ],
                                     ),
                                   ),
@@ -903,9 +902,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                           maxLength: 300,
                                           validator: (text) {
                                             if (text!.isEmpty) {
-                                              return 'Iltimos matn kiriting';
+                                              return "input_text".tr;
                                             } else if (text.length < 10) {
-                                              return 'Matn juda kam';
+                                              return "description_short".tr;
                                             }
                                             return null;
                                           },
@@ -921,8 +920,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                               filled: true,
                                               fillColor:
                                                   const Color(0xffffffff),
-                                              hintText:
-                                                  "Сдается в аренду для семьи трёхкомнатная квартира в центральном, спальном районе,на Дархане. Доброжелательные соседи,развитая  инфраструктура,в трёх минутах от метро Хамид Олимжан. Рядом  есть школа,детский сад.Квартира полностью оснащена для жилья: свежий ремонт, меблирована, детская будет обставлена по желанию жильцов,три телевизора,два кондиционера, большой холодильник, стиральная машина, пылесос. Техника, мебель и посуда новые,не пользованные. Вы будете первым хозяином. ",
+                                              hintText: "description_hint".tr,
                                               hintStyle: const TextStyle(
                                                   color: Color(0xffABABAB),
                                                   fontSize: 14)),
@@ -932,17 +930,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                   ),
 
                                   // NARX
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                   Padding(
+                                    padding: const EdgeInsets.only(
                                         top: 25, left: 10, bottom: 5),
                                     child: Row(
                                       children: [
-                                        Text("Narxni kiriting",
-                                            style: TextStyle(
+                                        Text("price".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -990,17 +988,12 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                                     .priceController,
                                                 validator: (narx) {
                                                   if (narx!.isEmpty) {
-                                                    return 'Iltimos narx kiriting';
+                                                    return "input_text".tr;
                                                   } else if (narx.length < 1) {
-                                                    return 'narx kam';
+                                                    return "price_short".tr;
                                                   }
                                                   return null;
                                                 },
-                                                // onChanged: (narx) {
-                                                //   setState(() {
-                                                //     this.narx = narx;
-                                                //   });
-                                                // },
                                                 keyboardType:
                                                     TextInputType.number,
                                                 inputFormatters: [
@@ -1054,7 +1047,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             child: DropdownButtonHideUnderline(
                                               child: DropdownButton(
                                                   value: valyuta,
-                                                  hint: const Text("so'm"),
+                                                  hint: Text("sum".tr),
                                                   borderRadius:
                                                       BorderRadius.circular(6),
                                                   icon: const Icon(Icons
@@ -1065,17 +1058,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400),
-                                                  items: const [
+                                                  items: [
                                                     DropdownMenuItem(
                                                       value: "sum",
                                                       child: Text(
-                                                        "so'm",
+                                                        "sum".tr,
                                                       ),
                                                     ),
                                                     DropdownMenuItem(
                                                       value: "dollar",
                                                       child: Text(
-                                                        'dollar',
+                                                        "dollar".tr,
                                                       ),
                                                     ),
                                                   ],
@@ -1090,17 +1083,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                       ],
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                  Padding(
+                                    padding: const EdgeInsets.only(
                                         top: 25, left: 10, bottom: 5),
                                     child: Row(
                                       children: [
-                                        Text("Telefon raqam",
-                                            style: TextStyle(
+                                        Text("phone".tr,
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                             )),
-                                        Text(" *",
+                                        const Text(" *",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -1135,9 +1128,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                               .phoneController,
                                           validator: (tel) {
                                             if (tel!.isEmpty) {
-                                              return 'Iltimos telefon raqamingizni kiriting';
+                                              return "phone_alert".tr;
                                             } else if (tel.length < 10) {
-                                              return 'Telefon raqam uzunligi yetarli emas';
+                                              return "phone_short".tr;
                                             }
                                             return null;
                                           },
@@ -1172,15 +1165,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             0) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.error_outline,
                                                     color: Colors.white,
                                                   ),
                                                   Text(
-                                                      '  Iltimos surat yuklang')
+                                                      "picture_alert".tr)
                                                 ],
                                               ),
                                               backgroundColor: Colors.redAccent,
@@ -1190,15 +1183,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             ijaravalue == '') {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.error_outline,
                                                     color: Colors.white,
                                                   ),
                                                   Text(
-                                                      '  Iltimos kategoriyani tanlang')
+                                                      "category_alert".tr)
                                                 ],
                                               ),
                                               backgroundColor: Colors.redAccent,
@@ -1208,15 +1201,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             tuman == '') {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.error_outline,
                                                     color: Colors.white,
                                                   ),
                                                   Text(
-                                                      '  Iltimos tumanni tanlang')
+                                                      "district_alert".tr)
                                                 ],
                                               ),
                                               backgroundColor: Colors.redAccent,
@@ -1226,15 +1219,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                             valyuta == '') {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                             SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.error_outline,
                                                     color: Colors.white,
                                                   ),
                                                   Text(
-                                                      '  Iltimos valyuta tanlang')
+                                                      "valyuta_alert".tr)
                                                 ],
                                               ),
                                               backgroundColor: Colors.redAccent,
@@ -1249,14 +1242,14 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                               valyuta.toString());
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.check,
                                                     color: Colors.white,
                                                   ),
-                                                  Text('Saqlanmoqda ...')
+                                                  Text("save_progress".tr),
                                                 ],
                                               ),
                                               backgroundColor:
@@ -1266,15 +1259,15 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                               content: Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.error_outline,
                                                     color: Colors.white,
                                                   ),
                                                   Text(
-                                                      '  Iltimos barcha qatorlarni to\'ldiring')
+                                                      "all_input".tr)
                                                 ],
                                               ),
                                               backgroundColor: Colors.redAccent,
@@ -1291,7 +1284,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                               BorderRadius.circular(6),
                                         ),
                                       ),
-                                      child: const Text("Saqlash"),
+                                      child: Text("save".tr),
                                     ),
                                   ),
                                 ],
@@ -1310,17 +1303,17 @@ class _AddAdScreenState extends State<AddAdScreen> {
                         ),
                         Lottie.asset('assets/lottie/login.json',
                             width: 200, height: 200),
-                        const Text(
-                          'Iltimos avval tizimga kiring',
-                          style: TextStyle(
+                        Text(
+                          "ad_login_alert".tr,
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          "E'lon joylashingiz uchun avval tizimga kirishingiz yoki ro'yxatdan o'tishingiz kerak ",
-                          style: TextStyle(
+                        Text(
+                          "ad_login_alert_text".tr,
+                          style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: Colors.grey),
@@ -1343,10 +1336,10 @@ class _AddAdScreenState extends State<AddAdScreen> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 10),
-                            child: Text('Kirish'),
+                            child: Text("login".tr),
                           ),
                         ),
                       ],

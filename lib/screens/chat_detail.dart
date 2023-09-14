@@ -122,11 +122,11 @@ class _ChatDetailState extends State<ChatDetail> {
                       InkWell(
                         onTap: () {
                           Get.defaultDialog(
-                            title: "Chatni o'chirish",
-                            content: const Text(
-                                "Chatni o'chirishni xohlaysizmi?"),
-                            textCancel: "Yo'q",
-                            textConfirm: "Ha",
+                            title: "delete".tr,
+                            content: Text(
+                            "delete_alert".tr),
+                            textCancel: "no".tr,
+                            textConfirm: "yes".tr,
                             confirmTextColor: Colors.white,
                             cancelTextColor: Colors.red,
                             buttonColor: Colors.red,
@@ -143,9 +143,9 @@ class _ChatDetailState extends State<ChatDetail> {
                         child: Row(
                           children: [
                             SvgPicture.asset('assets/icons/trash.svg'),
-                            const Text(
-                              " Chatni o'chirish",
-                              style: TextStyle(
+                            Text(
+                              " ${"delete".tr}",
+                              style: const TextStyle(
                                   color: Color(0xFFFF0000), fontSize: 16),
                             )
                           ],
@@ -182,7 +182,7 @@ class _ChatDetailState extends State<ChatDetail> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Sizda xabarlar yoq'));
+                      return Center(child: Text("no_message".tr));
                     } else {
                       return ListView.builder(
                         reverse: true, // This property reverses the list
@@ -259,7 +259,7 @@ class _ChatDetailState extends State<ChatDetail> {
                       controller: sendMessageController.messageController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Xabar yozish',
+                        hintText: "send_message".tr,
                         suffixIcon: IconButton(
                           disabledColor: Colors.cyan,
                           onPressed: () => _handleButtonClick(),

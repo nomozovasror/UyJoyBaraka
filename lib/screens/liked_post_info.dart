@@ -212,23 +212,23 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                                   : (isLiked) async {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
-                                        const SnackBar(
+                                        SnackBar(
                                           duration:
-                                              Duration(milliseconds: 1500),
+                                              const Duration(milliseconds: 1500),
                                           content: Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.heart_broken_outlined,
                                                 color: Colors.white,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
-                                                  "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                  "saved_alert".tr)
                                             ],
                                           ),
-                                          backgroundColor: Color(0xffFF8D08),
+                                          backgroundColor: const Color(0xffFF8D08),
                                         ),
                                       );
                                       return !isLiked;
@@ -290,7 +290,7 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                     controller: inChatMessageController.messageController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Xabar yozilmagan";
+                        return "no_message_write".tr;
                       }
                       return null;
                     },
@@ -304,7 +304,7 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                             )),
                         filled: true,
                         fillColor: const Color(0xffF1F1F1),
-                        hintText: "Uy egasiga yozish",
+                        hintText: "send_message_user".tr,
                         hintStyle: const TextStyle(
                             color: Color(0xffABABAB), fontSize: 14)),
                   ),
@@ -326,16 +326,16 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_rounded,
                               size: 20,
                             ),
                             Text(
-                              " Qo'ng'iroq qilish",
-                              style: TextStyle(fontSize: 14),
+                              " ${"call".tr}",
+                              style: const TextStyle(fontSize: 14),
                             )
                           ],
                         ),
@@ -360,8 +360,8 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                                 }
                               : () {
                                   Get.snackbar(
-                                    "Siz tizimga kirmagansiz",
-                                    "Xabar yozish uchun iltimos tizimga kiring",
+                                    "login_error".tr,
+                                    "login_error_text".tr,
                                     snackPosition: SnackPosition.BOTTOM,
                                     backgroundColor: const Color(0xFFFF8D08),
                                     forwardAnimationCurve: Curves.ease,
@@ -379,14 +379,14 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Yuborish ",
-                                style: TextStyle(fontSize: 14),
+                                "${"send".tr} ",
+                                style: const TextStyle(fontSize: 14),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.send_outlined,
                                 size: 20,
                               ),
@@ -432,11 +432,11 @@ class _LikedInfoScreenState extends State<LikedInfoScreen> {
                                 color: Color(0xff898989)),
                           ),
                           Text(
-                              "${timeSlicer(widget.allData.createdAt.toString())} dan beri",
+                              "${timeSlicer(widget.allData.createdAt.toString())} ${"time_plus".tr}",
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,
-                                  color: Color(0xff898989)))
+                                  color: Color(0xff898989),),)
                         ],
                       ),
                     ],

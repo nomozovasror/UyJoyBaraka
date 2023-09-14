@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_is_empty, avoid_print
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -300,11 +298,11 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 10, top: 30),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 30),
                 child: Text(
-                  "E’lonni yangilash",
-                  style: TextStyle(
+                  "update_add".tr,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF008B51),
@@ -338,11 +336,11 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       );
                     }),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10, bottom: 5),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 5),
                 child: Text(
-                  "Uy rasmini yuklang:",
-                  style: TextStyle(
+                  "adPictureTitle".tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Colors.black87,
@@ -466,16 +464,16 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  const Row(
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.add, color: Color(0xff008B51)),
-                                      SizedBox(
+                                      const Icon(Icons.add, color: Color(0xff008B51)),
+                                      const SizedBox(
                                         width: 6,
                                       ),
                                       Text(
-                                        "Rasm yuklang",
-                                        style: TextStyle(
+                                        "adPicture".tr,
+                                        style: const TextStyle(
                                           fontSize: 20,
                                           color: Color(0xff008B51),
                                         ),
@@ -485,9 +483,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  const Text(
-                                    'Yangi surat yuklaganizda avvalgi suratlar o’chirib tashlanadi',
-                                    style: TextStyle(
+                                  Text(
+                                    "update_picture_alert".tr,
+                                    style: const TextStyle(
                                         color: Color(0xff008B51), fontSize: 12),
                                   )
                                 ],
@@ -504,19 +502,19 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
+                          Padding(
+                            padding: const  EdgeInsets.only(
                               top: 25,
                               left: 10,
                             ),
                             child: Row(
                               children: [
-                                Text("Sarlavha kiriting",
-                                    style: TextStyle(
+                                Text("adTitle".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -546,10 +544,10 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                 controller: controller.titleController,
                                 validator: (sarlavha) {
                                   if (sarlavha!.isEmpty) {
-                                    return 'Iltimos matn kiriting';
+                                    return "input_text".tr;
                                   }
                                   if (sarlavha.length < 10) {
-                                    return 'Sarlavha uzunligi yetarli emas';
+                                    return "title_short".tr;
                                   }
                                   return null;
                                 },
@@ -563,26 +561,26 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                     ),
                                     filled: true,
                                     fillColor: const Color(0xffffffff),
-                                    hintText: "Masalan: olmazor uy arenda",
+                                    hintText: "hint_title".tr,
                                     hintStyle: const TextStyle(
                                         color: Color(0xffABABAB),
                                         fontSize: 14)),
                               ),
                             ]),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(
+                          Padding(
+                            padding: const EdgeInsets.only(
                               top: 25,
                               left: 10,
                             ),
                             child: Row(
                               children: [
-                                Text("Kategroiya",
-                                    style: TextStyle(
+                                Text("category".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -611,7 +609,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ijaravalue,
-                                  hint: const Text("Sotuv"),
+                                  hint: Text("sale_hint".tr),
                                   borderRadius: BorderRadius.circular(6),
                                   icon: const Icon(
                                       Icons.keyboard_arrow_down_outlined),
@@ -620,17 +618,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                       color: Color(0xff272727),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                       value: "sale",
                                       child: Text(
-                                        'Sotuv',
+                                        "sale_hint".tr,
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: "rent",
                                       child: Text(
-                                        'Ijara',
+                                          "rent".tr
                                       ),
                                     ),
                                   ],
@@ -641,19 +639,19 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   }),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(
+                          Padding(
+                            padding: const EdgeInsets.only(
                               top: 25,
                               left: 10,
                             ),
                             child: Row(
                               children: [
-                                Text("Shaxarni tanlang",
-                                    style: TextStyle(
+                                Text("city_hint".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -684,7 +682,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 value: viloyat,
-                                hint: const Text("Toshkent"),
+                                hint: Text("hint_city".tr),
                                 borderRadius: BorderRadius.circular(6),
                                 icon: const Icon(
                                     Icons.keyboard_arrow_down_outlined),
@@ -724,7 +722,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                 borderRadius: BorderRadius.circular(6)),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
-                                hint: const Text("Tumanni tanlang"),
+                                hint: Text("district_hint".tr),
                                 value: tuman,
                                 borderRadius: BorderRadius.circular(6),
                                 icon: const Icon(
@@ -797,17 +795,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                           ),
 
                           //MANZIL
-                          const Padding(
+                          Padding(
                             padding:
-                                EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                                const EdgeInsets.only(top: 25, left: 10, bottom: 5),
                             child: Row(
                               children: [
-                                Text("Manzil",
-                                    style: TextStyle(
+                                Text("adress".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -837,9 +835,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                 controller: controller.addressController,
                                 validator: (manzil) {
                                   if (manzil!.isEmpty) {
-                                    return 'Iltimos matn kiriting';
+                                    return "input_text".tr;
                                   } else if (manzil.length < 8) {
-                                    return 'Manzil uzunligi yetarli emas';
+                                    return "adress_short".tr;
                                   }
                                   return null;
                                 },
@@ -853,7 +851,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                     ),
                                     filled: true,
                                     fillColor: const Color(0xffffffff),
-                                    hintText: "Masalan: 17-mavze, 3-uy",
+                                    hintText: "adress_hint".tr,
                                     hintStyle: const TextStyle(
                                         color: Color(0xffABABAB),
                                         fontSize: 14)),
@@ -862,17 +860,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                           ),
 
                           //UY HAQIDA MA"LUMOT
-                          const Padding(
+                           Padding(
                             padding:
-                                EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                                const EdgeInsets.only(top: 25, left: 10, bottom: 5),
                             child: Row(
                               children: [
-                                Text("Uy haqida ma'lumot",
-                                    style: TextStyle(
+                                Text("description".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -908,9 +906,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   maxLength: 300,
                                   validator: (text) {
                                     if (text!.isEmpty) {
-                                      return 'Iltimos matn kiriting';
+                                      return "input_text".tr;
                                     } else if (text.length < 10) {
-                                      return 'Matn juda kam';
+                                      return "description_short".tr;
                                     }
                                     return null;
                                   },
@@ -924,9 +922,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                       ),
                                       filled: true,
                                       fillColor: const Color(0xffffffff),
-                                      hintText:
-                                          "Сдается в аренду для семьи трёхкомнатная квартира в центральном, спальном районе,на Дархане. Доброжелательные соседи,развитая  инфраструктура,в трёх минутах от метро Хамид Олимжан. Рядом  есть школа,детский сад.Квартира полностью оснащена для жилья: свежий ремонт, меблирована, детская будет обставлена по желанию жильцов,три телевизора,два кондиционера, большой холодильник, стиральная машина, пылесос. Техника, мебель и посуда новые,не пользованные. Вы будете первым хозяином. ",
-                                      hintStyle: const TextStyle(
+                                      hintText: "description_hint".tr,                                      hintStyle: const TextStyle(
                                           color: Color(0xffABABAB),
                                           fontSize: 14)),
                                 ),
@@ -935,17 +931,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                           ),
 
                           // NARX
-                          const Padding(
-                            padding:
-                                EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 25, left: 10, bottom: 5),
                             child: Row(
                               children: [
-                                Text("Narxni kiriting",
-                                    style: TextStyle(
+                                Text("price".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -990,17 +986,12 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                         controller: controller.priceController,
                                         validator: (narx) {
                                           if (narx!.isEmpty) {
-                                            return 'Iltimos narx kiriting';
+                                            return "input_text".tr;
                                           } else if (narx.length < 1) {
-                                            return 'narx kam';
+                                            return "price_short".tr;
                                           }
                                           return null;
                                         },
-                                        // onChanged: (narx) {
-                                        //   setState(() {
-                                        //     this.narx = narx;
-                                        //   });
-                                        // },
                                         keyboardType: TextInputType.number,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.digitsOnly
@@ -1046,7 +1037,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                     child: DropdownButtonHideUnderline(
                                       child: DropdownButton(
                                           value: valyuta,
-                                          hint: const Text("so'm"),
+                                          hint: Text("sum".tr),
                                           borderRadius:
                                               BorderRadius.circular(6),
                                           icon: const Icon(Icons
@@ -1056,17 +1047,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                               color: Color(0xff272727),
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400),
-                                          items: const [
+                                          items: [
                                             DropdownMenuItem(
                                               value: "sum",
                                               child: Text(
-                                                "so'm",
+                                                "sum".tr,
                                               ),
                                             ),
                                             DropdownMenuItem(
                                               value: "dollar",
                                               child: Text(
-                                                'dollar',
+                                                "dollar".tr,
                                               ),
                                             ),
                                           ],
@@ -1081,17 +1072,17 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                               ],
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding:
-                                EdgeInsets.only(top: 25, left: 10, bottom: 5),
+                                const EdgeInsets.only(top: 25, left: 10, bottom: 5),
                             child: Row(
                               children: [
-                                Text("Telefon raqam",
-                                    style: TextStyle(
+                                Text("phone".tr,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     )),
-                                Text(" *",
+                                const Text(" *",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -1122,9 +1113,9 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   controller: controller.phoneController,
                                   validator: (tel) {
                                     if (tel!.isEmpty) {
-                                      return 'Iltimos telefon raqamingizni kiriting';
+                                      return "phone_alert".tr;
                                     } else if (tel.length < 10) {
-                                      return 'Telefon raqam uzunligi yetarli emas';
+                                      return "phone_short".tr;
                                     }
                                     return null;
                                   },
@@ -1154,14 +1145,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                               onPressed: () {
                                 if (ijaravalue == null || ijaravalue == '') {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.error_outline,
                                             color: Colors.white,
                                           ),
-                                          Text('  Iltimos kategoriyani tanlang')
+                                          Text("category_alert".tr)
                                         ],
                                       ),
                                       backgroundColor: Colors.redAccent,
@@ -1169,14 +1160,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   );
                                 } else if (tuman == null || tuman == '') {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.error_outline,
                                             color: Colors.white,
                                           ),
-                                          Text('  Iltimos tumanni tanlang')
+                                          Text("district_alert".tr)
                                         ],
                                       ),
                                       backgroundColor: Colors.redAccent,
@@ -1184,14 +1175,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   );
                                 } else if (valyuta == null || valyuta == '') {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.error_outline,
                                             color: Colors.white,
                                           ),
-                                          Text('  Iltimos valyuta tanlang')
+                                          Text("valyuta_alert".tr)
                                         ],
                                       ),
                                       backgroundColor: Colors.redAccent,
@@ -1205,14 +1196,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                       valyuta.toString(),
                                       widget.post.announcementId!);
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.check,
                                             color: Colors.white,
                                           ),
-                                          Text('Saqlanmoqda ...')
+                                          Text("save_progress".tr)
                                         ],
                                       ),
                                       backgroundColor: Colors.greenAccent,
@@ -1220,15 +1211,15 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.error_outline,
                                             color: Colors.white,
                                           ),
                                           Text(
-                                              '  Iltimos barcha qatorlarni to\'ldiring')
+                                              "all_input".tr)
                                         ],
                                       ),
                                       backgroundColor: Colors.redAccent,
@@ -1243,7 +1234,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                               ),
-                              child: const Text("Saqlash"),
+                              child: Text("save".tr),
                             ),
                           ),
                         ],

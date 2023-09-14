@@ -5,9 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -137,14 +135,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       border:
                           Border.all(color: const Color(0xff008B51), width: 2),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Text(
-                          "E'lonlar orasidan qidirish",
-                          style: TextStyle(
+                          "search_ad".tr,
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
                           ),
@@ -212,11 +210,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
+                               SizedBox(
                                 width: 300,
                                 child: Text(
-                                  "Uy-joy e’lonlaringizni bizning saytga joylashtiring",
-                                  style: TextStyle(
+                                  "carousel_title".tr,
+                                  style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white),
@@ -231,15 +229,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 6),
                                 ),
-                                child: const Row(
+                                child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.phone_rounded,
                                       size: 20,
                                     ),
                                     Text(
-                                      " Biz bilan bog'lanish",
-                                      style: TextStyle(fontSize: 14),
+                                      "button_title".tr,
+                                      style: const TextStyle(fontSize: 14),
                                     )
                                   ],
                                 ),
@@ -323,11 +321,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                       width: 300,
                                       child: Text(
-                                        "REKLAMANGIZ UCHUN\nJOY",
-                                        style: TextStyle(
+                                        "ad_title".tr,
+                                        style: const TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.w700,
                                             color: Color(0xff008B51)),
@@ -343,15 +341,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 6),
                                       ),
-                                      child: const Row(
+                                      child: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.phone_rounded,
                                             size: 20,
                                           ),
                                           Text(
-                                            " Biz bilan bog'lanish",
-                                            style: TextStyle(fontSize: 14),
+                                              "button_title".tr,
+                                            style: const TextStyle(fontSize: 14),
                                           )
                                         ],
                                       ),
@@ -389,13 +387,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decoration: const BoxDecoration(
                                   color: Color(0xff008B51),
                                 ),
-                                child: const Center(
+                                child:  Center(
                                   child: SizedBox(
                                     width: 138,
                                     child: Text(
-                                      "Bizni ijtimoiy tarmoqlarda kuzating",
+                                      "social_title".tr,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 11,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600),
@@ -584,27 +582,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .showSnackBar(
-                                                          const SnackBar(
-                                                            duration: Duration(
+                                                           SnackBar(
+                                                            duration: const Duration(
                                                                 milliseconds:
                                                                     1500),
                                                             content: Row(
                                                               children: [
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .heart_broken_outlined,
                                                                   color: Colors
                                                                       .white,
                                                                 ),
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
                                                                 Text(
-                                                                    "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                                    "saved_alert".tr)
                                                               ],
                                                             ),
                                                             backgroundColor:
-                                                                Color(
+                                                                const Color(
                                                                     0xffFF8D08),
                                                           ),
                                                         );
@@ -670,12 +668,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   staggeredTileBuilder: (int index) =>
                       const StaggeredTile.fit(1))
-              : const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+              : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Center(
                     child: Text(
-                      "Oxiriga yettingiz",
-                      style: TextStyle(color: Colors.grey),
+                      "last_ads".tr,
+                      style: const  TextStyle(color: Colors.grey),
                     ),
                   ),
                 )

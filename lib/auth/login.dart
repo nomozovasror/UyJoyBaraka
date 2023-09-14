@@ -60,7 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Text(isLogin.value ? "Ro'yxatdan o'tish" : "Kirish",
+              Text(isLogin.value ? "sign_up".tr : "sign_in".tr,
                   style: const TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -68,7 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Text("Telefon raqam va parol kiriting",
+              Text("input_pass_number".tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -92,7 +92,7 @@ class _AuthScreenState extends State<AuthScreen> {
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Ism Familya",
+            child: Text("name_hint".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -102,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos ism va familyangizni kiriting";
+                return "name_alert".tr;
               }
               return null;
             },
@@ -113,7 +113,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Telefon raqam",
+            child: Text("phone".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -123,9 +123,9 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos telefon raqamingizni kiriting";
+                return "phone_alert".tr;
               } else if (value.length < 7) {
-                return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+                return "phone_short_seven".tr;
               }
               return null;
             },
@@ -153,7 +153,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Parol",
+            child: Text("password".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -163,9 +163,9 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos parol kiriting";
+                return "password_alert".tr;
               } else if (value.length < 8) {
-                return "Parol 8 ta belgidan kam bo'lmasligi kerak";
+                return "password_short".tr;
               }
               return null;
             },
@@ -192,7 +192,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Parolni qayta kiriting",
+            child: Text("password_confirm".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -202,11 +202,11 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos parolini kiriting";
+                return "password_alert".tr;
               } else if (value.length < 8) {
-                return "Parol kamida 8 ta belgidan iborat bo'lishi kerak";
+                return "password_short".tr;
               } else if (value != registerationController.passwordController.text) {
-                return "Parol mos kelmadi";
+                return "password_confirm_alert".tr;
               }
               return null;
             },
@@ -227,9 +227,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   registerationController.register();
                 }
               },
-              child: const Text(
-                "Ro'yxatdan o'tish",
-                style: TextStyle(
+              child: Text(
+                "sign_up".tr,
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -243,14 +243,14 @@ class _AuthScreenState extends State<AuthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Sizda akkaunt bormi?"),
+              Text("account".tr),
               MaterialButton(
                 onPressed: () {
                   isLogin.value = false;
                 },
-                child: const Text(
-                  "Kirish",
-                  style: TextStyle(color: Colors.green),
+                child: Text(
+                  "sign_in".tr,
+                  style: const TextStyle(color: Colors.green),
                 ),
               ),
             ],
@@ -267,7 +267,7 @@ class _AuthScreenState extends State<AuthScreen> {
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Telefon raqam",
+            child: Text("phone".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -277,9 +277,9 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos telefon raqamingizni kiriting";
+                return "input_pass_number".tr;
               } else if (value.length < 7) {
-                return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+                return "phone_short_seven".tr;
               }
               return null;
             },
@@ -310,7 +310,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Parol",
+            child: Text("password".tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -320,9 +320,9 @@ class _AuthScreenState extends State<AuthScreen> {
           TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return "Iltimos parol kiriting";
+                return "password_alert".tr;
               } else if (value.length < 8) {
-                return "Parol 8 ta belgidan kam bo'lmasligi kerak";
+                return "password_short".tr;
               }
               return null;
             },
@@ -356,7 +356,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Parolni qayta kiriting",
+                      child: Text("password_confirm".tr,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[700],
@@ -366,12 +366,12 @@ class _AuthScreenState extends State<AuthScreen> {
                     TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Iltimos parolini kiriting";
+                          return "password_alert".tr;
                         } else if (value.length < 8) {
-                          return "Parol kamida 8 ta belgidan iborat bo'lishi kerak";
+                          return "password_short".tr;
                         } else if (value !=
                             loginController.passwordController.text) {
-                          return "Parol mos kelmadi";
+                          return "password_confirm_alert".tr;
                         }
                         return null;
                       },
@@ -390,20 +390,20 @@ class _AuthScreenState extends State<AuthScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Parolni tiklamoqchimisiz"),
+                              title: Text("reset_password_question".tr),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Yo\'q'),
+                                  child: Text("no".tr),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     resetPass.value = false;
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Ha'),
+                                  child: Text("yes".tr),
                                 )
                               ],
                             ),
@@ -412,27 +412,27 @@ class _AuthScreenState extends State<AuthScreen> {
                           showCupertinoDialog(
                             context: context,
                             builder: (context) => CupertinoAlertDialog(
-                              title: const Text("Parolni tiklamoqchimisiz"),
+                              title: Text("reset_password_question".tr),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Yo\'q'),
+                                  child: Text("no".tr),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     resetPass.value = false;
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Ha'),
+                                  child: Text("yes".tr),
                                 )
                               ],
                             ),
                           );
                         }
                       },
-                      child: Text("Parolni unutdingizmi?",
+                      child: Text("forgot_password".tr,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[800],
@@ -457,9 +457,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           loginController.login();
                         }
                       },
-                      child: loginController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text(
-                        "Kirish",
-                        style: TextStyle(color: Colors.white),
+                      child: loginController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : Text(
+                        "sign_in".tr,
+                        style: const TextStyle(color: Colors.white),
                       )),
                 )
               : Container(
@@ -474,9 +474,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           resetController.resetPassword();
                         }
                       },
-                      child: resetController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text(
-                        "Parolni tiklash",
-                        style: TextStyle(color: Colors.white),
+                      child: resetController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : Text(
+                        "reset_password".tr,
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
           const SizedBox(
@@ -485,15 +485,15 @@ class _AuthScreenState extends State<AuthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Akkauntingiz yo'qmi?"),
+              Text("not_account".tr),
               MaterialButton(
                 onPressed: () {
                   isLogin.value = true;
                   resetPass.value = true;
                 },
-                child: const Text(
-                  "Ro'yxatdan o'tish",
-                  style: TextStyle(color: Colors.green),
+                child: Text(
+                  "sign_up".tr,
+                  style: const TextStyle(color: Colors.green),
                 ),
               ),
             ],

@@ -62,13 +62,13 @@ class Members {
     data['user_id'] = userId;
     data['announcement_id'] = announcementId;
     data['createdAt'] = createdAt;
-    if (this.user != null) {
+    if (user != null) {
       data['user'] = user!.toJson();
     }
-    if (this.post != null) {
+    if (post != null) {
       data['post'] = post!.toJson();
     }
-    if (this.message != null) {
+    if (message != null) {
       data['message'] = message!.toJson();
     }
     return data;
@@ -128,7 +128,6 @@ class Message {
   String? createdAt;
   String? updatedAt;
   String? chatId;
-  Null chatChatId;
 
   Message(
       {this.messageId,
@@ -138,8 +137,7 @@ class Message {
         this.timestamp,
         this.createdAt,
         this.updatedAt,
-        this.chatId,
-        this.chatChatId});
+        this.chatId,});
 
   Message.fromJson(Map<String, dynamic> json) {
     messageId = json['message_id'];
@@ -150,7 +148,6 @@ class Message {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     chatId = json['chat_id'];
-    chatChatId = json['chatChatId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -163,7 +160,6 @@ class Message {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['chat_id'] = chatId;
-    data['chatChatId'] = chatChatId;
     return data;
   }
 }

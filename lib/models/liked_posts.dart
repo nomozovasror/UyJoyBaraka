@@ -35,7 +35,7 @@ class LikePosts {
     if (posts != null) {
       data['posts'] = posts!.map((v) => v.toJson()).toList();
     }
-    data['totalCount'] = this.totalCount;
+    data['totalCount'] = totalCount;
     data['c_page'] = cPage;
     data['p_page'] = pPage;
     return data;

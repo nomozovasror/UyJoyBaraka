@@ -202,17 +202,17 @@ class _SavedScreenState extends State<SavedScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Sizda saqlangan e\'lonlar yo\'q',
-                          style: TextStyle(
+                         Text(
+                          "not_saved".tr,
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Siz saqlangan e\'lonlarni shu yerda ko\'rishingiz mumkin',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        Text(
+                          "saved_info".tr,
+                          style: const TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                       ],
                     );

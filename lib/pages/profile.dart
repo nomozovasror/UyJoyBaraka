@@ -15,7 +15,6 @@ import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/screens/about.dart';
 import 'package:uy_joy_baraka/screens/my_ad.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
-
 import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -184,9 +183,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               const AuthScreen()),
                                     );
                                   },
-                                  child: const Text(
-                                    "Kirish",
-                                    style: TextStyle(
+                                  child: Text(
+                                    "login".tr,
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
@@ -221,8 +220,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const SizedBox(
                                           width: 12,
                                         ),
-                                        const Text("E’lonlarim",
-                                            style: TextStyle(
+                                        Text("adds".tr,
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
                                                 color: Color(0xff181725)))
@@ -262,8 +261,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  const Text("Yordam",
-                                      style: TextStyle(
+                                  Text("help".tr,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0xff181725)))
@@ -271,7 +270,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               IconButton(
                                   onPressed: () {
-                                    launch(ApiEndPoints.authEndPoints.telegramBotUrl);
+                                    launch(ApiEndPoints
+                                        .authEndPoints.telegramBotUrl);
                                   },
                                   icon: const Icon(
                                       Icons.arrow_forward_ios_rounded))
@@ -301,8 +301,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  const Text("Ilova haqida ma'lumot",
-                                      style: TextStyle(
+                                  Text("about".tr,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0xff181725)))
@@ -326,6 +326,113 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Divider(
                         thickness: 1.6,
                       ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(context: context, builder: (BuildContext context){
+
+                            return SimpleDialog(
+                              contentPadding: const EdgeInsets.all(10),
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    await prefs.setString('selectedLanguage', "uz");
+                                    Get.updateLocale(const Locale('uz'));
+                                    Get.back();
+                                  },
+                                  child: const Row(
+                                    children: [
+                                      Text('🇺🇿', style: TextStyle(fontSize: 22),),
+                                      SizedBox(width: 10,),
+                                      Text("O'zbekcha", style: TextStyle(fontSize: 20),)
+                                    ],
+                                  )
+                                ),
+                                const Divider(
+                                  thickness: 1.6,
+                                ),
+                                InkWell(
+                                    onTap: () async {
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      await prefs.setString('selectedLanguage', "ru");
+                                      Get.updateLocale(const Locale('ru'));
+                                      Get.back();
+                                    },
+                                    child: const Row(
+                                      children: [
+                                        Text('🇷🇺', style: TextStyle(fontSize: 22),),
+                                        SizedBox(width: 10,),
+                                        Text("Русский", style: TextStyle(fontSize: 20),)
+                                      ],
+                                    )
+                                ),
+                                const Divider(
+                                  thickness: 1.6,
+                                ),
+                                InkWell(
+                                    onTap: () async {
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      await prefs.setString('selectedLanguage', "en");
+                                      Get.updateLocale(const Locale('en'));
+                                      Get.back();
+                                    },
+                                    child: const Row(
+                                      children: [
+                                        Text('🇬🇧', style: TextStyle(fontSize: 22),),
+                                        SizedBox(width: 10,),
+                                        Text("English", style: TextStyle(fontSize: 20),)
+                                      ],
+                                    )
+                                ),
+                              ],
+                            );
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.language),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Text("change_language".tr,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff181725)))
+                                ],
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          const AboutScreen()),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                      Icons.arrow_forward_ios_rounded)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 1.6,
+                      ),
+                      Text('language'.tr,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff181725),),),
+                      ElevatedButton(onPressed: () async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        print(prefs.get('selectedLanguage'));
+                      }, child: Text("change language"))
                     ],
                   );
                 }),
@@ -336,13 +443,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text("Tizimdan chiqmoqchimisiz"),
+                                title: Text("logout_alert".tr),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Yo\'q'),
+                                    child: Text("no".tr),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -354,7 +461,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       getUserDataController.deleteUserData();
                                       Get.offAll(() => const MyHomePage());
                                     },
-                                    child: const Text('Ha'),
+                                    child: Text("yes".tr),
                                   )
                                 ],
                               ),
@@ -363,13 +470,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             showCupertinoDialog(
                               context: context,
                               builder: (context) => CupertinoAlertDialog(
-                                title: const Text("Parolni tiklamoqchimisiz"),
+                                title: Text("reset_password_question".tr),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Yo\'q'),
+                                    child: Text("no".tr),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -381,7 +488,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       getUserDataController.deleteUserData();
                                       Get.offAll(() => const MyHomePage());
                                     },
-                                    child: const Text('Ha'),
+                                    child: Text("yes".tr),
                                   )
                                 ],
                               ),
@@ -398,9 +505,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SvgPicture.asset("assets/icons/exit.svg"),
-                              const Text(
-                                "Chiqish",
-                                style: TextStyle(
+                              Text(
+                                "logout".tr,
+                                style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff53B175)),

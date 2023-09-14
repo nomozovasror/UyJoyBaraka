@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -29,11 +30,11 @@ class AboutScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Text(
-                        "Biz haqimizda",
-                        style: TextStyle(
+                        "title".tr,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           color: Color(0xff008B51),
@@ -44,12 +45,12 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       Expanded(
                         child: Text(
-                          "Uy joy baraka - Bu O'zbekistonda onlayn uy joylarni, sotish va ijaraga olish uchun platforma. Toshkent, Samarqand, Andijon yoki boshqa shaharlarda kvartira, uy yoki ofis sotib olish yoki sotishni istaysizmi? Siz to'g'ri manzildasiz! Bu yerda O'zbekistonning ko'plab potentsial sotuvchilarni ko'rish mumkin. Biz sizga xohlagan uy joylarni oson topishingizga yoki uyi joylaringizni  muvaffaqiyatli sotishingizda yordam bera olishimiz mumkin.",
-                          style: TextStyle(
+                          "text".tr,
+                          style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               height: 1.5),
@@ -82,13 +83,13 @@ class AboutScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: Color(0xff008B51),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: SizedBox(
                               width: 138,
                               child: Text(
-                                "Bizni ijtimoiy tarmoqlarda kuzating",
+                                "social_title".tr,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 11,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600),
@@ -146,12 +147,12 @@ class AboutScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Row(
+                  Row(
                     children: [
                       Expanded(
                         child: Text(
-                          "Biz mijozlarimizni qadrlaymiz. Bizning adminlarimiz joylashtirilgan e'lonlar haqida savollaringizga javob berishadi. Biz o'zimizni qidiruvni qulaylashtiradigan tanlov kriteriyalarini taqdim etamiz, shunda siz qidirayotgan narsani va qidirayotgan joyda topishingiz mumkin. Siz telefon orqali yoki e'lon joylashtirgan sotuvchi bilan to'g'ridan-to'g'ri bog'lanishingiz mumkin. Biz sizning xohishlarizni topishning tez, tashkil etilgan va samarali usulini taqdim etishga harakat qilamiz. \n\nBizning platformada e'lon joylashtirish tezkor va qulay. Siz bir necha daqiqada e'lon joylashtirishingiz mumkin, uy haqida ma'lumotlarini taqdim qilishingiz, tasvirlarni qo'shishingiz va potentsial sotuvchilar uchun qulayliklarni ko'rsatishingiz mumkin. Siz o'z profilni boshqarishingiz va O'zbekistondagi ko'plab potentsial sotuvchilarga kirishiga ega bo'lishingiz mumkin. Nima uchun kutmoqdasiz? Qo'shiling!\n\nHurmat bilan,\nUy joy baraka jamoasi",
-                          style: TextStyle(
+                  "text".tr,
+                          style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               height: 1.5),

@@ -180,7 +180,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               borderSide: const BorderSide(
                                   color: Color(0xff008B51), width: 2),
                             ),
-                            hintText: "Qidirish",
+                            hintText: "search".tr,
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 getSearchItemController.searchController
@@ -253,7 +253,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                   value: ijaravalue,
-                                  hint: const Text("Sotuv"),
+                                  hint: Text("sale_hint".tr),
                                   borderRadius: BorderRadius.circular(6),
                                   icon: const Icon(
                                       Icons.keyboard_arrow_down_outlined),
@@ -262,24 +262,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                       color: Color(0xff272727),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                       value: "",
                                       child: Text(
-                                        'Sotuv yoki ijara',
-                                        style: TextStyle(color: Colors.grey),
+                                        "sale_or_rent".tr,
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: "sale",
                                       child: Text(
-                                        'Sotuv',
+                                        "sale".tr,
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: "rent",
                                       child: Text(
-                                        'Ijara',
+                                        "rent".tr,
                                       ),
                                     ),
                                   ],
@@ -310,93 +310,93 @@ class _SearchScreenState extends State<SearchScreen> {
                                       color: Color(0xff272727),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                       value: "",
                                       child: Text(
-                                        'Viloyat',
-                                        style: TextStyle(color: Colors.grey),
+                                        "region".tr,
+                                        style: const TextStyle(color: Colors.grey),
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Toshkent",
                                       child: Text(
                                         'Toshkent',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Andijon",
                                       child: Text(
                                         'Andijon',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Buxoro",
                                       child: Text(
                                         'Buxoro',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Fargona",
                                       child: Text(
                                         'Farg\'ona',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Xorazm",
                                       child: Text(
                                         'Xorazm',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Namangan",
                                       child: Text(
                                         'Namangan',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Navoiy",
                                       child: Text(
                                         'Navoiy',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Qashqadaryo",
                                       child: Text(
                                         'Qashqadaryo',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Qoraqalpog'iston",
                                       child: Text(
                                         'Qoraqalpog\'iston',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Samarqand",
                                       child: Text(
                                         'Samarqand',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Sirdaryo",
                                       child: Text(
                                         'Sirdaryo',
                                         softWrap: true,
                                       ),
                                     ),
-                                    DropdownMenuItem(
+                                    const DropdownMenuItem(
                                       value: "Surxondaryo",
                                       child: Text(
                                         'Surxondaryo',
@@ -431,24 +431,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                       color: Color(0xff272727),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                       value: "",
                                       child: Text(
-                                        'valyuta',
-                                        style: TextStyle(color: Colors.grey),
+                                        "currency".tr,
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: "sum",
                                       child: Text(
-                                        "so'm",
+                                        "sum".tr,
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: "dollar",
                                       child: Text(
-                                        'dollar',
+                                        "dollar".tr,
                                       ),
                                     ),
                                   ],
@@ -641,27 +641,27 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .showSnackBar(
-                                                          const SnackBar(
-                                                            duration: Duration(
+                                                          SnackBar(
+                                                            duration: const Duration(
                                                                 milliseconds:
                                                                     1500),
                                                             content: Row(
                                                               children: [
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .heart_broken_outlined,
                                                                   color: Colors
                                                                       .white,
                                                                 ),
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   width: 10,
                                                                 ),
                                                                 Text(
-                                                                    "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                                                    "saved_alert".tr)
                                                               ],
                                                             ),
                                                             backgroundColor:
-                                                                Color(
+                                                                const Color(
                                                                     0xffFF8D08),
                                                           ),
                                                         );
@@ -743,9 +743,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              const Text(
-                                "Sizning so'rovingiz bo'yicha hech narsa topilmadi",
-                                style: TextStyle(
+                              Text(
+                                "no_result".tr,
+                                style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold),
@@ -755,12 +755,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                         );
                       } else {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                        return Padding(
+                          padding: const  EdgeInsets.symmetric(vertical: 10),
                           child: Center(
                             child: Text(
-                              "Oxiriga yettingiz",
-                              style: TextStyle(color: Colors.grey),
+                              "last_ads".tr,
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ),
                         );
@@ -778,9 +778,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          "Izlash uchun kalit so'zni kiriting",
-                          style: TextStyle(color: Colors.grey, fontSize: 18),
+                        Text(
+                          "search_key_input".tr,
+                          style: const  TextStyle(color: Colors.grey, fontSize: 18),
                           textAlign: TextAlign.center,
                         ),
                       ],

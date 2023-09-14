@@ -11,6 +11,7 @@ import 'package:uy_joy_baraka/pages/home.dart';
 import 'package:uy_joy_baraka/pages/profile.dart';
 import 'package:uy_joy_baraka/pages/saved.dart';
 import 'package:uy_joy_baraka/screens/start_screen.dart';
+import 'package:uy_joy_baraka/utils/locale_string.dart';
 
 Future<void> initSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,18 +33,44 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final bool isFirst;
+
   const MyApp({Key? key, required this.isFirst}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String? selectedLanguage;
+
+  _loadSelectedLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedLanguage = prefs.getString('selectedLanguage') ?? '';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSelectedLanguage();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        home: isFirst ? const MyHomePage() : const StartScreen());
+      translations: LocaleString(),
+      locale: Locale(selectedLanguage ?? 'uz'),
+      debugShowCheckedModeBanner: false,
+      title: 'Uy Joy Baraka',
+      home: widget.isFirst ? const MyHomePage() : const StartScreen(),
+    );
   }
 }
+
 
 LikeController likeController = Get.put(LikeController());
 
@@ -104,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 28,
                   height: 28,
                 ),
-                label: 'Menu',
+                label: "menu_title".tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -115,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 28,
                   height: 28,
                 ),
-                label: 'Saqlanganlar',
+                label: "saved_title".tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -126,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 28,
                   height: 28,
                 ),
-                label: 'E\'lon qo\'shish',
+                label: "add_title".tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -137,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 28,
                   height: 28,
                 ),
-                label: 'Chat',
+                label: "chat_title".tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -148,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 28,
                   height: 28,
                 ),
-                label: 'Profil',
+                label: "profile_title".tr,
               ),
             ],
           )),

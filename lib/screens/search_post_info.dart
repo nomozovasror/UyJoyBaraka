@@ -198,65 +198,26 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                           onTap: userLoggedIn ? (isLiked) async {
                             this.isLiked = likeController.isPostLiked(widget.allData.announcementId!);
                             _toggleLikeStatus(widget.allData.announcementId!);
-                            likeController.isPostLiked(widget.allData.announcementId!)
-                                ? ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                duration: Duration(
-                                    milliseconds: 1000),
-                                content: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.delete_outline,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                        "  Saqlanganlardan o'chirildi")
-                                  ],
-                                ),
-                                backgroundColor:
-                                Color(0xffFF8D08),
-                              ),
-                            )
-                                : ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                duration: Duration(
-                                    milliseconds: 1000),
-                                content: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                        "  Saqlanglarga qo'shildi")
-                                  ],
-                                ),
-                                backgroundColor:
-                                Colors.green,
-                              ),);
-
                             return !isLiked;
                           } : (isLiked) async {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(
-                              const SnackBar(
-                                duration: Duration(
+                              SnackBar(
+                                duration: const Duration(
                                     milliseconds: 1500),
                                 content: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.heart_broken_outlined,
                                       color: Colors.white,
                                     ),
-                                    SizedBox(width: 10,),
+                                    const SizedBox(width: 10,),
                                     Text(
-                                        "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak")
+                                        "saved_alert".tr)
                                   ],
                                 ),
                                 backgroundColor:
-                                Color(0xffFF8D08),
+                                const Color(0xffFF8D08),
                               ),
                             );
                             return !isLiked;
@@ -317,7 +278,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                   controller: inChatMessageController.messageController,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Xabar yozilmagan";
+                      return "no_message_write".tr;
                     }
                     return null;
                   },
@@ -331,7 +292,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                           )),
                       filled: true,
                       fillColor: const Color(0xffF1F1F1),
-                      hintText: "Uy egasiga yozish",
+                      hintText: "send_message_user".tr,
                       hintStyle: const TextStyle(
                           color: Color(0xffABABAB), fontSize: 14)),
                 ),
@@ -352,16 +313,16 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_rounded,
                               size: 20,
                             ),
                             Text(
-                              " Qo'ng'iroq qilish",
-                              style: TextStyle(fontSize: 14),
+                              " ${"call".tr}",
+                              style: const TextStyle(fontSize: 14),
                             )
                           ],
                         ),
@@ -385,8 +346,8 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                                 }
                               } : (){
                                 Get.snackbar(
-                                  "Siz tizimga kirmagansiz",
-                                  "Xabar yozish uchun iltimos tizimga kiring",
+                                  "login_error".tr,
+                                  "login_error_text".tr,
                                   snackPosition: SnackPosition.BOTTOM,
                                   backgroundColor: const Color(0xFFFF8D08),
                                   forwardAnimationCurve: Curves.ease,
@@ -401,14 +362,14 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 6),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Yuborish ",
-                                    style: TextStyle(fontSize: 14),
+                                    "${"send".tr} ",
+                                    style: const TextStyle(fontSize: 14),
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.send_outlined,
                                     size: 20,
                                   ),
@@ -449,7 +410,7 @@ class _SearchInfoScreenState extends State<SearchInfoScreen> {
                                 color: Color(0xff898989)),
                           ),
 
-                          Text("${timeSlicer(widget.allData.createdAt.toString())} dan beri",
+                          Text("${timeSlicer(widget.allData.createdAt.toString())} ${"time_plus".tr}",
                               style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w300,

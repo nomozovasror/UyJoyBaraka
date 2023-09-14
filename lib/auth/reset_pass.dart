@@ -45,18 +45,18 @@ class _ResetPassState extends State<ResetPass> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Text(
-                  "Besh raqamli kodni kiriting",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Text(
+                  "five_number".tr,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Code",
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    "code".tr,
+                    style: const TextStyle(fontSize: 15, color: Colors.grey),
                   ),
                 ),
                 Align(
@@ -111,7 +111,7 @@ class _ResetPassState extends State<ResetPass> {
                         setState(() {
                           timer = true;
                         });
-                      }, child: const Text('Qayta yuborish',style: TextStyle(
+                      }, child: Text("resend".tr,style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xFF53B175)),)),
                       FloatingActionButton(

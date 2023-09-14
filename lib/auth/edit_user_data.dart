@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:uy_joy_baraka/controller/edit_number_controller.dart';
 
 class EditUserDataScreen extends StatefulWidget {
@@ -9,12 +9,9 @@ class EditUserDataScreen extends StatefulWidget {
   State<EditUserDataScreen> createState() => _EditUserDataScreenState();
 }
 
-
-
 EditPhoneController editPhoneController = EditPhoneController();
 
 final formKey = GlobalKey<FormState>();
-
 
 class _EditUserDataScreenState extends State<EditUserDataScreen> {
   @override
@@ -48,9 +45,9 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Iltimos telefon raqamingizni kiriting";
+                      return "phone_alert".tr;
                     } else if (value.length < 7) {
-                      return "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak";
+                      return "phone_short_seven".tr;
                     }
                     return null;
                   },
@@ -77,7 +74,7 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
                           editPhoneController.editPhone();
                         }
                       },
-                      child: const Text('Saqlash', style: TextStyle(color: Colors.blue),),
+                      child: Text("save".tr, style: const TextStyle(color: Colors.blue),),
                     )
                   ),
                 ),
@@ -87,20 +84,20 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Iltimos ism va familyangizni kiriting";
+                      return "name_alert".tr;
                     }
                     return null;
                   },
                   controller: editPhoneController.nameController,
                   decoration: InputDecoration(
-                    hintText: 'Ism va familya',
+                    hintText: 'name_hint'.tr,
                     suffixIcon: TextButton(
                       onPressed: (){
                         if (formKey.currentState!.validate()) {
                           editPhoneController.editName();
                         }
                       },
-                      child: const Text('Saqlash', style: TextStyle(color: Colors.blue),),
+                      child: Text('save'.tr, style: const TextStyle(color: Colors.blue),),
                     )
                   )
                 ),

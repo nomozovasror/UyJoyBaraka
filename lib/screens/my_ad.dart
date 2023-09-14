@@ -83,12 +83,12 @@ class _AdScreenState extends State<AdScreen> {
                         getInactivePostController.getInactivePosts();
                       }
                     },
-                    tabs: const [
+                    tabs: [
                       Tab(
                         child: SizedBox(
                           child: Align(
                             alignment: Alignment.center,
-                            child: Text("Faol"),
+                            child: Text("active".tr),
                           ),
                         ),
                       ),
@@ -96,7 +96,7 @@ class _AdScreenState extends State<AdScreen> {
                         child: SizedBox(
                           child: Align(
                             alignment: Alignment.center,
-                            child: Text("Faol emas"),
+                            child: Text("inactive".tr),
                           ),
                         ),
                       ),
@@ -227,8 +227,8 @@ class _AdScreenState extends State<AdScreen> {
                                                       temp.add(active
                                                           .announcementId!);
                                                       Get.snackbar(
-                                                        "Muaffaqiyatli",
-                                                        "E'lon nofaollashtirildi",
+                                                        "success".tr,
+                                                        "ad_inactive".tr,
                                                         snackPosition:
                                                             SnackPosition
                                                                 .BOTTOM,
@@ -359,9 +359,9 @@ class _AdScreenState extends State<AdScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const Text(
-                                  'Sizda faol e\'lonlar yo\'q',
-                                  style: TextStyle(
+                                Text(
+                                  "no_active".tr,
+                                  style: const TextStyle(
                                       fontSize: 18, color: Colors.grey),
                                 ),
                               ],
@@ -473,11 +473,11 @@ class _AdScreenState extends State<AdScreen> {
                                               child: IconButton(
                                                 onPressed: () {
                                                   Get.defaultDialog(
-                                                    title: "E'lonni o'chirish",
-                                                    content: const Text(
-                                                        "E'lonni o'chirishni xohlaysizmi?"),
-                                                    textCancel: "Yo'q",
-                                                    textConfirm: "Ha",
+                                                    title: "delete_ad".tr,
+                                                    content: Text(
+                                                        "delete_ad_alert".tr),
+                                                    textCancel: "no".tr,
+                                                    textConfirm: "yes".tr,
                                                     confirmTextColor:
                                                         Colors.white,
                                                     cancelTextColor: Colors.red,
@@ -606,8 +606,8 @@ class _AdScreenState extends State<AdScreen> {
                                                       temp.remove(inactive
                                                           .announcementId!);
                                                       Get.snackbar(
-                                                        "Muaffaqiyatli",
-                                                        "E'lon faollashtirildi",
+                                                        "success".tr,
+                                                        "ad_active".tr,
                                                         snackPosition:
                                                             SnackPosition
                                                                 .BOTTOM,
@@ -646,10 +646,10 @@ class _AdScreenState extends State<AdScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               4)),
-                                                  child: const Center(
+                                                  child: Center(
                                                     child: Text(
-                                                      "Faollashtirish",
-                                                      style: TextStyle(
+                                                      "active_alert".tr,
+                                                      style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 14,
                                                           fontWeight:
@@ -659,10 +659,10 @@ class _AdScreenState extends State<AdScreen> {
                                                 ),
                                               ),
                                             )
-                                          : const Text(
-                                              "E'lon tasdiqlanishi\nkutilmoda",
+                                          : Text(
+                                              "wait_text".tr,
                                               style:
-                                                  TextStyle(color: Colors.red),
+                                                  const TextStyle(color: Colors.red),
                                               textAlign: TextAlign.center,
                                             ),
                                     ],
@@ -685,9 +685,9 @@ class _AdScreenState extends State<AdScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const Text(
-                                  'Sizda nofaol e\'lonlar yo\'q',
-                                  style: TextStyle(
+                                Text(
+                                  "no_active".tr,
+                                  style: const TextStyle(
                                       fontSize: 18, color: Colors.grey),
                                 ),
                               ],
