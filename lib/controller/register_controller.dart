@@ -13,6 +13,7 @@ class RegisterationController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  var loading = false.obs;
 
   LoginController loginController = Get.put(LoginController());
 
@@ -20,6 +21,7 @@ class RegisterationController extends GetxController {
 
   Future<void> sendCode() async {
     try {
+      loading.value = true;
       var headerss = {
         'Content-Type': 'application/json',
       };
@@ -49,11 +51,14 @@ class RegisterationController extends GetxController {
       if (kDebugMode) {
         print(e);
       }
+    }finally{
+      loading.value = false;
     }
   }
 
   Future<void> register() async {
     try {
+      loading.value = true;
       var headers = {
         'Content-Type': 'application/json',
       };
@@ -126,6 +131,8 @@ class RegisterationController extends GetxController {
               ],
             );
           });
+    }finally{
+      loading.value = false;
     }
   }
 }

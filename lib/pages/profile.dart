@@ -423,14 +423,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Divider(
                         thickness: 1.6,
                       ),
-                      Text('language'.tr,
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff181725),),),
-                      ElevatedButton(onPressed: () async {
-                        // SharedPreferences prefs = await SharedPreferences.getInstance();
-                      }, child:const  Text("change language"))
                     ],
                   );
                 }),

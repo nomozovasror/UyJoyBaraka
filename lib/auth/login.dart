@@ -227,7 +227,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   registerationController.register();
                 }
               },
-              child: Text(
+              child: registerationController.loading.value ? const CircularProgressIndicator(color: Colors.white,) : Text(
                 "sign_up".tr,
                 style: const TextStyle(
                   fontSize: 18,
