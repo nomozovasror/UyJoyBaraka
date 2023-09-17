@@ -49,7 +49,7 @@ class _CheckCodeState extends State<CheckCode> {
               ),
               Text(
                 "five_number".tr,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 40,

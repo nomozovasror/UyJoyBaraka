@@ -329,14 +329,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       InkWell(
                         onTap: () {
                           showDialog(context: context, builder: (BuildContext context){
-
                             return SimpleDialog(
                               contentPadding: const EdgeInsets.all(10),
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    await prefs.setString('selectedLanguage', "uz");
                                     Get.updateLocale(const Locale('uz'));
                                     Get.back();
                                   },
@@ -353,8 +350,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 InkWell(
                                     onTap: () async {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      await prefs.setString('selectedLanguage', "ru");
                                       Get.updateLocale(const Locale('ru'));
                                       Get.back();
                                     },
@@ -371,8 +366,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 InkWell(
                                     onTap: () async {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      await prefs.setString('selectedLanguage', "en");
                                       Get.updateLocale(const Locale('en'));
                                       Get.back();
                                     },
@@ -430,9 +423,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.w600,
                               color: Color(0xff181725),),),
                       ElevatedButton(onPressed: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        print(prefs.get('selectedLanguage'));
-                      }, child: Text("change language"))
+                        // SharedPreferences prefs = await SharedPreferences.getInstance();
+                      }, child:const  Text("change language"))
                     ],
                   );
                 }),

@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocaleString(),
-      locale: Locale(selectedLanguage ?? 'uz'),
+      locale: Locale('uz'),
       debugShowCheckedModeBanner: false,
       title: 'Uy Joy Baraka',
       home: widget.isFirst ? const MyHomePage() : const StartScreen(),
