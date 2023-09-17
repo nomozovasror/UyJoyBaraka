@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/pages/ad.dart';
@@ -12,6 +13,7 @@ import 'package:uy_joy_baraka/pages/profile.dart';
 import 'package:uy_joy_baraka/pages/saved.dart';
 import 'package:uy_joy_baraka/screens/start_screen.dart';
 import 'package:uy_joy_baraka/utils/locale_string.dart';
+import 'package:uy_joy_baraka/utils/localization_controller.dart';
 
 Future<void> initSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,7 +29,9 @@ void main() async {
   await likeController.fetchAndStoreLikedPosts();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final isFirst = prefs.getBool('isFirst') ?? false;
-
+  await GetStorage.init();
+  final localizationController = Get.put(LocalizationController());
+  localizationController.initSelectedLanguage();
   runApp(MyApp(
     isFirst: isFirst,
   ));
@@ -45,10 +49,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String? selectedLanguage;
 
-  _loadSelectedLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
+  _loadSelectedLanguage() {
+    final localizationController = Get.find<LocalizationController>();
     setState(() {
-      selectedLanguage = prefs.getString('selectedLanguage') ?? '';
+      selectedLanguage = localizationController.selectedLanguage;
     });
   }
 
@@ -63,7 +67,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocaleString(),
-      locale: Locale('uz'),
+      locale: Locale(selectedLanguage ?? 'uz'),
       debugShowCheckedModeBanner: false,
       title: 'Uy Joy Baraka',
       home: widget.isFirst ? const MyHomePage() : const StartScreen(),

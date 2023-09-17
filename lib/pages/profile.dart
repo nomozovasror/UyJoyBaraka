@@ -15,6 +15,7 @@ import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/screens/about.dart';
 import 'package:uy_joy_baraka/screens/my_ad.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
+import 'package:uy_joy_baraka/utils/localization_controller.dart';
 import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -27,6 +28,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   GetUserDataController getUserDataController =
       Get.put(GetUserDataController());
+  LocalizationController localizationController =
+      Get.put(LocalizationController());
 
   @override
   void initState() {
@@ -334,6 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 InkWell(
                                   onTap: () async {
+                                    localizationController.selectedLanguage = 'uz';
                                     Get.updateLocale(const Locale('uz'));
                                     Get.back();
                                   },
@@ -350,6 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 InkWell(
                                     onTap: () async {
+                                      localizationController.selectedLanguage = 'ru';
                                       Get.updateLocale(const Locale('ru'));
                                       Get.back();
                                     },
@@ -366,6 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 InkWell(
                                     onTap: () async {
+                                      localizationController.selectedLanguage = 'en';
                                       Get.updateLocale(const Locale('en'));
                                       Get.back();
                                     },
