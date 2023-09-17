@@ -348,6 +348,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                       ),
                                     ),
                                     const DropdownMenuItem(
+                                      value: "Jizzax",
+                                      child: Text(
+                                        'Jizzax',
+                                        softWrap: true,
+                                      ),
+                                    ),
+                                    const DropdownMenuItem(
                                       value: "Xorazm",
                                       child: Text(
                                         'Xorazm',
