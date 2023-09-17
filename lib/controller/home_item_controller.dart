@@ -15,7 +15,7 @@ class GetAllItemController extends GetxController {
 
   bool hasMoreData = true;
   bool isLoading = false;
-  int limit = 10;
+  int limit = 20;
 
   @override
   void onInit() {
@@ -32,7 +32,7 @@ class GetAllItemController extends GetxController {
   getAllItem() async {
     try {
       if (!hasMoreData || isLoading) {
-        return; // Don't fetch if there is no more data or an ongoing API call
+        return;
       }
       isLoading = true;
 

@@ -31,6 +31,7 @@ class _AuthEndPoints {
   final String deletePost = "/api/announcements/delete/";
   final String updatePost = "/api/announcements/update/";
   final String getChats = "/api/chats";
+  final String getAdvert = "/ads/app";
 
   final String telegramBotUrl = "https://t.me/uyjoybarakauz_bot";
   final String phone = "tel:+998992435577";

@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/advertising_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
 import 'package:uy_joy_baraka/controller/view_count_controller.dart';
@@ -33,11 +37,24 @@ class _HomeScreenState extends State<HomeScreen> {
     'assets/images/carusel_2.jpg',
     'assets/images/carusel_3.jpg',
   ];
+  int randomNumber = 0;
+
+
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
   ViewCounterController viewCounterController =
       Get.put(ViewCounterController());
   LikeController likeController = Get.put(LikeController());
+  GetAdvertsDataController getAdvertsDataController =
+      Get.put(GetAdvertsDataController());
+
+  void generateRandomNumber() {
+    Random random = Random();
+    int newRandomNumber = random.nextInt(getAdvertsDataController.allAds.length); // 0 dan 99 gacha tasodifiy son olish
+    setState(() {
+      randomNumber = newRandomNumber;
+    });
+  }
 
   String? ijaravalue = "ijaraYokiSotuv";
   String? viloyat = "Toshkent";
@@ -79,6 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     scrollController.addListener(_scrollListener);
     likeController.initializeLikedPostIds();
+    getAdvertsDataController.getAdvertsData();
+    Timer.periodic(const Duration(seconds: 15), (Timer t) {
+      generateRandomNumber();
+    });
   }
 
   @override
@@ -117,9 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SearchScreen()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchScreen(),
+                ),
+              );
             },
             child: Row(
               children: [
@@ -174,95 +197,130 @@ class _HomeScreenState extends State<HomeScreen> {
           // FILTER >>>>>>>
 
           // CAROUSEL >>>>>>>>
-          Stack(alignment: Alignment.center, children: [
-            CarouselSlider.builder(
-              options: CarouselOptions(
-                  height: 250,
-                  viewportFraction: 1,
-                  autoPlay: true,
-                  onPageChanged: (index, reason) =>
-                      setState(() => activeIndex = index)),
-              itemCount: imgList.length,
-              itemBuilder: (BuildContext context, int index, int realIndex) {
-                final imgL = imgList[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(imgL), fit: BoxFit.cover),
-                  ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            Color(0x40008B51),
-                            Color(0x40000000),
-                          ],
-                          begin: FractionalOffset(0.0, 0.0),
-                          end: FractionalOffset(1.0, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: 42,
-                          left: 28,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                               SizedBox(
-                                width: 300,
-                                child: Text(
-                                  "carousel_title".tr,
-                                  style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  launch(ApiEndPoints.authEndPoints.phone);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff008B51),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.phone_rounded,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      "button_title".tr,
-                                      style: const TextStyle(fontSize: 14),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+          Obx(() {
+            if(getAdvertsDataController.loadItem.value) { return Stack(alignment: Alignment.center, children: [
+              CarouselSlider.builder(
+                options: CarouselOptions(
+                    height: 250,
+                    viewportFraction: 1,
+                    autoPlay: true,
+                    onPageChanged: (index, reason) =>
+                        setState(() => activeIndex = index)),
+                itemCount: getAdvertsDataController.allAds.length,
+                itemBuilder: (BuildContext context, int index, int realIndex) {
+                  final add = getAdvertsDataController.allAds[index];
+                  if (index == 0){
+                    return Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(ApiEndPoints.BASE_URL + add.imgMob.toString()), fit: BoxFit.cover),
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                Color(0x40008B51),
+                                Color(0x40000000),
+                              ],
+                              begin: FractionalOffset(0.0, 0.0),
+                              end: FractionalOffset(1.0, 0.0),
+                              stops: [0.0, 1.0],
+                              tileMode: TileMode.clamp),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            Positioned(
-                bottom: 10,
-                child: AnimatedSmoothIndicator(
-                  activeIndex: activeIndex,
-                  count: imgList.length,
-                  effect: const WormEffect(
-                      dotWidth: 12,
-                      dotHeight: 12,
-                      activeDotColor: Color(0xffFF8D08),
-                      dotColor: Colors.white),
-                ))
-          ]),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 42,
+                              left: 28,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 300,
+                                    child: Text(
+                                      "carousel_title".tr,
+                                      style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      launch(ApiEndPoints.authEndPoints.phone);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff008B51),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.phone_rounded,
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          "button_title".tr,
+                                          style: const TextStyle(fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }else{
+                    return GestureDetector(
+                      onTap: () {
+                        launchUrl(Uri.parse(add.link.toString()));
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
+                        imageBuilder: (context, imageProvider) =>
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8)),
+                                image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xff008B51),
+                            )),
+                        errorWidget: (context, url, error) =>
+                        const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              Positioned(
+                  bottom: 10,
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: activeIndex,
+                    count: getAdvertsDataController.allAds.length,
+                    effect: const WormEffect(
+                        dotWidth: 12,
+                        dotHeight: 12,
+                        activeDotColor: Color(0xffFF8D08),
+                        dotColor: Colors.white),
+                  ))
+            ]); }else{ return carousel();}
+          }),
           // TITLE
           Container(
             margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
@@ -302,62 +360,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     String postId = post.announcementId ?? '';
                     if ((index + 1) % 11 == 0) {
                       if (index < 11) {
+
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 20),
                           height: 260,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage(
-                                  "assets/images/ad_img.jpg",
-                                )),
-                          ),
-                          // AD BANNER
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 42,
-                                left: 28,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                     SizedBox(
-                                      width: 300,
-                                      child: Text(
-                                        "ad_title".tr,
-                                        style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff008B51)),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        launch(ApiEndPoints.authEndPoints.phone);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xff008B51),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 6),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.phone_rounded,
-                                            size: 20,
-                                          ),
-                                          Text(
-                                              "button_title".tr,
-                                            style: const TextStyle(fontSize: 14),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                image: NetworkImage(
+                                  ApiEndPoints.BASE_URL +
+                                      getAdvertsDataController.allAds[randomNumber].imgMob
+                                          .toString(),
                                 ),
-                              ),
-                            ],
+                            ),
                           ),
                         );
                       } else {
@@ -387,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decoration: const BoxDecoration(
                                   color: Color(0xff008B51),
                                 ),
-                                child:  Center(
+                                child: Center(
                                   child: SizedBox(
                                     width: 138,
                                     child: Text(
@@ -582,10 +597,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .showSnackBar(
-                                                           SnackBar(
-                                                            duration: const Duration(
-                                                                milliseconds:
-                                                                    1500),
+                                                          SnackBar(
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        1500),
                                                             content: Row(
                                                               children: [
                                                                 const Icon(
@@ -598,7 +614,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   width: 10,
                                                                 ),
                                                                 Text(
-                                                                    "saved_alert".tr)
+                                                                    "saved_alert"
+                                                                        .tr)
                                                               ],
                                                             ),
                                                             backgroundColor:
@@ -673,7 +690,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Center(
                     child: Text(
                       "last_ads".tr,
-                      style: const  TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   ),
                 )
@@ -681,6 +698,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Widget carousel() => Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: 250,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+        ),
+      ));
 
   Widget homeShimmer() => Container(
         margin: const EdgeInsets.all(10),
