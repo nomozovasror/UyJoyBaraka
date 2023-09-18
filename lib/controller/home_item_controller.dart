@@ -15,7 +15,7 @@ class GetAllItemController extends GetxController {
 
   bool hasMoreData = true;
   bool isLoading = false;
-  int limit = 20;
+  int limit = 10;
 
   @override
   void onInit() {

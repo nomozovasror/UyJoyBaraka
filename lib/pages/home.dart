@@ -360,18 +360,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     String postId = post.announcementId ?? '';
                     if ((index + 1) % 11 == 0) {
                       if (index < 11) {
-
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 20),
-                          height: 260,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  ApiEndPoints.BASE_URL +
-                                      getAdvertsDataController.allAds[randomNumber].imgMob
-                                          .toString(),
-                                ),
+                        int ran =  randomNumber.toInt();
+                        return GestureDetector(
+                          onTap: () {
+                            launchUrl(Uri.parse(getAdvertsDataController.allAds[ran].link.toString()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            height: 260,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    ApiEndPoints.BASE_URL +
+                                        getAdvertsDataController.allAds[ran].imgMob
+                                            .toString(),
+                                  ),
+                              ),
                             ),
                           ),
                         );
