@@ -206,14 +206,113 @@ class _HomeScreenState extends State<HomeScreen> {
                     autoPlay: true,
                     onPageChanged: (index, reason) =>
                         setState(() => activeIndex = index)),
-                itemCount: getAdvertsDataController.allAds.length,
+                itemCount: getAdvertsDataController.allAds.isNotEmpty ? getAdvertsDataController.allAds.length : imgList.length,
                 itemBuilder: (BuildContext context, int index, int realIndex) {
                   final add = getAdvertsDataController.allAds[index];
-                  if (index == 0){
+
+                  if (getAdvertsDataController.allAds.isNotEmpty){
+                    if (index == 0){
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(ApiEndPoints.BASE_URL + add.imgMob.toString()), fit: BoxFit.cover),
+                        ),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [
+                                  Color(0x40008B51),
+                                  Color(0x40000000),
+                                ],
+                                begin: FractionalOffset(0.0, 0.0),
+                                end: FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                top: 42,
+                                left: 28,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 300,
+                                      child: Text(
+                                        "carousel_title".tr,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        launch(ApiEndPoints.authEndPoints.phone);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xff008B51),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 6),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.phone_rounded,
+                                            size: 20,
+                                          ),
+                                          Text(
+                                            "button_title".tr,
+                                            style: const TextStyle(fontSize: 14),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }else{
+                      return GestureDetector(
+                        onTap: () {
+                          launchUrl(Uri.parse(add.link.toString()));
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
+                          imageBuilder: (context, imageProvider) =>
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8)),
+                                  image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xff008B51),
+                              )),
+                          errorWidget: (context, url, error) =>
+                          const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                        ),
+                      );
+                    }
+                  }else{
                     return Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: NetworkImage(ApiEndPoints.BASE_URL + add.imgMob.toString()), fit: BoxFit.cover),
+                            image: AssetImage(imgList[index]), fit: BoxFit.cover),
                       ),
                       child: Container(
                         decoration: const BoxDecoration(
@@ -274,37 +373,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     );
-                  }else{
-                    return GestureDetector(
-                      onTap: () {
-                        launchUrl(Uri.parse(add.link.toString()));
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
-                        imageBuilder: (context, imageProvider) =>
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                                image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(
-                              color: Color(0xff008B51),
-                            )),
-                        errorWidget: (context, url, error) =>
-                        const Icon(
-                          Icons.error,
-                          color: Colors.red,
-                        ),
-                      ),
-                    );
                   }
                 },
               ),
@@ -312,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: 10,
                   child: AnimatedSmoothIndicator(
                     activeIndex: activeIndex,
-                    count: getAdvertsDataController.allAds.length,
+                    count: getAdvertsDataController.allAds.isNotEmpty ? getAdvertsDataController.allAds.length : imgList.length,
                     effect: const WormEffect(
                         dotWidth: 12,
                         dotHeight: 12,
@@ -330,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff008B51))),
+                        color: Color(0xff008B51),),),
               ],
             ),
           ),
@@ -361,25 +429,70 @@ class _HomeScreenState extends State<HomeScreen> {
                     if ((index + 1) % 11 == 0) {
                       if (index < 11) {
                         int ran =  randomNumber.toInt();
-                        return GestureDetector(
-                          onTap: () {
-                            launchUrl(Uri.parse(getAdvertsDataController.allAds[ran].link.toString()));
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 20),
-                            height: 260,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
+                        if(getAdvertsDataController.allAds.isNotEmpty){
+                          return GestureDetector(
+                            onTap: () {
+                              launchUrl(Uri.parse(getAdvertsDataController.allAds[ran].link.toString()));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              height: 260,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
                                     ApiEndPoints.BASE_URL +
                                         getAdvertsDataController.allAds[ran].imgMob
                                             .toString(),
                                   ),
+                                ),
                               ),
                             ),
-                          ),
-                        );
+                          );
+                        }else{
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            height: 260,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  'assets/images/ad_img.jpg',
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("ad_title".tr, style: TextStyle(color: Color(0xff008B51), fontSize: 28, fontWeight: FontWeight.w700),),
+                                  const SizedBox(height: 10,),
+                                  MaterialButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: (){
+                                    launchUrl(Uri.parse(ApiEndPoints.authEndPoints.phone));
+                                  }, child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: const Color(0xff008B51),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.phone, color: Colors.white,),
+                                          const SizedBox(width: 10,),
+                                          Text("button_title".tr, style: const TextStyle(color: Colors.white, fontSize: 18),),
+                                        ],
+                                      )))
+                                ],
+                              ),
+                            ),
+                          );
+                        }
                       } else {
                         // SECOND AD BANNER
                         return Container(
