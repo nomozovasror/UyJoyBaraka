@@ -33,6 +33,10 @@ class _AuthEndPoints {
   final String getChats = "/api/chats";
   final String getAdvert = "/ads/app";
 
+  final String youTube = "https://www.youtube.com/@UyjoyBaraka";
+  final String instagram = "https://www.instagram.com/uyjoy_baraka/";
+  final String telegram = "https://t.me/uy_joybarakabor";
+
   final String telegramBotUrl = "https://t.me/uyjoybarakauz_bot";
   final String phone = "tel:+998992435577";
 }

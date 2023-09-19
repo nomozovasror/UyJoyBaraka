@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/utils/api_endpoints.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -100,43 +102,66 @@ class AboutScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)),
-                              height: 25,
-                              width: 25,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                    'assets/icons/ri_facebook-fill.svg'),
+                            GestureDetector(
+                              onTap: () {
+                                launchUrl(Uri.parse(ApiEndPoints
+                                    .authEndPoints.youTube
+                                    .toString()));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF8D08),
+                                    borderRadius: BorderRadius.circular(50)),
+                                height: 25,
+                                width: 25,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/icons/youtube.svg',
+                                    width: 18,
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(
                               width: 5,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)),
-                              height: 25,
-                              width: 25,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                    'assets/icons/mdi_instagram.svg'),
+                            GestureDetector(
+                              onTap: () {
+                                launchUrl(Uri.parse(ApiEndPoints
+                                    .authEndPoints.instagram
+                                    .toString()));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF8D08),
+                                    borderRadius: BorderRadius.circular(50)),
+                                height: 25,
+                                width: 25,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                      'assets/icons/mdi_instagram.svg'),
+                                ),
                               ),
                             ),
                             const SizedBox(
                               width: 5,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFFFF8D08),
-                                  borderRadius: BorderRadius.circular(50)),
-                              height: 25,
-                              width: 25,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                    'assets/icons/mingcute_telegram-line.svg'),
+                            GestureDetector(
+                              onTap: () {
+                                launchUrl(Uri.parse(ApiEndPoints
+                                    .authEndPoints.telegram
+                                    .toString()));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF8D08),
+                                    borderRadius: BorderRadius.circular(50)),
+                                height: 25,
+                                width: 25,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                      'assets/icons/mingcute_telegram-line.svg'),
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -151,7 +176,7 @@ class AboutScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                  "text".tr,
+                          "text".tr,
                           style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,

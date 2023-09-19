@@ -424,46 +424,61 @@ class _HomeScreenState extends State<HomeScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFFF8D08),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    height: 25,
-                                    width: 25,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                          'assets/icons/ri_facebook-fill.svg'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.youTube.toString()));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFFF8D08),
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 25,
+                                      width: 25,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                            'assets/icons/youtube.svg', width: 18,),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFFF8D08),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    height: 25,
-                                    width: 25,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                          'assets/icons/mdi_instagram.svg'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.instagram.toString()));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFFF8D08),
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 25,
+                                      width: 25,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                            'assets/icons/mdi_instagram.svg'),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFFF8D08),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    height: 25,
-                                    width: 25,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                          'assets/icons/mingcute_telegram-line.svg'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.telegram.toString()));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFFF8D08),
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 25,
+                                      width: 25,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                            'assets/icons/mingcute_telegram-line.svg'),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
