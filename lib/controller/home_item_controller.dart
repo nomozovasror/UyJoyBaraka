@@ -124,9 +124,9 @@ class GetAllItemController extends GetxController {
           });
     } finally {
       isLoading =
-          false; // Reset the isLoading flag regardless of success or failure
+          false;
       loadItem.value =
-          false; // Set loadItem to false after the API call is complete
+          false;
     }
   }
 }

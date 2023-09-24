@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uy_joy_baraka/controller/get_all_chats.dart';
 import 'package:uy_joy_baraka/controller/get_messages.dart';
 import 'package:uy_joy_baraka/controller/send_message.dart';
-import 'package:uy_joy_baraka/controller/user_data_controller.dart';
 import 'package:uy_joy_baraka/models/get_all_chats_model.dart';
 import 'package:uy_joy_baraka/models/meseeages_model.dart';
 import 'package:uy_joy_baraka/utils/api_endpoints.dart';
@@ -19,9 +18,7 @@ class ChatDetail extends StatefulWidget {
 }
 
 GetMessagesController getMessagesController = Get.put(GetMessagesController());
-SendMessageController sendMessageController = Get.put(SendMessageController());
-GetUserDataController getUserDataController = Get.put(GetUserDataController());
-GetAllChatsController getAllChatsController = Get.put(GetAllChatsController());
+SendMessageController sendMessageController = Get.put(SendMessageController());GetAllChatsController getAllChatsController = Get.put(GetAllChatsController());
 
 class _ChatDetailState extends State<ChatDetail> {
   String timeSlicer(time, start, end) {

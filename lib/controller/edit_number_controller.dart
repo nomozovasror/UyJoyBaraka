@@ -41,7 +41,7 @@ class EditPhoneController extends GetxController {
               'authorization': prefs.getString('token') ?? '',
             };
             Map body = {
-              "phone": phoneController.text,
+              "phone": "998${phoneController.text}",
             };
             var url = Uri.parse(ApiEndPoints.BASE_URL +
                 ApiEndPoints.authEndPoints.editUserPhone);

@@ -61,12 +61,7 @@ class LocaleString extends Translations{
         "phone": "Telefon raqam",
         "save_progress": "Saqlanmoqda ...",
         "all_input": "  Iltimos barcha qatorlarni to'ldiring",
-
-
-
-
         "not_chat": "Yozishmalar topilmadi",
-
         "login": "Kirish",
         "adds": "E'lonlarim",
         "help": "Yordam",
@@ -76,8 +71,6 @@ class LocaleString extends Translations{
         "logout_alert": "Tizimdan chiqmoqchimisiz?",
         "logout_yes": "Ha",
         "logout_no": "Yo'q",
-
-
         "title": "Biz haqimizda",
         "text": "Uy joy baraka - Bu O'zbekistonda onlayn uy joylarni, sotish va ijaraga olish uchun platforma. Toshkent, Samarqand, Andijon yoki boshqa shaharlarda kvartira, uy yoki ofis sotib olish yoki sotishni istaysizmi? Siz to'g'ri manzildasiz! Bu yerda O'zbekistonning ko'plab potentsial sotuvchilarni ko'rish mumkin. Biz sizga xohlagan uy joylarni oson topishingizga yoki uyi joylaringizni  muvaffaqiyatli sotishingizda yordam bera olishimiz mumkin.",
         "text2": "Biz mijozlarimizni qadrlaymiz. Bizning adminlarimiz joylashtirilgan e'lonlar haqida savollaringizga javob berishadi. Biz o'zimizni qidiruvni qulaylashtiradigan tanlov kriteriyalarini taqdim etamiz, shunda siz qidirayotgan narsani va qidirayotgan joyda topishingiz mumkin. Siz telefon orqali yoki e'lon joylashtirgan sotuvchi bilan to'g'ridan-to'g'ri bog'lanishingiz mumkin. Biz sizning xohishlarizni topishning tez, tashkil etilgan va samarali usulini taqdim etishga harakat qilamiz. \nBizning platformada e'lon joylashtirish tezkor va qulay. Siz bir necha daqiqada e'lon joylashtirishingiz mumkin, uy haqida ma'lumotlarini taqdim qilishingiz, tasvirlarni qo'shishingiz va potentsial sotuvchilar uchun qulayliklarni ko'rsatishingiz mumkin. Siz o'z profilni boshqarishingiz va O'zbekistondagi ko'plab potentsial sotuvchilarga kirishiga ega bo'lishingiz mumkin. Nima uchun kutmoqdasiz? Qo'shiling!\nHurmat bilan,\nUy joy baraka jamoasi,\n",
@@ -87,7 +80,6 @@ class LocaleString extends Translations{
         "delete_no": "Yo'q",
         "no_message": "Sizda xabarlar yoq",
         "send_message": "Xabar yuborish",
-
         "saved_alert": "Saqlanglarga qo'shish uchun avval\ntizimga kirishingiz kerak",
         "no_message_write": "Xabar yozilmagan",
         "send_message_user": "Uy egasiga yozish",
@@ -97,7 +89,6 @@ class LocaleString extends Translations{
         "send": "Yuborish",
         "time_plus": " dan beri",
         "offer": "Siz uchun taklif",
-
         "active": "Faol",
         "inactive": "Faol emas",
         "success": "Muvaffaqiyatli",
@@ -108,7 +99,6 @@ class LocaleString extends Translations{
         "delete_ad_alert": "E'lonni o'chirishni xohlaysizmi?",
         "active_alert": "Faollashtirish,",
         "wait_text": "E'lon tasdiqlanishi\nkutilmoda",
-
         "search": "Qidiruv",
         "rent_hint": "Ijara",
         "sale_or_rent": "Sotuv yoki ijara",
@@ -116,19 +106,16 @@ class LocaleString extends Translations{
         "currency": "valyuta",
         "sum": "so'm",
         "dollar": "dollar",
-
         "no_result": "Sizning so'rovingiz bo'yicha hech narsa topilmadi",
         "search_key_input": "Izlash uchun kalit so'zni kiriting",
-
         "five_number": "Besh raqamli kodni kiriting",
         "code": "Code",
         "resend": "Qayta yuborish",
-
         "phone_alert": "Iltimos telefon raqamingizni kiriting",
         "phone_short_seven": "Telefon raqam 7 ta belgidan kam bo'lmasligi kerak",
         "save": "Saqlash",
         "name_alert": "Iltimos ism va familyangizni kiriting",
-        "name_hint": "Ism va familya",
+        "name_hint": "Ismingizni kiriting",
 
         "sign_up": "Ro'yxatdan o'tish",
         "sign_in": "Kirish",
@@ -145,10 +132,11 @@ class LocaleString extends Translations{
         "forgot_password": "Parolni unutdingizmi?",
         "reset_password": "Parolni tiklash",
         "not_account": "Sizda akkaunt yo'qmi?",
-
         "start_title": "Xush kelibsiz\nUy joy baraka",
         "start_text": "O’zingizga kerakli uyni tez va oson toping",
-        "start_button": "Boshlash"
+        "start_button": "Boshlash",
+        "delete_account": "Akkauntni o'chirish",
+        "delete_account_alert": "Akkauntni o'chirishni xohlaysizmi?",
     },
     'ru_RU':{
       "language": "Русский",
@@ -295,7 +283,10 @@ class LocaleString extends Translations{
 
       "start_title": "Добро пожаловать\nUy joy baraka",
       "start_text": "Найдите нужный вам дом быстро и легко",
-      "start_button": "Начат"
+      "start_button": "Начат",
+
+      "delete_account": "Удалить аккаунт",
+      "delete_account_alert": "Вы уверены, что хотите удалить аккаунт?",
     },
     'en_US':{
       "language": "English",
@@ -437,7 +428,10 @@ class LocaleString extends Translations{
 
       "start_title": "Welcome\nUy joy baraka",
       "start_text": "Find the house you need quickly and easily",
-      "start_button": "Start"
+      "start_button": "Start",
+
+      "delete_account": "Delete Account",
+      "delete_account_alert": "Are you sure you want to delete your account?",
     },
   };
 

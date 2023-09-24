@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
     'assets/images/carusel_3.jpg',
   ];
   int randomNumber = 0;
-
-
+  int min = 1;
+  late Timer _randomNumberTimer;
 
   GetAllItemController getAllItemController = Get.put(GetAllItemController());
   ViewCounterController viewCounterController =
@@ -49,11 +49,26 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(GetAdvertsDataController());
 
   void generateRandomNumber() {
-    Random random = Random();
-    int newRandomNumber = random.nextInt(getAdvertsDataController.allAds.length); // 0 dan 99 gacha tasodifiy son olish
-    setState(() {
-      randomNumber = newRandomNumber;
+    if(mounted){
+      Random random = Random();
+      int newRandomNumber = min + random.nextInt(getAdvertsDataController.allAds.length - min);
+      setState(() {
+        randomNumber = newRandomNumber;
+        print(newRandomNumber);
+      });
+    }
+  }
+
+  void _startRandomNumberTimer() {
+    _randomNumberTimer = Timer.periodic(const Duration(seconds: 15), (Timer t) {
+      generateRandomNumber();
     });
+  }
+
+  void _cancelRandomNumberTimer() {
+    if (_randomNumberTimer.isActive) {
+      _randomNumberTimer.cancel();
+    }
   }
 
   String? ijaravalue = "ijaraYokiSotuv";
@@ -97,15 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
     scrollController.addListener(_scrollListener);
     likeController.initializeLikedPostIds();
     getAdvertsDataController.getAdvertsData();
-    Timer.periodic(const Duration(seconds: 15), (Timer t) {
-      generateRandomNumber();
-    });
+    _startRandomNumberTimer();
   }
 
   @override
   void dispose() {
     scrollController.removeListener(_scrollListener);
     scrollController.dispose();
+    _cancelRandomNumberTimer();
     super.dispose();
   }
 
@@ -198,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // CAROUSEL >>>>>>>>
           Obx(() {
-            if(getAdvertsDataController.loadItem.value) { return Stack(alignment: Alignment.center, children: [
+            if(getAdvertsDataController.loadItem.value) { return carousel(); }else{ return Stack(alignment: Alignment.center, children: [
               CarouselSlider.builder(
                 options: CarouselOptions(
                     height: 250,
@@ -213,67 +227,86 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (getAdvertsDataController.allAds.isNotEmpty){
                     if (index == 0){
                       return Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(ApiEndPoints.BASE_URL + add.imgMob.toString()), fit: BoxFit.cover),
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                Color(0x40008B51),
+                                Color(0x40000000),
+                              ],
+                              begin: FractionalOffset(0.0, 0.0),
+                              end: FractionalOffset(1.0, 0.0),
+                              stops: [0.0, 1.0],
+                              tileMode: TileMode.clamp),
                         ),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color(0x40008B51),
-                                  Color(0x40000000),
-                                ],
-                                begin: FractionalOffset(0.0, 0.0),
-                                end: FractionalOffset(1.0, 0.0),
-                                stops: [0.0, 1.0],
-                                tileMode: TileMode.clamp),
-                          ),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 42,
-                                left: 28,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 300,
-                                      child: Text(
-                                        "carousel_title".tr,
-                                        style: const TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                      ),
+                        child: Stack(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8)),
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
                                     ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        launch(ApiEndPoints.authEndPoints.phone);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xff008B51),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 6),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.phone_rounded,
-                                            size: 20,
-                                          ),
-                                          Text(
-                                            "button_title".tr,
-                                            style: const TextStyle(fontSize: 14),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(0xff008B51),
+                                  )),
+                              errorWidget: (context, url, error) =>
+                              const Icon(
+                                Icons.error,
+                                color: Colors.red,
                               ),
-                            ],
-                          ),
+                            ),
+                            Positioned(
+                              top: 42,
+                              left: 28,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 300,
+                                    child: Text(
+                                      "carousel_title".tr,
+                                      style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      launch(ApiEndPoints.authEndPoints.phone);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff008B51),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.phone_rounded,
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          "button_title".tr,
+                                          style: const TextStyle(fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     }else{
@@ -387,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         activeDotColor: Color(0xffFF8D08),
                         dotColor: Colors.white),
                   ))
-            ]); }else{ return carousel();}
+            ]);}
           }),
           // TITLE
           Container(
@@ -467,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("ad_title".tr, style: TextStyle(color: Color(0xff008B51), fontSize: 28, fontWeight: FontWeight.w700),),
+                                  Text("ad_title".tr, style: const TextStyle(color: Color(0xff008B51), fontSize: 28, fontWeight: FontWeight.w700),),
                                   const SizedBox(height: 10,),
                                   MaterialButton(
                                       padding: EdgeInsets.zero,
