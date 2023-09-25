@@ -131,6 +131,7 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: Text("delete_account_alert".tr),
+                          content: Text("delete_account_text".tr, style: const TextStyle(color: Colors.red),),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -156,7 +157,8 @@ class _EditUserDataScreenState extends State<EditUserDataScreen> {
                       showCupertinoDialog(
                         context: context,
                         builder: (context) => CupertinoAlertDialog(
-                          title: Text("reset_password_question".tr),
+                          title: Text("delete_account_alert".tr),
+                          content: Text("delete_account_text".tr, style: const TextStyle(color: Colors.red),),
                           actions: [
                             TextButton(
                               onPressed: () {

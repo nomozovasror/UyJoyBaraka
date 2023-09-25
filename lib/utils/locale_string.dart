@@ -137,6 +137,7 @@ class LocaleString extends Translations{
         "start_button": "Boshlash",
         "delete_account": "Akkauntni o'chirish",
         "delete_account_alert": "Akkauntni o'chirishni xohlaysizmi?",
+        "delete_account_text": "Agar siz accauntingizni o'chirib tashlasangiz e'lonlar va saqlangan habarlar o'chib ketadi!",
     },
     'ru_RU':{
       "language": "Русский",
@@ -263,7 +264,7 @@ class LocaleString extends Translations{
       "phone_short_seven": "Номер телефона должен содержать не менее 7 цифр",
       "save": "Сохранить",
       "name_alert": "Пожалуйста, введите ваше имя и фамилию",
-      "name_hint": "Имя и фамилия",
+      "name_hint": "Введите ваше имя",
 
       "sign_up": "Зарегистрироваться",
       "sign_in": "Войти",
@@ -287,6 +288,7 @@ class LocaleString extends Translations{
 
       "delete_account": "Удалить аккаунт",
       "delete_account_alert": "Вы уверены, что хотите удалить аккаунт?",
+      "delete_account_text": "Все ваши объявления и сообщения будут удалены",
     },
     'en_US':{
       "language": "English",
@@ -408,7 +410,7 @@ class LocaleString extends Translations{
       "phone_short_seven": "Phone number must be at least 7 digits",
       "save": "Save",
       "name_alert": "Please enter your first and last name",
-      "name_hint": "First and Last Name",
+      "name_hint": "Enter your name",
 
       "sign_up": "Sign Up",
       "sign_in": "Sign In",
@@ -432,6 +434,7 @@ class LocaleString extends Translations{
 
       "delete_account": "Delete Account",
       "delete_account_alert": "Are you sure you want to delete your account?",
+      "delete_account_text": "Ads and saved messages will be deleted if you delete your account!",
     },
   };
 

@@ -54,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
       int newRandomNumber = min + random.nextInt(getAdvertsDataController.allAds.length - min);
       setState(() {
         randomNumber = newRandomNumber;
-        print(newRandomNumber);
       });
     }
   }

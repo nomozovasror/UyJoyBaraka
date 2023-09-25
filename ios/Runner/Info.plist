@@ -31,7 +31,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please grant microphone access</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please grant photo gallery access</string>
+	<string>To upload pictures of your home, we need access to your photo library.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
