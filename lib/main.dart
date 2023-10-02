@@ -103,86 +103,91 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            title: Image.asset('assets/images/logo.png', height: 40),
-            backgroundColor: const Color(0xff008B51),
-            centerTitle: true,
-          ),
-          body: pagesList[currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: const Color(0xffFF8D08),
-            unselectedItemColor: const Color(0xff130F26),
-            selectedFontSize: 10,
-            unselectedFontSize: 10,
-            currentIndex: currentIndex,
-            onTap: (index) {
-              if (index == 1) {
-                updatePost();
-              }
-              setState(() {
-                currentIndex = index;
-              });
-            },
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/tabler_category.svg',
-                  color: currentIndex == 0
-                      ? const Color(0xffFF8D08)
-                      : const Color(0xff130F26),
-                  width: 28,
-                  height: 28,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              title: Image.asset('assets/images/logo.png', height: 40),
+              backgroundColor: const Color(0xff008B51),
+              centerTitle: true,
+            ),
+            body: pagesList[currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: const Color(0xffFF8D08),
+              unselectedItemColor: const Color(0xff130F26),
+              selectedFontSize: 10,
+              unselectedFontSize: 10,
+              currentIndex: currentIndex,
+              onTap: (index) {
+                if (index == 1) {
+                  updatePost();
+                }
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/tabler_category.svg',
+                    color: currentIndex == 0
+                        ? const Color(0xffFF8D08)
+                        : const Color(0xff130F26),
+                    width: 28,
+                    height: 28,
+                  ),
+                  label: "menu_title".tr,
                 ),
-                label: "menu_title".tr,
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/mdi_heart-outline.svg',
-                  color: currentIndex == 1
-                      ? const Color(0xffFF8D08)
-                      : const Color(0xff130F26),
-                  width: 28,
-                  height: 28,
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/mdi_heart-outline.svg',
+                    color: currentIndex == 1
+                        ? const Color(0xffFF8D08)
+                        : const Color(0xff130F26),
+                    width: 28,
+                    height: 28,
+                  ),
+                  label: "saved_title".tr,
                 ),
-                label: "saved_title".tr,
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/mdi_plus-outline.svg',
-                  color: currentIndex == 2
-                      ? const Color(0xffFF8D08)
-                      : const Color(0xff130F26),
-                  width: 28,
-                  height: 28,
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/mdi_plus-outline.svg',
+                    color: currentIndex == 2
+                        ? const Color(0xffFF8D08)
+                        : const Color(0xff130F26),
+                    width: 28,
+                    height: 28,
+                  ),
+                  label: "add_title".tr,
                 ),
-                label: "add_title".tr,
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/majesticons_chat-line.svg',
-                  color: currentIndex == 3
-                      ? const Color(0xffFF8D08)
-                      : const Color(0xff130F26),
-                  width: 28,
-                  height: 28,
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/majesticons_chat-line.svg',
+                    color: currentIndex == 3
+                        ? const Color(0xffFF8D08)
+                        : const Color(0xff130F26),
+                    width: 28,
+                    height: 28,
+                  ),
+                  label: "chat_title".tr,
                 ),
-                label: "chat_title".tr,
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/solar_user-outline.svg',
-                  color: currentIndex == 4
-                      ? const Color(0xffFF8D08)
-                      : const Color(0xff130F26),
-                  width: 28,
-                  height: 28,
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/solar_user-outline.svg',
+                    color: currentIndex == 4
+                        ? const Color(0xffFF8D08)
+                        : const Color(0xff130F26),
+                    width: 28,
+                    height: 28,
+                  ),
+                  label: "profile_title".tr,
                 ),
-                label: "profile_title".tr,
-              ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 }
