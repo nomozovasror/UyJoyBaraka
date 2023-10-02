@@ -144,6 +144,9 @@ class LocaleString extends Translations{
         "forgot_password": "Parolni unutdingizmi?",
         "reset_password": "Parolni tiklash",
         "not_account": "Sizda akkaunt yo'qmi?",
+        "delete_account": "Akkauntni o'chirish",
+        "delete_account_alert": "Akkauntni o'chirishni xohlaysizmi?",
+        "delete_account_text": "Eslatma! sizning barcha ma'lumotlaringiz o'chib ketadi",
 
         "start_title": "Xush kelibsiz\nUy joy baraka",
         "start_text": "O’zingizga kerakli uyni tez va oson toping",
@@ -291,6 +294,9 @@ class LocaleString extends Translations{
       "forgot_password": "Забыли пароль?",
       "reset_password": "Сбросить пароль",
       "not_account": "У вас нет аккаунта?",
+      "delete_account": "Удалить аккаунт",
+      "delete_account_alert": "Вы уверены, что хотите удалить аккаунт?",
+      "delete_account_text": "Все ваши объявления и сообщения будут удалены",
 
       "start_title": "Добро пожаловать\nUy joy baraka",
       "start_text": "Найдите нужный вам дом быстро и легко",
@@ -432,7 +438,10 @@ class LocaleString extends Translations{
       "no": "No",
       "forgot_password": "Forgot Password?",
       "reset_password": "Reset Password",
-      "no_account": "Don't have an account?",
+      "not_account": "Don't have an account?",
+      "delete_account": "Delete Account",
+      "delete_account_alert": "Are you sure you want to delete your account?",
+      "delete_account_text": "All your listings will be deleted",
 
       "start_title": "Welcome\nUy joy baraka",
       "start_text": "Find the house you need quickly and easily",
