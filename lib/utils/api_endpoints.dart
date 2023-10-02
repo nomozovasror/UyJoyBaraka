@@ -32,6 +32,7 @@ class _AuthEndPoints {
   final String updatePost = "/api/announcements/update/";
   final String getChats = "/api/chats";
   final String getAdvert = "/ads/app";
+  final String getAdvertBanner = "/ads/min-app";
   final String userDelete = "/api/users/delete";
 
   final String youTube = "https://www.youtube.com/@UyjoyBaraka";

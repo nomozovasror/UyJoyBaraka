@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uy_joy_baraka/controller/add_min_controller.dart';
 import 'package:uy_joy_baraka/controller/advertising_controller.dart';
 import 'package:uy_joy_baraka/controller/home_item_controller.dart';
 import 'package:uy_joy_baraka/controller/like_controller.dart';
@@ -47,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
   LikeController likeController = Get.put(LikeController());
   GetAdvertsDataController getAdvertsDataController =
       Get.put(GetAdvertsDataController());
+  GetMinAdvertsDataController getMinAdvertsDataController =
+      Get.put(GetMinAdvertsDataController());
 
   void generateRandomNumber() {
     if(mounted){
@@ -111,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
     scrollController.addListener(_scrollListener);
     likeController.initializeLikedPostIds();
     getAdvertsDataController.getAdvertsData();
+    getMinAdvertsDataController.getMinAdvertsData();
     _startRandomNumberTimer();
   }
 
@@ -211,7 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // CAROUSEL >>>>>>>>
           Obx(() {
-            if(getAdvertsDataController.loadItem.value) { return carousel(); }else{ return Stack(alignment: Alignment.center, children: [
+            if(getAdvertsDataController.loadItem.value)
+            { return Stack(alignment: Alignment.center, children: [
               CarouselSlider.builder(
                 options: CarouselOptions(
                     height: 250,
@@ -221,100 +226,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         setState(() => activeIndex = index)),
                 itemCount: getAdvertsDataController.allAds.isNotEmpty ? getAdvertsDataController.allAds.length : imgList.length,
                 itemBuilder: (BuildContext context, int index, int realIndex) {
-                  final add = getAdvertsDataController.allAds[index];
-
                   if (getAdvertsDataController.allAds.isNotEmpty){
-                    if (index == 0){
-                      return Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [
-                                Color(0x40008B51),
-                                Color(0x40000000),
-                              ],
-                              begin: FractionalOffset(0.0, 0.0),
-                              end: FractionalOffset(1.0, 0.0),
-                              stops: [0.0, 1.0],
-                              tileMode: TileMode.clamp),
-                        ),
-                        child: Stack(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8)),
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xff008B51),
-                                  )),
-                              errorWidget: (context, url, error) =>
-                              const Icon(
-                                Icons.error,
-                                color: Colors.red,
-                              ),
-                            ),
-                            Positioned(
-                              top: 42,
-                              left: 28,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 300,
-                                    child: Text(
-                                      "carousel_title".tr,
-                                      style: const TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      launch(ApiEndPoints.authEndPoints.phone);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff008B51),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.phone_rounded,
-                                          size: 20,
-                                        ),
-                                        Text(
-                                          "button_title".tr,
-                                          style: const TextStyle(fontSize: 14),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }else{
-                      return GestureDetector(
+                    return GestureDetector(
                         onTap: () {
-                          launchUrl(Uri.parse(add.link.toString()));
+                          launchUrl(Uri.parse(getAdvertsDataController.allAds[index].link.toString()));
                         },
                         child: CachedNetworkImage(
-                          imageUrl: ApiEndPoints.BASE_URL + add.imgMob.toString(),
+                          imageUrl: ApiEndPoints.BASE_URL + getAdvertsDataController.allAds[index].imgMob.toString(),
                           imageBuilder: (context, imageProvider) =>
                               Container(
                                 width: double.infinity,
@@ -339,7 +257,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       );
-                    }
                   }else{
                     return Container(
                       decoration: BoxDecoration(
@@ -419,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         activeDotColor: Color(0xffFF8D08),
                         dotColor: Colors.white),
                   ))
-            ]);}
+            ]);} else { return carousel(); }
           }),
           // TITLE
           Container(
@@ -461,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if ((index + 1) % 11 == 0) {
                       if (index < 11) {
                         int ran =  randomNumber.toInt();
-                        if(getAdvertsDataController.allAds.isNotEmpty){
+                        if(getAdvertsDataController.allAds.length > 1){
                           return GestureDetector(
                             onTap: () {
                               launchUrl(Uri.parse(getAdvertsDataController.allAds[ran].link.toString()));
@@ -527,113 +444,143 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       } else {
                         // SECOND AD BANNER
-                        return Container(
-                          height: 80,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xff008B51), width: 1)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Image.asset(
-                                'assets/images/green3.png',
-                                width: 70,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 35),
-                                width: 140,
-                                height: 90,
-                                transform: Matrix4.skewX(-.3),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xff008B51),
-                                ),
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 138,
-                                    child: Text(
-                                      "social_title".tr,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
+                        if (getMinAdvertsDataController.loadItem.value) {
+                          if(getMinAdvertsDataController.ad != null){
+                            return GestureDetector(
+                              onTap: () {
+                                launchUrl(Uri.parse(getMinAdvertsDataController.ad!.ads.link.toString()));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 20),
+                                height: 260,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      ApiEndPoints.BASE_URL +
+                                          getMinAdvertsDataController.ad!.ads.imgMob.toString()
+                                              .toString(),
                                     ),
                                   ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                            );
+                          }else{
+                            return Container(
+                              height: 80,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xff008B51), width: 1)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.youTube.toString()));
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFFF8D08),
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      height: 25,
-                                      width: 25,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                            'assets/icons/youtube.svg', width: 18,),
-                                      ),
-                                    ),
-                                  ),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.instagram.toString()));
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFFF8D08),
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      height: 25,
-                                      width: 25,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                            'assets/icons/mdi_instagram.svg'),
+                                  Image.asset(
+                                    'assets/images/green3.png',
+                                    width: 70,
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 35),
+                                    width: 140,
+                                    height: 90,
+                                    transform: Matrix4.skewX(-.3),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xff008B51),
+                                    ),
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: 138,
+                                        child: Text(
+                                          "social_title".tr,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      launchUrl(Uri.parse(ApiEndPoints.authEndPoints.telegram.toString()));
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFFF8D08),
-                                          borderRadius:
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          launchUrl(Uri.parse(ApiEndPoints.authEndPoints.youTube.toString()));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xFFFF8D08),
+                                              borderRadius:
                                               BorderRadius.circular(50)),
-                                      height: 25,
-                                      width: 25,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                            'assets/icons/mingcute_telegram-line.svg'),
+                                          height: 25,
+                                          width: 25,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/icons/youtube.svg', width: 18,),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          launchUrl(Uri.parse(ApiEndPoints.authEndPoints.instagram.toString()));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xFFFF8D08),
+                                              borderRadius:
+                                              BorderRadius.circular(50)),
+                                          height: 25,
+                                          width: 25,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                                'assets/icons/mdi_instagram.svg'),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          launchUrl(Uri.parse(ApiEndPoints.authEndPoints.telegram.toString()));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xFFFF8D08),
+                                              borderRadius:
+                                              BorderRadius.circular(50)),
+                                          height: 25,
+                                          width: 25,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                                'assets/icons/mingcute_telegram-line.svg'),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                        );
+                              ),
+                            );
+                          }
+                        }
+                        else{
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(child: CircularProgressIndicator(color: Color(0xff008B51),),),
+                          );
+                        }
                       }
                     } else {
                       // CARD
