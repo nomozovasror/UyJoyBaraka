@@ -8,19 +8,17 @@
   class GetAdvertsDataController extends GetxController {
 
     List<Ads> allAds = [];
-    var loadItem = true.obs;
+    var loadItem = false.obs;
 
     @override
     void onInit() {
-      if (!loadItem.value) return;
       getAdvertsData();
       super.onInit();
     }
 
     Future<void> getAdvertsData() async {
       try {
-        if (!loadItem.value) return;
-        loadItem.value = true;
+        loadItem.value = false;
         var url = Uri.parse(
             '${ApiEndPoints.BASE_URL}${ApiEndPoints.authEndPoints.getAdvert}');
 
@@ -42,7 +40,7 @@
           print(e);
         }
       }finally{
-        loadItem.value = false;
+        loadItem.value = true;
       }
     }
   }
