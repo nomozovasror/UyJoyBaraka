@@ -58,11 +58,6 @@ class CreatePostController extends GetxController {
       };
       var url = Uri.parse(ApiEndPoints.BASE_URL + ApiEndPoints.authEndPoints.createPost);
 
-      // Check if images are selected
-      if (selectedImages == null || selectedImages!.isEmpty) {
-        return;
-      }
-
       // Create a new multipart request
       var request = http.MultipartRequest('POST', url);
 
@@ -82,11 +77,12 @@ class CreatePostController extends GetxController {
       request.fields['price_type'] = valyuta.toString();
       request.fields['phone'] = phoneController.text;
 
-      // Add the images to the request
-      for (int i = 0; i < selectedImages!.length; i++) {
-        var imageFile = selectedImages![i];
-        var multipartFile = http.MultipartFile.fromBytes('images', await imageFile.readAsBytes(), filename: imageFile.path.split('/').last);
-        request.files.add(multipartFile);
+      if (selectedImages != null && selectedImages!.isNotEmpty) {
+        for (int i = 0; i < selectedImages!.length; i++) {
+          var imageFile = selectedImages![i];
+          var multipartFile = http.MultipartFile.fromBytes('images', await imageFile.readAsBytes(), filename: imageFile.path.split('/').last);
+          request.files.add(multipartFile);
+        }
       }
 
       // Send the request and get the response
@@ -113,7 +109,7 @@ class CreatePostController extends GetxController {
                           child: Lottie.asset("assets/lottie/success.json", height: 200, options: LottieOptions(enableMergePaths: true,)),
                         ),
                       ],
-                    )
+                    ),
                   )
                 ],
               );
@@ -140,11 +136,12 @@ class CreatePostController extends GetxController {
             children: [
               SimpleDialogOption(
                 child: Text(e.toString()),
-              )
+              ),
             ],
           );
         },
       );
     }
   }
+
 }

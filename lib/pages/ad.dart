@@ -1185,26 +1185,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
                                         horizontal: 90, vertical: 20),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        if (createPostController
-                                                .selectedImages!.length <=
-                                            0) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.error_outline,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Text(
-                                                      "picture_alert".tr)
-                                                ],
-                                              ),
-                                              backgroundColor: Colors.redAccent,
-                                            ),
-                                          );
-                                        } else if (ijaravalue == null ||
+                                        if (ijaravalue == null ||
                                             ijaravalue == '') {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
